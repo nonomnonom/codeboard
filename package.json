@@ -1,11 +1,23 @@
 {
   "name": "codeboard-studio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Code-first drawing and storyboard tools for JavaScript and TypeScript",
-  "repository": { "type": "git", "url": "git+https://github.com/nonomnonom/codeboard.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nonomnonom/codeboard.git"
+  },
   "homepage": "https://github.com/nonomnonom/codeboard#readme",
-  "bugs": { "url": "https://github.com/nonomnonom/codeboard/issues" },
-  "keywords": ["storyboard", "animation", "drawing", "procedural-art", "typescript", "brush-engine"],
+  "bugs": {
+    "url": "https://github.com/nonomnonom/codeboard/issues"
+  },
+  "keywords": [
+    "storyboard",
+    "animation",
+    "drawing",
+    "procedural-art",
+    "typescript",
+    "brush-engine"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "dist/src/index.js",
@@ -25,6 +37,7 @@
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
+    "package:portable": "npm run build && node scripts/build-portable.mjs",
     "test": "vitest run",
     "test:package": "node scripts/verify-package.mjs",
     "test:install": "node scripts/verify-package.mjs --install",

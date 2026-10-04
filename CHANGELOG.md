@@ -4,6 +4,12 @@ Changes are grouped by release. Unreleased work is not a claim of registry publi
 
 ## Unreleased
 
+## [0.1.1] - 2026-10-04
+
+- Add GitHub-only portable CLI bundles for Windows x64, Linux x64, macOS x64 and macOS arm64, including Node and native runtime dependencies.
+- Verify each extracted bundle on its target OS before release; document installation paths.
+- Remove the unused npm registry publishing workflow.
+
 ## [0.1.0] - 2026-10-04
 
 ### Added

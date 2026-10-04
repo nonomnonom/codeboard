@@ -21,6 +21,12 @@ No account, AI service, or manual editor is required. It works with ordinary scr
 
 Codeboard is pre-1.0 software. It is not a replacement for a mature hand-drawing editor, a generative video model, or an emulator of Photoshop/Krita brush engines. API and storage changes need compatibility review. See [implemented behavior and limits](docs/architecture.md).
 
+## Install a release
+
+Download the package for your OS from [GitHub Releases](https://github.com/nonomnonom/codeboard/releases/latest). Windows, Linux and macOS bundles include Node and native drawing dependencies; extract and run `codeboard --help` (`codeboard.cmd` on Windows). [Installation paths and commands for each OS](docs/install.md).
+
+Packages are distributed through GitHub, not the npm registry. FFmpeg is a separate requirement for movie export.
+
 ## Try it locally
 
 Requires **Node.js 22.22+** and npm. Native rendering dependencies are installed by npm. FFmpeg is only needed for movie export.

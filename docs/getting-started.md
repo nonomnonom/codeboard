@@ -1,5 +1,7 @@
 # Getting started
 
+For a ready-to-run package without installing Node/npm, follow [per-OS installation](install.md). The instructions below are for building from source.
+
 Use Node.js 22.22 or newer. The repository's `.nvmrc` selects the minimum supported version. npm installs the native `skia-canvas` and `sharp` rendering dependencies.
 
 ```sh
