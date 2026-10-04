@@ -3,7 +3,7 @@ import { dirname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const excluded = new Set(['node_modules', '.git', 'dist', 'tmp', 'output', 'coverage']);
+const excluded = new Set(['node_modules', '.git', 'dist', 'tmp', 'output', 'coverage', '.next', '.source', 'out', 'release']);
 async function markdownFiles(directory) {
   const files = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
