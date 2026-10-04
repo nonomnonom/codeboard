@@ -91,6 +91,6 @@ const lock = project.production.lock('layer', 'clawd', 'Pose review in progress'
 project.production.unlock(lock);
 ```
 
-A lock belongs to the project's current actor. Only that actor can unlock it. Choose an actor with `StoryboardProject.open(path, { actor: 'agent:cleanup' })` when ownership matters across sessions. Locks coordinate edits inside the document; they are not operating-system access control or a network collaboration service.
+A lock belongs to the project's current actor and blocks edits by other actors. Its owner can continue editing and is the only actor who can unlock it. Choose an actor with `StoryboardProject.open(path, { actor: 'agent:cleanup' })` when ownership matters across sessions. Locks coordinate edits inside the document; they are not operating-system access control or a network collaboration service.
 
 For detailed ghosting rules, follow [onion skin, layer by layer](onion-skin.md). For framing overlays, see [camera guides](camera.md#framing-guides-and-isolated-artwork).

@@ -57,7 +57,7 @@ project.production.reparentLayer(ink.id, character.id);
 
 `moveLayer` places a layer before another sibling; omit the destination to move it to the end of its stack. `reparentLayer` changes its group; use `null` for the panel root and `beforeLayerId` to choose the destination stack position. Reparenting changes the coordinate hierarchy, so review placement when parent transforms differ. Mask and drawing-sequence relationships must remain valid.
 
-`production.removeLayer(id)` removes a layer and its descendants. A selection's `remove()` deletes selected elements or its selected layer. Locked artwork rejects edits until unlocked. Use a transaction for related changes and render before saving.
+`production.removeLayer(id)` removes a layer and its descendants. A selection's `remove()` deletes selected elements or its selected layer. Review locks block changes by other actors; deleting locked artwork requires releasing the lock first. Use a transaction for related changes and render before saving.
 
 ## Partial transforms and pivots
 
