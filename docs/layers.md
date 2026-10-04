@@ -13,6 +13,8 @@ const shade = panel.addRasterLayer('Shading', {
 
 Layers render in their stored order, with later layers over earlier ones. Group transforms and opacity affect their children.
 
+For full input shapes, see `LayerOptions`, `LayerChanges`, `Transform`, and `Pivot` in [API types](api-types.md).
+
 ## Move, rotate, or hide a layer
 
 ```js
@@ -45,6 +47,23 @@ const highlights = panel.addRasterLayer('Highlights', { clipToBelow: true });
 For an explicit mask, set `maskLayerId` to another layer in the same sibling stack. The mask's alpha controls visibility. Clear a mask with `layer.set({ maskLayerId: null })`. Masks and clipping are compositing operations; the source artwork remains editable.
 
 Supported blend modes are `source-over`, `multiply`, `screen`, `overlay`, `darken`, and `lighten`.
+
+## Change stacking and parenting
+
+```js
+project.production.moveLayer(shade.id, ink.id);
+project.production.reparentLayer(ink.id, character.id);
+```
+
+`moveLayer` places a layer before another sibling; omit the destination to move it to the end of its stack. `reparentLayer` changes its group; use `null` for the panel root and `beforeLayerId` to choose the destination stack position. Reparenting changes the coordinate hierarchy, so review placement when parent transforms differ. Mask and drawing-sequence relationships must remain valid.
+
+`production.removeLayer(id)` removes a layer and its descendants. A selection's `remove()` deletes selected elements or its selected layer. Locked artwork rejects edits until unlocked. Use a transaction for related changes and render before saving.
+
+## Partial transforms and pivots
+
+Layer transforms contain X/Y translation, X/Y scale and radian rotation. Negative scale can mirror artwork. A layer pivot is in local coordinates. An element selection composes an affine placement matrix; a contour edit instead changes source coordinates. Those operations produce different future rotation and scaling behavior.
+
+When feedback refers to a visible screen location, use [coordinate conversion](math.md#convert-between-spaces) at the relevant frame. Parent transforms, animation and camera placement all contribute to that mapping.
 
 ## Find a layer in a later session
 

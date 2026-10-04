@@ -17,12 +17,28 @@ The example assumes a 1280×720 project starting at frame 0. For later shots, us
 
 ## Revise the framing
 
+![Original framing of the demo takeoff pose](../website/public/art/code-board-demo/camera-wide.png)
+
+![The same frame with a closer camera and corrected pan](../website/public/art/code-board-demo/camera-close.png)
+
+These images show the same drawing at frame 128. Only the camera changes. In the [downloadable example](code-board-demo.md), the shot ID is `hop`:
+
+```js
+project.production.addCameraKeyframe('hop', 128, {
+  x: 60, y: 160, zoom: 2, rotation: 0,
+});
+```
+
+Positive camera X moves the viewing position right, so artwork moves left in the frame; positive Y moves the viewing position down. Zoom is centered on the frame after pan. Zoom and root-plane depth must be positive.
+
 ```js
 project.production.updateCameraKeyframe(shot.id, endKey, { zoom: 1.6 });
 console.log(project.production.cameraKeyframes(shot.id, { limit: 20 }));
 ```
 
 Use `removeCameraKeyframe(shotId, keyId)` to delete a key. X, Y, zoom, and rotation interpolate independently, using the same easing choices as [layer animation](animation.md).
+
+To remove only zoom from a mixed camera key, use `removeCameraKeyframeChannels(shotId, keyId, ['zoom'])`. Other channels on that key remain. Keys at the same frame merge supplied channels. A channel holds its nearest value before its first key and after its last key; unkeyed channels keep the default framing.
 
 ## Build depth
 
@@ -34,6 +50,34 @@ const background = panel.addGroup('Background', { depth: 2 });
 ```
 
 Multiplane depth changes camera projection; it does not turn flat artwork into a 3D model. Render the start, middle, and end of a move to check framing and overlaps.
+
+Use `production.setPlaneDepth(layerId, depth)` to change a plane later, or a layer key's `depth` channel to animate it. Projection uses pan divided by depth and zoom raised to `1 / depth`. Root layer order still controls overlap. Depth does not reorder layers or create perspective geometry.
+
+## Evaluate without playback
+
+```js
+import { evaluateCamera } from 'codeboard-studio';
+const keys = project.production.cameraKeyframes('hop', { limit: 100 });
+console.log(evaluateCamera(keys, 128));
+```
+
+Pass the full set of relevant keys when evaluating, including keys bracketing the requested frame. A truncated query can give a different interpolation result. Rendering a project evaluates its complete timeline automatically.
+
+## Framing guides and isolated artwork
+
+```js
+import { renderPanelPNG, renderCompositionGuides } from 'codeboard-studio';
+import { writeFile } from 'node:fs/promises';
+await writeFile('source-pose.png', await renderPanelPNG(project, 'performance', {
+  frame: 128, camera: false, annotations: false, layerIds: ['clawd'],
+}));
+await writeFile('guides.png', await renderCompositionGuides(project, 'performance', {
+  frame: 128, thirds: true, safeInset: .08, horizonY: 800,
+  vanishingPoints: [{ x: 960, y: 400 }],
+}));
+```
+
+Guides are review overlays; they do not modify the document. Horizon and vanishing-point positions are output-frame coordinates. `safeInset` is a fractional inset on each edge, not a named broadcast-safe standard. Layer isolation respects its hierarchy; a hidden ancestor can still hide the selected artwork.
 
 ## Inspect a camera frame
 

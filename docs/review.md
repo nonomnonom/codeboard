@@ -1,5 +1,7 @@
 # Review and revise
 
+The [runnable character demo](code-board-demo.md) includes a layer-isolated onion skin and an exact-frame before/after revision. Use it to practice the review loop with real artwork.
+
 Make review part of your authoring loop: run a script, render the relevant view, inspect the image, then change only the artwork or timing that needs attention.
 
 ## Find the target
@@ -69,3 +71,26 @@ const framePoint = transformPoint(space.localToFrame, { x: 30, y: 20 });
 The inverse `frameToLocal` maps a point in the rendered frame back into source coordinates. It is `null` when the transform cannot be inverted, for example at zero scale.
 
 Codeboard produces review images and change information. Your agent or reviewer decides whether the pose, composition, or timing is good.
+
+## Attach a review note
+
+```js
+const note = project.production.comment('Keep the rear foot planted here.', {
+  panelId: 'performance', layerId: 'clawd', frame: 128, x: 940, y: 800,
+}, { author: 'Reviewer' });
+// After applying and inspecting the correction:
+project.production.resolveComment(note);
+```
+
+Comments preserve feedback and an optional artwork/frame anchor. They do not execute changes. Review notes and panel status are stored with the project. `production.inspect()` returns the project overview, including timeline, assets and open comments; it is not paginated. Use `production.find()` and paged key/audio queries for bounded discovery in large projects. See [the production reference](api-production.md) for return shapes.
+
+## Protect a reviewed part
+
+```js
+const lock = project.production.lock('layer', 'clawd', 'Pose review in progress');
+project.production.unlock(lock);
+```
+
+A lock belongs to the project's current actor. Only that actor can unlock it. Choose an actor with `StoryboardProject.open(path, { actor: 'agent:cleanup' })` when ownership matters across sessions. Locks coordinate edits inside the document; they are not operating-system access control or a network collaboration service.
+
+For detailed ghosting rules, follow [onion skin, layer by layer](onion-skin.md). For framing overlays, see [camera guides](camera.md#framing-guides-and-isolated-artwork).

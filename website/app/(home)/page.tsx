@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { basePath, releaseVersion, repository } from '@/lib/shared';
 
-const example = `const panel = project.addScene('Night')
-  .addShot('The last light').addPanel();
+const example = `const { current } = project.production
+  .drawingNeighbors('clawd', 124);
 
-const ink = panel.addRasterLayer('Rough ink');
-ink.rasterStroke(gesture, myBrush, { seed: 12 });
+project.production.setDrawingRange(
+  'clawd', 126, 130, current.drawingId
+);
 
-await project.save('last-light.cboard');`;
+await project.save('clawd.cboard');`;
 
 export default function Home() {
   return <main id="main-content" className="site-main">
@@ -21,12 +22,12 @@ export default function Home() {
         </div>
       </div>
     </section>
-    <figure className="hero-art"><img src={`${basePath}/art/last-light.png`} width="1280" height="720" alt="A lantern keeper watches a mechanical firefly illuminate a rain-soaked city, drawn through Codeboard's public API." fetchPriority="high" />
-      <figcaption><span><strong>THE LAST LIGHT</strong> / Code-authored storyboard</span><Link href="/examples#last-light">See the project</Link></figcaption>
+    <figure className="hero-art"><video controls preload="none" playsInline poster={`${basePath}/art/code-board-demo/poster.png`} src={`${basePath}/art/code-board-demo/walkthrough.mp4`} aria-label="Codeboard: a 48-second silent walkthrough of character drawing and animation"><a href={`${basePath}/art/code-board-demo/walkthrough.mp4`}>Download the walkthrough</a></video>
+      <figcaption><span><strong>CODEBOARD DEMO</strong> / 48-second visual walkthrough · silent</span><Link href="/docs/code-board-demo">Run the example</Link></figcaption>
     </figure>
     <section className="authoring-section">
       <div><span className="section-label">From a mark to a moving scene</span><h2>The artwork is<br /><em>still yours to change.</em></h2><p>Write a stroke. Adjust its pressure. Replace a drawing. Hold a shot a little longer. Codeboard gives your agent the drawing and production controls to make those changes directly.</p><Link className="text-link" href="/docs/review">Follow the code → review → revise workflow</Link></div>
-      <div className="source-sample"><div className="source-caption">JavaScript authoring</div><pre><code>{example}</code></pre><p>A brush, a gesture and an editable project. <Link href={`${repository}/blob/main/examples/last-light.ts`}>Read the full source.</Link></p></div>
+      <div className="source-sample"><div className="source-caption">Hold the anticipation for two more frames</div><pre><code>{example}</code></pre><p>Change one exposure range. Keep the surrounding performance. <Link href="/docs/code-board-demo#revise-the-anticipation">See the before and after.</Link></p></div>
     </section>
     <section className="guide-section"><h2>Put your agent to work.</h2><div className="guide-list">
       <Link href="/docs/brushes"><span>01</span><div><h3>Make your own marks</h3><p>Custom bitmap brushes, pressure dynamics and external brush resources.</p></div><span aria-hidden="true">↗</span></Link>

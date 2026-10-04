@@ -11,7 +11,7 @@ import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/components/mdx';
 import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
-import { getPageImageUrl, getPageMarkdownUrl, gitConfig } from '@/lib/shared';
+import { basePath, getPageImageUrl, getPageMarkdownUrl, gitConfig } from '@/lib/shared';
 
 export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params;
@@ -37,6 +37,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
           components={getMDXComponents({
             a: ({href, ...props}) => {
               const RelativeLink = createRelativeLink(source, page);
+              if (href?.startsWith('../website/public/')) return <a href={`${basePath}/${href.slice('../website/public/'.length)}`} {...props} />;
               if (href?.startsWith('../')) return <a href={`https://github.com/nonomnonom/codeboard/blob/main/${href.slice(3)}`} {...props} />;
               return <RelativeLink href={href} {...props} />;
             },
