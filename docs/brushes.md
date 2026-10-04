@@ -40,7 +40,7 @@ The third swatch uses `customizeBrush(brushes.charcoal, { texture: 'dry-brush', 
 | `paperTexture` | A repeating bitmap texture attached to the artwork |
 | `dynamics` | Responses to pressure, speed, tilt, and rotation jitter |
 
-Use `brushParameterSchema` to inspect and validate the full preset structure. Set an explicit stroke `seed` when using randomized texture or rotation jitter.
+Use `brushParameterSchema` to inspect the full preset structure as JSON Schema. Set an explicit stroke `seed` when using randomized texture or rotation jitter.
 
 ## Import a bitmap tip
 
@@ -123,4 +123,4 @@ project.production.reviseBrush(brushId, { size: 90 });
 
 Saving the project stores its brush definitions and tip data. Revising a library brush affects future strokes; existing strokes keep their recorded brush settings. Use an explicit stroke edit when you want older paint to use a different brush.
 
-`duplicateBrush(id, name)` creates a separately editable preset. `brush(id)` reads its current definition. Call `brushParameterSchema.parse(definition)` to validate a complete definition before painting; the schema includes ranges and supported enumerations. A successful parse does not establish that the swatch looks right—render it.
+`duplicateBrush(id, name)` creates a separately editable preset. `brush(id)` reads its current definition. `brushParameterSchema` is a JSON Schema object, not a parser with a `.parse()` method. It describes ranges and supported enumerations for inspection or use with a JSON Schema validator. `production.createBrush(definition)` validates a complete preset when adding it to the project. Successful validation does not establish that the swatch looks right—render it.

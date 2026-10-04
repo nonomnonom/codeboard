@@ -1,0 +1,17 @@
+[
+  {
+    "id": "hold",
+    "skills": ["codeboard-revise", "codeboard-animate", "codeboard-review"],
+    "request": "In film.cboard, extend the Rest drawing on the Performance panel through global frames 30 through 35 inclusive. Resume the pre-existing performance at frame 36. Keep the total duration, placement animation, camera, sound, and all other artwork unchanged. Save the revision to film.cboard and render before.png and after.png at global frame 34. Inspect the images if a viewing tool is available. Leave the revision script and a result.md describing what you actually checked."
+  },
+  {
+    "id": "retime",
+    "skills": ["codeboard-storyboard", "codeboard-animate", "codeboard-camera", "codeboard-audio"],
+    "request": "In film.cboard, lengthen the Performance panel from 24 to 36 frames and let the following panel move later. Keep the Hit cue four frames before Performance ends; retain its source trim, length, and volume. Leave Ambience timing alone and move the Tail cue with the following panel. At the retimed midpoint camera key, change only zoom to 1.4; preserve its other channels and all artwork. Save film.cboard, render before.png and after.png at the respective old/new midpoint, and write result.md stating which sound checks were structural versus actually heard."
+  },
+  {
+    "id": "brush",
+    "skills": ["codeboard-brushes", "codeboard-draw", "codeboard-debug"],
+    "request": "Import reed.kpp using the tip dependency supplied beside it. These are original eval resources, CC0-1.0, redistribution allowed. Save the actual import report as import.json. Make an editable study.cboard with one curved pressure-varying stroke using that imported bitmap tip, render swatch.png, and inspect it if possible. Keep unmapped behavior explicit. Also write a separate missing.json report for importing reed.kpp without dependencies; do not manufacture a substitute tip for that report. Leave source and result.md."
+  }
+]

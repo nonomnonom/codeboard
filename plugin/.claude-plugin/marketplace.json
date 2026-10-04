@@ -1,0 +1,9 @@
+{
+  "name": "codeboard-local",
+  "owner": {"name": "Nonom"},
+  "plugins": [{
+    "name": "codeboard",
+    "source": "./",
+    "description": "Editable drawing, storyboard, and animation workflows for the Codeboard CLI."
+  }]
+}
