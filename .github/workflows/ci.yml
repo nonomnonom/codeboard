@@ -102,7 +102,9 @@ jobs:
           $base = 'https://github.com/nonomnonom/codeboard/releases/download/v0.2.1'
           $installer = Join-Path $env:RUNNER_TEMP 'install.ps1'
           Invoke-WebRequest "$base/install.ps1" -OutFile $installer
-          $sums = (Invoke-WebRequest "$base/SHA256SUMS").Content
+          $sumsFile = Join-Path $env:RUNNER_TEMP 'SHA256SUMS'
+          Invoke-WebRequest "$base/SHA256SUMS" -OutFile $sumsFile
+          $sums = Get-Content -LiteralPath $sumsFile -Raw
           $expected = [regex]::Match($sums, '(?m)^([a-f0-9]{64})  install.ps1\r?$').Groups[1].Value
           if (!$expected -or (Get-FileHash $installer -Algorithm SHA256).Hash -ne $expected) { throw 'Installer checksum mismatch' }
           & $installer -Version 0.2.1 -InstallDir "$env:RUNNER_TEMP/codeboard" -NoModifyPath
