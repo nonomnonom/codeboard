@@ -84,6 +84,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           path: release
@@ -94,7 +97,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          sha256sum *.tgz *.zip *.tar.gz > SHA256SUMS
+          cp ../website/public/install.sh ../website/public/install.ps1 .
+          sha256sum *.tgz *.zip *.tar.gz install.sh install.ps1 > SHA256SUMS
           args=()
           if [[ "$GITHUB_REF_NAME" == *-* ]]; then args+=(--prerelease); fi
-          gh release create "$GITHUB_REF_NAME" *.tgz *.zip *.tar.gz SHA256SUMS --verify-tag --title "Codeboard $GITHUB_REF_NAME" --generate-notes "${args[@]}"
+          gh release create "$GITHUB_REF_NAME" *.tgz *.zip *.tar.gz install.sh install.ps1 SHA256SUMS --verify-tag --title "Codeboard $GITHUB_REF_NAME" --generate-notes "${args[@]}"

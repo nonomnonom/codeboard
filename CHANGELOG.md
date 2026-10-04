@@ -4,6 +4,12 @@ Changes are grouped by release. Unreleased work is not a claim of registry publi
 
 ## Unreleased
 
+## [0.2.0] - 2026-10-04
+
+- Install from GitHub with checksum-verifying shell and PowerShell installers, automatic command setup, and retained version directories.
+- Create an authoring script with `codeboard init` and execute JavaScript or erasable TypeScript with `codeboard run`, including public API imports outside the installation directory.
+- Replace the old documentation with public installation, drawing, animation, review, revision, and export guides.
+
 ## [0.1.1] - 2026-10-04
 
 - Add GitHub-only portable CLI bundles for Windows x64, Linux x64, macOS x64 and macOS arm64, including Node and native runtime dependencies.

@@ -53,13 +53,30 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: npm ci
       - run: npm test -- test/movie.test.ts
+  installers:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.22.0'
+          package-manager-cache: false
+      - run: node scripts/test-installers.mjs
   gate:
     if: always()
-    needs: [test, movie]
+    needs: [test, movie, installers]
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
       - env:
           TEST_RESULT: ${{ needs.test.result }}
           MOVIE_RESULT: ${{ needs.movie.result }}
-        run: test "$TEST_RESULT" = success && test "$MOVIE_RESULT" = success
+          INSTALLER_RESULT: ${{ needs.installers.result }}
+        run: test "$TEST_RESULT" = success && test "$MOVIE_RESULT" = success && test "$INSTALLER_RESULT" = success

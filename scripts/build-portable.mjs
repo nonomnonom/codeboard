@@ -51,6 +51,10 @@ try{
     ?run(process.env.ComSpec??'cmd.exe',['/d','/c','codeboard.cmd','--version'],installed)
     :run(join(installed,'codeboard'),['--version'],installed);
   assert.equal(version.trim(),pkg.version,'Portable launcher version mismatch');
+  const authoring=join(work,'authoring');await mkdir(authoring);
+  run(node,[join(installed,'dist/src/cli.js'),'init'],authoring);
+  process.stdout.write(run(node,[join(installed,'dist/src/cli.js'),'run','scene.mjs'],authoring));
+  assert((await readFile(join(authoring,'output/first.png'))).subarray(1,4).toString()==='PNG','Authoring did not render a PNG');
   console.log(`Verified extracted portable bundle: ${archive}`);
 }finally{
   const local=relative(resolve(tmpdir()),resolve(work));

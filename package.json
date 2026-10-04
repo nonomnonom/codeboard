@@ -1,6 +1,6 @@
 {
   "name": "codeboard-studio",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Code-first drawing and storyboard tools for JavaScript and TypeScript",
   "repository": {
     "type": "git",

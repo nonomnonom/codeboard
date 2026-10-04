@@ -1,35 +1,23 @@
-# Codeboard documentation
+# Codeboard
 
-Codeboard is a JavaScript/TypeScript toolkit for drawing, storyboards and 2D animation. Your agent writes code; the engine produces editable artwork and renders frames, sheets and films.
+Draw, build storyboards, and animate with JavaScript or TypeScript. Give your coding agent a brief, let it run Codeboard, then review the images and ask for revisions.
 
-## Install and draw
+Codeboard runs on your computer. It includes its own runtime; you do not need an npm account or an AI service to use it.
 
-Download a [portable package for your OS](install.md), or [build from source](getting-started.md). No model service or account is required to run Codeboard.
+## Start a project
 
-Read the [authoring guide](authoring.md) to create a project, draw with brushes, manage layers and render your first panel. The [agent review loop](agent-workflow.md) covers inspecting frames and making targeted revisions.
+1. [Install Codeboard](install.md) on Windows, macOS, or Linux.
+2. [Create your first drawing](quickstart.md) and render a PNG.
+3. [Review and revise](review.md) the saved artwork.
 
-## Drawing and painting
+## Create artwork
 
-- [Custom and imported brushes](brush-resources.md): author tips, inspect import reports and preserve brush settings with artwork.
-- [Vector geometry](vector-geometry.md): edit contours and convert pressure strokes to outlines.
-- [Pixel editing](pixels.md): paint and revise pixel surfaces and selections.
-- [Gradient fills](gradient-fills.md): use editable linear and radial vector fills.
-- [Transforms](transforms.md): place artwork with local coordinates and pivots.
+Use [drawing tools](drawing.md) for pressure-sensitive strokes, curves, contours, and pixels. Make [custom brushes](brushes.md) from your own tips or imported brush resources. Organize a panel with [layers, groups, and masks](layers.md).
 
-## Animation and production
+## Build a sequence
 
-- [Frame-by-frame drawings](drawing-sequences.md): holds, blanks, drawing substitutions and onion skins.
-- [Animation properties](animation-channels.md): layer and camera keys, easing and timing.
-- [Rigging](rigging.md): supported two-bone cutout controls and their limits.
-- [Storyboard sheets](storyboard-sheets.md): captions, page layout and PDF export.
-- [Inspection](inspection.md): find elements, read bounded metadata and render comparisons.
+Arrange scenes, shots, and panels in a project. Add [drawing changes and keyframes](animation.md), control the [camera](camera.md), and place [audio](audio.md). Export [storyboard sheets or a movie](export.md) when you are ready to share.
 
-## Editable projects
+## Keep working
 
-The [storage guide](storage.md) explains `.cboard` files, partial reads, transactions, undo and named revisions. Source artwork remains editable; exports are derived outputs.
-
-Codeboard is pre-1.0 software. Read [implemented capabilities and limits](architecture.md) before choosing a workflow. It does not claim complete Harmony or Storyboard Pro parity.
-
-## Examples and source
-
-The repository includes [a small quickstart](../examples/quickstart.mjs), [LENGKAP](../examples/lengkap/README.md) and [THE LAST LIGHT](../examples/README.md). Each example is authored through the public API. Code is MIT; original example artwork and audio use CC0.
+A `.cboard` file keeps the editable artwork, timeline, brushes, and assets together. Use [projects and revisions](projects.md) to reopen work in another session. The [CLI reference](cli.md) lists terminal commands; the [API guide](reference.md) maps common tasks to code.

@@ -6,7 +6,7 @@ import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 const docs = defineDocs({
   dir: '../docs',
   docs: {
-    files: ['*.md', '!README.md'],
+    files: ['*.md'],
     schema: ({ source }) => pageSchema.extend({
       title: pageSchema.shape.title.default(source.match(/^# (.+)$/m)?.[1] ?? 'Codeboard'),
     }),

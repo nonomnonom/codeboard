@@ -25,14 +25,14 @@ export default function Home() {
       <figcaption><span><strong>THE LAST LIGHT</strong> / Code-authored storyboard</span><Link href="/examples#last-light">See the project</Link></figcaption>
     </figure>
     <section className="authoring-section">
-      <div><span className="section-label">From a mark to a moving scene</span><h2>The artwork is<br /><em>still yours to change.</em></h2><p>Write a stroke. Adjust its pressure. Replace a drawing. Hold a shot a little longer. Codeboard gives your agent the drawing and production controls to make those changes directly.</p><Link className="text-link" href="/docs/agent-workflow">Follow the code → review → revise workflow</Link></div>
+      <div><span className="section-label">From a mark to a moving scene</span><h2>The artwork is<br /><em>still yours to change.</em></h2><p>Write a stroke. Adjust its pressure. Replace a drawing. Hold a shot a little longer. Codeboard gives your agent the drawing and production controls to make those changes directly.</p><Link className="text-link" href="/docs/review">Follow the code → review → revise workflow</Link></div>
       <div className="source-sample"><div className="source-caption">JavaScript authoring</div><pre><code>{example}</code></pre><p>A brush, a gesture and an editable project. <Link href={`${repository}/blob/main/examples/last-light.ts`}>Read the full source.</Link></p></div>
     </section>
     <section className="guide-section"><h2>Put your agent to work.</h2><div className="guide-list">
-      <Link href="/docs/brush-resources"><span>01</span><div><h3>Make your own marks</h3><p>Custom bitmap brushes, pressure dynamics and external brush resources.</p></div><span aria-hidden="true">↗</span></Link>
-      <Link href="/docs/drawing-sequences"><span>02</span><div><h3>Give drawings time</h3><p>Frame-by-frame drawings, holds, onion skins and independent layer motion.</p></div><span aria-hidden="true">↗</span></Link>
-      <Link href="/docs/storage"><span>03</span><div><h3>Keep the decisions editable</h3><p>Layered projects, targeted revisions, undo and reusable artwork.</p></div><span aria-hidden="true">↗</span></Link>
+      <Link href="/docs/brushes"><span>01</span><div><h3>Make your own marks</h3><p>Custom bitmap brushes, pressure dynamics and external brush resources.</p></div><span aria-hidden="true">↗</span></Link>
+      <Link href="/docs/animation"><span>02</span><div><h3>Give drawings time</h3><p>Frame-by-frame drawings, holds, onion skins and independent layer motion.</p></div><span aria-hidden="true">↗</span></Link>
+      <Link href="/docs/projects"><span>03</span><div><h3>Keep the decisions editable</h3><p>Layered projects, targeted revisions, undo and reusable artwork.</p></div><span aria-hidden="true">↗</span></Link>
     </div></section>
-    <footer className="site-footer"><span>Codeboard · Open source under MIT</span><Link href="/docs/architecture">Capabilities & limits</Link><a href={repository}>Source on GitHub</a></footer>
+    <footer className="site-footer"><span>Codeboard · Open source under MIT</span><Link href="/docs/reference">API guide</Link><a href={repository}>Source on GitHub</a></footer>
   </main>;
 }
