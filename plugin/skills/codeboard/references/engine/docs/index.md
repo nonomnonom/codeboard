@@ -14,7 +14,7 @@ Follow [the Codeboard demo](code-board-demo.md) from pose construction to exposu
 2. [Create your first drawing](quickstart.md) and render a PNG.
 3. [Review and revise](review.md) the saved artwork.
 
-Using Codex or Claude Code? [Install the agent plugin](agent-plugin.md) for operation skills and an offline API reference.
+Using a coding agent? [Install the Codeboard skills](agent-plugin.md) for operation guidance and an offline API reference, with plugin and portable-folder setup for compatible hosts.
 
 ## Create artwork
 

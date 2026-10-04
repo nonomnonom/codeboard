@@ -50,7 +50,7 @@ Continue with [the quickstart](quickstart.md).
 
 ## Connect your coding agent
 
-[Install the agent plugin](agent-plugin.md) in Codex or Claude Code to add Codeboard skills and bundled documentation. Engine and plugin installation are separate: the engine runs your scripts, while the plugin guides your agent through authoring, review, and revision.
+[Install the Codeboard skills](agent-plugin.md) in your compatible coding agent. Use the plugin route for Codex and Claude Code, or the portable skill folders for other hosts. Install the engine in the same environment where the agent executes commands; the skills provide authoring, review, and revision guidance plus bundled documentation.
 
 ## Review or pin the installer
 

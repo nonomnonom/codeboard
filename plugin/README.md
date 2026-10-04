@@ -1,8 +1,8 @@
 # Codeboard agent plugin
 
-Plugin Codex dan Claude Code berisi kumpulan skill untuk mengoperasikan Codeboard. Setiap skill membantu agent memilih operasi, menjalankan pekerjaan, dan memeriksa hasil berdasarkan kemampuan engine. Paket membawa manual dan referensi API Codeboard 0.2.1, quickstart, serta source demo karakter. Agent tidak perlu mengakses repo atau internet untuk membacanya.
+Kumpulan Agent Skills untuk mengoperasikan Codeboard, dengan paket plugin Codex/Claude Code dan pemasangan folder skill untuk host lain yang kompatibel. Setiap skill membantu agent memilih operasi, menjalankan pekerjaan, dan memeriksa hasil berdasarkan kemampuan engine. Paket membawa manual dan referensi API Codeboard 0.2.1, quickstart, serta source demo karakter. Agent tidak perlu mengakses repo atau internet untuk membacanya.
 
-Versi plugin: **0.2.0**. Dasar desain, kepemilikan instruksi, serta audit seluruh 29 panduan ada di [catatan desain](docs/design.md).
+Versi plugin: **0.2.1**. Dasar desain, kepemilikan instruksi, serta audit seluruh 29 panduan ada di [catatan desain](docs/design.md).
 
 ## Skill
 
@@ -23,10 +23,10 @@ Skill spesialis bisa dipilih langsung; `codeboard` menetapkan konteks runtime/do
 
 ## Pasang dan gunakan
 
-[Panduan instalasi plugin](skills/codeboard/references/engine/docs/agent-plugin.md) memuat langkah Codex dan Claude Code, verifikasi pemasangan, contoh brief, update, dan troubleshooting. Panduan yang sama tersedia di [website Codeboard](https://codeboard.nonom.xyz/docs/agent-plugin/). Engine dipasang terpisah.
+[Panduan instalasi](skills/codeboard/references/engine/docs/agent-plugin.md) memuat jalur plugin dan folder skill, lokasi host yang didukung dokumentasinya, verifikasi, contoh brief, update, dan troubleshooting. Panduan yang sama tersedia di [website Codeboard](https://codeboard.nonom.xyz/docs/agent-plugin/). Salin seluruh sepuluh folder skill beserta referensinya untuk pemasangan portabel. Engine dipasang terpisah.
 
 ## Verifikasi
 
 Dari root repo, `npm run check:plugin` memeriksa manifest, katalog, trigger, nama dependensi skill, duplikasi paragraf, target docs, dan kesesuaian bundle dengan dokumentasi sumber. Edit panduan hanya di `/docs`, lalu jalankan `npm run docs:generate` untuk memperbarui referensi API dan bundle beserta hash sumbernya. Jangan edit bundle manual. `npm run check` menolak hasil generate yang tertinggal; CI dan validasi rilis menjalankan perintah tersebut.
 
-[Panduan eval](evals/README.md) menyediakan fixture, tugas agent, grader artefak, dan probe kemampuan/discovery. [Hasil eval](evals/results.md) memisahkan hasil baseline, kandidat, kegagalan yang ditemukan, dan keterbatasan. Tes ini tidak menjamin agent bebas halusinasi. Host Claude dan pemilihan skill otomatis oleh sesi host bersih belum diverifikasi.
+[Panduan eval](evals/README.md) menyediakan fixture, tugas agent, grader artefak, dan probe kemampuan/discovery. [Hasil eval](evals/results.md) memisahkan hasil baseline, kandidat, kegagalan yang ditemukan, dan keterbatasan. Hasil juga mencatat demo end-to-end yang sudah dibuat menggunakan plugin: proyek editable, film 48 detik, dan laporan verifikasi artefak. Tes ini tidak menjamin agent bebas halusinasi. Instalasi dan eksekusi paket terisolasi telah diuji di Codex; instalasi host lain dan pemilihan skill otomatis oleh sesi host bersih belum diverifikasi lewat pengujian yang setara.
