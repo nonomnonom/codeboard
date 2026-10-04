@@ -7,7 +7,7 @@
   "sourceHashes": {
     "LICENSE": "853024c7fcd95c5759499b8e388c6eacdf9d1a54a63f2b1214d2a986d483f204",
     "NOTICE": "039df07eac628942ac2af427a2889482919c1b935cc316f3473bff0cd69a45f4",
-    "docs/agent-plugin.md": "85b338a1a8c0b4185052279c8cc3a68ec779e288d769d5d0fafb5cb13080ae61",
+    "docs/agent-plugin.md": "509db899e767c89ac2eed9dd67de20af1a6bbd7bbbd921498a41e48f385800fb",
     "docs/agent-workflow.md": "d181b00c3f8b20dd4aa30697e1c90b22d81935550a33a76d23f7f01c55571197",
     "docs/animation.md": "01b48be0af78c91f7fbec88764ec5637a3539d86d2fea26ad2f384fd78f8e0d6",
     "docs/api-drawing.md": "bf74c5ab17d8b547ec1698e91e68c60d81d4e659ab54b82f4b25ba14b8afb2a5",
@@ -49,7 +49,7 @@
   "bundledHashes": {
     "LICENSE": "853024c7fcd95c5759499b8e388c6eacdf9d1a54a63f2b1214d2a986d483f204",
     "NOTICE": "039df07eac628942ac2af427a2889482919c1b935cc316f3473bff0cd69a45f4",
-    "docs/agent-plugin.md": "85b338a1a8c0b4185052279c8cc3a68ec779e288d769d5d0fafb5cb13080ae61",
+    "docs/agent-plugin.md": "509db899e767c89ac2eed9dd67de20af1a6bbd7bbbd921498a41e48f385800fb",
     "docs/agent-workflow.md": "d181b00c3f8b20dd4aa30697e1c90b22d81935550a33a76d23f7f01c55571197",
     "docs/animation.md": "550acc8d0c210924de42ad6b8dffd5da87ff2ce15e36e2b2df804dc7c814ba48",
     "docs/api-drawing.md": "bf74c5ab17d8b547ec1698e91e68c60d81d4e659ab54b82f4b25ba14b8afb2a5",

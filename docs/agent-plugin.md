@@ -117,7 +117,7 @@ Before an artwork task, ask:
 
 > Load the codeboard skill, show the path to its bundled reference index, read the bundle's engine version, and run codeboard --version. Confirm that you can load codeboard-draw and read the relevant bundled drawing reference. Do not modify any artwork yet.
 
-The reference index must come from the installed core skill's `references/engine/docs/index.md`. Then try one small drawing through [the quickstart](quickstart.md). Discovery alone does not prove that the engine runs or that the agent inspected an image. Codeboard's installed-package execution evaluations currently cover Codex; the additional host routes are documented integrations, not completed cross-host evaluations.
+The reference index must come from the installed core skill's `references/engine/docs/index.md`. Then try one small drawing through [the quickstart](quickstart.md). Discovery alone does not prove that the engine runs or that the agent inspected an image. The [Codeboard demo](code-board-demo.md) is an existing end-to-end result of plugin use: an editable animation project and a 48-second film, with saved-artifact verification. Separate isolated installed-package execution evaluations cover Codex. The additional host installation routes above follow their official documentation; they have not each received an equivalent installation-and-execution evaluation.
 
 ## Install in Codex
 

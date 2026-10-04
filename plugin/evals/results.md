@@ -46,6 +46,18 @@ Two fresh agents received only installed plugin/runtime paths and separate task 
 
 Evidence is in the workspace's ignored `.preview/codeboard-portable-eval/installed-oQuf7w/`: `install.log`, `environment.json`, the frozen installed plugin, and `tasks/run-6ipnRS/{hold,brush}` with separate `grade-hold.json` and `grade-brush.json`. The retime fixture in that run was not executed. A separate automated sync regression passes for canonical source changes, manual bundle tampering, renamed documents, internal/media link conversion, and containment of obsolete-file deletion.
 
+## Existing end-to-end demo evidence
+
+The project owner identifies `code-board-demo/` as an existing result of testing the plugin. Its tracked README and source describe the editable projects, authoring/rendering commands, and verification. The public [demo walkthrough](https://codeboard.nonom.xyz/docs/code-board-demo/) provides the film and reproducible source. This complements the controlled task trials above; it is not another baseline/candidate sample.
+
+Reviewed existing local reports, without regenerating or overwriting the artwork:
+
+- `code-board-demo/output/launch/verification.json` and `code-board-demo/delivery/verification.json`: 1920×1080, 24 fps, 48 seconds (1,152 frames); 192 final animation frames matched; locked final camera; 32 turnaround cels with four leg paths each; 12 rig-control cels.
+- `code-board-demo/output/performance/verification.json`: saved and reopened projects, 55 unique rendered drawings, 84 exposure keys, 192 paired frames compared, and 541 planted-sole comparisons with maximum drift about 0.000065 pixels.
+- `code-board-demo/delivery/selected-playback.json`: a recorded 48-second playback at 1× speed, 1,152 total frames and two dropped frames. MP4 deliverables are present. This is historical playback evidence, not a fresh viewing or listening claim from this documentation review.
+
+The film's terminal scenes are scripted presentation, as its README states. They do not establish which host installed or automatically activated the skills. The local delivery also contains a C-funk variant; the public walkthrough uses the separately documented public demo assets. Local reports and delivery media are not copied into the plugin reference bundle.
+
 ## Limits
 
-Image inspections are recorded in agent logs; PNG equality proves rendered evidence matches saved state, not artistic quality. No sound was heard and no MP4 export was exercised. The trials do not exercise every pixel, IK, storage recovery, or component workflow. Claude host loading, automatic skill discovery in a clean host session, and cross-model reliability remain unverified.
+Image inspections are recorded in agent logs; PNG equality proves rendered evidence matches saved state, not artistic quality. The controlled plugin trials above did not listen to sound or exercise MP4 export; the existing demo evidence is recorded separately. The trials do not exercise every pixel, IK, storage recovery, or component workflow. Claude host loading, automatic skill discovery in a clean host session, and cross-model reliability remain unverified.
