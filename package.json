@@ -1,0 +1,62 @@
+{
+  "name": "codeboard-studio",
+  "version": "0.1.0",
+  "description": "Code-first drawing and storyboard tools for JavaScript and TypeScript",
+  "repository": { "type": "git", "url": "git+https://github.com/nonomnonom/codeboard.git" },
+  "homepage": "https://github.com/nonomnonom/codeboard#readme",
+  "bugs": { "url": "https://github.com/nonomnonom/codeboard/issues" },
+  "keywords": ["storyboard", "animation", "drawing", "procedural-art", "typescript", "brush-engine"],
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "bin": {
+    "codeboard": "dist/src/cli.js"
+  },
+  "files": [
+    "dist/src",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "vitest run",
+    "test:package": "node scripts/verify-package.mjs",
+    "test:install": "node scripts/verify-package.mjs --install",
+    "typecheck": "tsc --noEmit",
+    "check:docs": "node scripts/check-doc-links.mjs",
+    "prepack": "npm run build",
+    "example:quickstart": "node examples/quickstart.mjs",
+    "check": "npm run build && npm test && npm run check:docs && npm run test:package",
+    "example": "tsx examples/last-light.ts",
+    "example:movie": "tsx examples/last-light.ts --movie",
+    "example:revise": "tsx examples/revise-last-light.ts",
+    "example:lengkap": "tsx examples/lengkap.ts",
+    "example:lengkap:movie": "tsx examples/lengkap.ts --movie",
+    "example:lengkap:verify": "tsx examples/lengkap/verify.ts",
+    "preview": "tsx src/cli.ts preview examples/output/last-light/last-light.cboard",
+    "verify": "npm run build && npm test && npm run example"
+  },
+  "engines": {
+    "node": ">=22.22"
+  },
+  "dependencies": {
+    "commander": "^14.0.1",
+    "fast-xml-parser": "^5.11.2",
+    "fflate": "^0.8.3",
+    "sharp": "^0.35.5",
+    "skia-canvas": "^3.0.8",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
+}

@@ -1,0 +1,15 @@
+name: Feature request
+description: Describe an authoring task that Codeboard cannot handle well.
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: What are you trying to create?
+      description: Give a concrete drawing or animation task and its current limitation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: A small API example or visual reference can help. Include any workaround you tried.

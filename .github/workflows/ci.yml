@@ -1,0 +1,65 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  SKIA_CANVAS_THREADS: '2'
+jobs:
+  test:
+    name: test (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, node: '22.22.0'}
+          - {os: windows-latest, node: '22.22.0'}
+          - {os: macos-latest, node: '22.22.0'}
+          - {os: ubuntu-latest, node: '24.x'}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run example:quickstart
+      - if: matrix.os == 'ubuntu-latest' && matrix.node == '22.22.0'
+        run: npm run test:install
+  movie:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FFMPEG_PATH: ffmpeg
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.22.0'
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npm ci
+      - run: npm test -- test/movie.test.ts
+  gate:
+    if: always()
+    needs: [test, movie]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - env:
+          TEST_RESULT: ${{ needs.test.result }}
+          MOVIE_RESULT: ${{ needs.movie.result }}
+        run: test "$TEST_RESULT" = success && test "$MOVIE_RESULT" = success

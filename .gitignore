@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.storyboard-preview/
+tmp/
+examples/output/
+/code-board-demo/
+*.tgz
+*.log
+*.cboard-wal
+*.cboard-shm
+.codeboard-audio-*/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
