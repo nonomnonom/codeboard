@@ -1,5 +1,5 @@
-import {catmullRom,type PanelHandle,type StoryboardProject} from "../../src/index.js";
-import {amber,contour,dry,hatch,ink,insect,paper,ring,stroke} from "./art.js";
+import {catmullRom,type PanelHandle,type StoryboardProject} from "codeboard-studio";
+import {amber,contour,dry,hatch,ink,insect,paper,ring,stroke} from "./art.ts";
 
 export function relay(p:PanelHandle,board:StoryboardProject,start:number){
   const sky=p.addVectorLayer("Relay / rain sky",{depth:4});

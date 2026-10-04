@@ -1,5 +1,5 @@
-import type {PanelHandle,StoryboardProject} from '../../src/index.js';
-import {contour,ring,ink,amber} from './art.js';
+import type {PanelHandle,StoryboardProject} from 'codeboard-studio';
+import {contour,ring,ink,amber} from './art.ts';
 
 export function flightLegRigs(panel:PanelHandle,project:StoryboardProject,parentId:string,bodyId:string,start:number){
  const body=project.production.layer(bodyId);if(body.kind==='group')throw new Error('Expected thorax drawing');

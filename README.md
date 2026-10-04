@@ -43,7 +43,7 @@ Open `output/first.png` to see the stroke. `output/first.cboard` keeps the edita
 
 [![Pose drawings from the Codeboard demo](website/public/art/code-board-demo/key-drawings.png)](https://codeboard.nonom.xyz/docs/code-board-demo/)
 
-**The Codeboard demo** follows Clawd through a walk, pause, hop and landing. [Run the example](docs/code-board-demo.md), inspect its onion skins, and revise a drawing hold. The walkthrough includes downloadable source and an editable project.
+**The Codeboard demo** follows Clawd through a walk, pause, hop and landing. [Run the example](docs/code-board-demo.md), inspect its onion skins, and revise a drawing hold. Download either the eight-second study or the complete 48-second demo, then run it with the installed `codeboard` CLI. Both use the public API; no engine build is needed. See [all runnable examples](examples/README.md).
 
 ## Contribute
 

@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { StoryboardProject, exportMovie } from '../../src/index.js';
-import { output, sheets } from '../lengkap.js';
+import { StoryboardProject, exportMovie } from 'codeboard-studio';
+import { output, sheets } from '../lengkap.ts';
 
 const board=await StoryboardProject.open(join(output,'lengkap.cboard'));
 await sheets(board);console.log('Refreshed stills from saved editable project.');

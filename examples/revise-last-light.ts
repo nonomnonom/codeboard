@@ -1,9 +1,9 @@
 import { writeFile, stat } from "node:fs/promises";
 import { resolve,join } from "node:path";
 import { createHash } from "node:crypto";
-import {timeRain} from "./last-light/art.js";
-import {fitRainBed} from "./last-light/sound.js";
-import { StoryboardProject,ProjectStore,renderPanelPNG,renderContactSheet,renderDetail,exportStoryboard,exportMovie,polygonPixelSelection,fillPixels } from "../src/index.js";
+import {timeRain} from "./last-light/art.ts";
+import {fitRainBed} from "./last-light/sound.ts";
+import { StoryboardProject,ProjectStore,renderPanelPNG,renderContactSheet,renderDetail,exportStoryboard,exportMovie,polygonPixelSelection,fillPixels } from "codeboard-studio";
 
 const root=resolve("examples/output/last-light"),p=await StoryboardProject.open(join(root,"last-light.cboard"));
 const before=p.toJSON(),version=p.version;

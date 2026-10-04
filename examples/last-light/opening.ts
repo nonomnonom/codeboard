@@ -1,7 +1,7 @@
-import type {PanelHandle,StoryboardProject} from "../../src/index.js";
-import {city,contour,stroke,hatch,ink} from "./art.js";
+import type {PanelHandle,StoryboardProject} from "codeboard-studio";
+import {city,contour,stroke,hatch,ink} from "./art.ts";
 
-import {walkingPerformance} from "./walk.js";
+import {walkingPerformance} from "./walk.ts";
 
 export function opening(p:PanelHandle,board:StoryboardProject,start:number,duration:number){
   city(p);

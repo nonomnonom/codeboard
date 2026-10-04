@@ -1,4 +1,4 @@
-import { pathCommands, samplePath, withPressure, catmullRom, ellipse, hatchPolygon, brushes, customizeBrush, brushTipFromFunction, type LayerHandle, type PanelHandle, type StoryboardProject } from "../../src/index.js";
+import { pathCommands, samplePath, withPressure, catmullRom, ellipse, hatchPolygon, brushes, customizeBrush, brushTipFromFunction, type LayerHandle, type PanelHandle, type StoryboardProject } from "codeboard-studio";
 
 export const ink = "#171c20", paper = "#e8e0cd", amber = "#edb65d", grey = "#68706f";
 export const reed = customizeBrush(brushes.cleanInk, { id: "brush:keeper-reed", name: "Keeper / split reed", size: 5, tip: brushTipFromFunction(24,24,(x,y)=> Math.max(0,1-x*x-y*y) * (Math.abs(x-.22)<.10 ? .12 : 1)), spacing: .12, hardness: .86, taperEnd: .22 });

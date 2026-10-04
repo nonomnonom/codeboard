@@ -1,9 +1,9 @@
+import { renderFrameSheet } from 'codeboard-studio';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
-import { Canvas } from 'skia-canvas';
-import { StoryboardProject, ProjectStore, createRenderSession, renderFramePNG, type Layer } from '../../src/index.js';
+import { StoryboardProject, ProjectStore, createRenderSession, renderFramePNG, type Layer } from 'codeboard-studio';
 
 const root=resolve('examples/output/lengkap'),review=join(root,'review'),file=join(root,'lengkap.cboard');
 await mkdir(review,{recursive:true});
@@ -32,12 +32,7 @@ const reds=(frame:number)=>{
 };
 assert.equal(reds(133),0);assert.ok(reds(134)>0);assert.ok(reds(160)>reds(134));
 const times=[0,5,14,27,40,59,61,76,92,109,115,119,120,129,133,134,139,146,152,170,180,194,203,239,240,250,260,267,273,299,300,304,308,311,335,359];
-const sheet=new Canvas(1920,Math.ceil(times.length/6)*210),ctx=sheet.getContext('2d');ctx.fillStyle='#f3eddf';ctx.fillRect(0,0,sheet.width,sheet.height);
-for(const [i,f] of times.entries()){
-  const x=(i%6)*320,y=Math.floor(i/6)*210;ctx.drawImage(session.frame(f),x,y,320,180);
-  ctx.font='14px Arial';ctx.fillStyle='#191916';ctx.fillText(`${f}f / ${(f/24).toFixed(3)}s`,x+10,y+200);
-}
-await writeFile(join(review,'timing-contact.png'),await sheet.toBuffer('png'));
+await writeFile(join(review,'timing-contact.png'),await renderFrameSheet(board,times,{columns:6,thumbnailWidth:320}));
 
 const hashes=await Promise.all(before.panels.map(async p=>hash(await renderFramePNG(board,p.startFrame+59))));
 const suffix=hash(Buffer.from(hashes.join(''))).slice(0,12),baseName=`lengkap-final-${suffix}`,variantName=`shorter-red-link-${suffix}`;

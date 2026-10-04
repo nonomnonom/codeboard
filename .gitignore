@@ -5,7 +5,13 @@ coverage/
 .storyboard-preview/
 tmp/
 examples/output/
-/code-board-demo/
+/code-board-demo/archive/
+/code-board-demo/output/
+/code-board-demo/delivery/
+/code-board-demo/assets/audio/codeboard-*.wav
+/code-board-demo/assets/audio/*-report.json
+/code-board-demo/assets/audio/sfx-audit.json
+/code-board-demo/assets/references/
 *.tgz
 *.log
 *.cboard-wal
@@ -16,3 +22,8 @@ examples/output/
 !.env.example
 .DS_Store
 Thumbs.db
+
+/codeboard-demo-output/
+/code-board-demo/assets/
+/code-board-demo/docs/
+/code-board-demo/src/audio/

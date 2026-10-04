@@ -1,5 +1,5 @@
-import {pathCommands,type PanelHandle,type StoryboardProject} from "../../src/index.js";
-import {contour,stroke,ink,paper,grey} from "./art.js";
+import {pathCommands,type PanelHandle,type StoryboardProject} from "codeboard-studio";
+import {contour,stroke,ink,paper,grey} from "./art.ts";
 
 export function flightWingCycle(panel:PanelHandle,board:StoryboardProject,parentId:string,oldWingsId:string,start:number,duration:number){
  const track=panel.addGroup("Flight / wing drawing sequence",{},parentId);

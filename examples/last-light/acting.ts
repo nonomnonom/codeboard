@@ -1,5 +1,5 @@
-import {pathCommands,type PanelHandle,type StoryboardProject} from "../../src/index.js";
-import {amber,contour,ink,keeper,lantern,paper,stroke} from "./art.js";
+import {pathCommands,type PanelHandle,type StoryboardProject} from "codeboard-studio";
+import {amber,contour,ink,keeper,lantern,paper,stroke} from "./art.ts";
 
 export function extinguishLantern(p:PanelHandle,board:StoryboardProject,start:number){
   const chamber=p.addVectorLayer("Lantern chamber");

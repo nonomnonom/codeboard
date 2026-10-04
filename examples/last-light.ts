@@ -1,17 +1,17 @@
-import {walkingPerformance} from "./last-light/walk.js";
+import {walkingPerformance} from "./last-light/walk.ts";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
-import { StoryboardProject, exportStoryboard, exportMovie, renderPanelPNG, renderContactSheet, catmullRom, createPixels } from "../src/index.js";
-import { city, keeper, hands, supportingHand, insect, rain, contour, stroke, ink, paper, amber, reed, dry } from "./last-light/art.js";
-import { makeBrushResource } from "./last-light/brush-resource.js";
-import { sound } from "./last-light/sound.js";
-import { payoff } from "./last-light/payoff.js";
-import { opening } from "./last-light/opening.js";
-import { flight } from "./last-light/flight.js";
-import {flightWingCycle} from './last-light/wings.js';
-import { relay } from "./last-light/relay.js";
-import { closeupPerformance, placeLantern, extinguishLantern } from "./last-light/acting.js";
+import { StoryboardProject, exportStoryboard, exportMovie, renderPanelPNG, renderContactSheet, catmullRom, createPixels } from "codeboard-studio";
+import { city, keeper, hands, supportingHand, insect, rain, contour, stroke, ink, paper, amber, reed, dry } from "./last-light/art.ts";
+import { makeBrushResource } from "./last-light/brush-resource.ts";
+import { sound } from "./last-light/sound.ts";
+import { payoff } from "./last-light/payoff.ts";
+import { opening } from "./last-light/opening.ts";
+import { flight } from "./last-light/flight.ts";
+import {flightWingCycle} from './last-light/wings.ts';
+import { relay } from "./last-light/relay.ts";
+import { closeupPerformance, placeLantern, extinguishLantern } from "./last-light/acting.ts";
 
 const output=resolve("examples/output/last-light");
 await mkdir(output,{recursive:true});
