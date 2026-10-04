@@ -1,0 +1,10 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "---Start here---", "index", "install", "getting-started", "authoring", "agent-workflow",
+    "---Draw---", "brush-resources", "vector-geometry", "gradient-fills", "pixels", "transforms",
+    "---Animate---", "drawing-sequences", "animation-channels", "rigging", "storyboard-sheets",
+    "---Understand the engine---", "inspection", "storage", "architecture", "engine-decision",
+    "---Contribute---", "contributor-architecture", "releasing"
+  ]
+}

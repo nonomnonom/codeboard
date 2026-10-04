@@ -6,7 +6,7 @@ Codeboard is a JavaScript/TypeScript toolkit for procedural drawing, storyboards
 
 No account, AI service, or manual editor is required. It works with ordinary scripts and can be operated by coding agents.
 
-[Get started](#try-it-locally) · [Documentation](docs/README.md) · [Examples](examples/README.md) · [Contributing](CONTRIBUTING.md)
+[Website](https://codeboard.nonom.xyz) · [Documentation](https://codeboard.nonom.xyz/docs/) · [Download](https://codeboard.nonom.xyz/download/) · [Examples](examples/README.md) · [Contributing](CONTRIBUTING.md)
 
 [![Six scenes from LENGKAP: a report filled with motorbike drawings, a red approval stamp, an empty warehouse, and the closing line “Di kertas, semuanya ada.”](docs/media/lengkap-storyboard.png)](https://github.com/nonomnonom/codeboard/blob/main/docs/media/lengkap.mp4)
 
