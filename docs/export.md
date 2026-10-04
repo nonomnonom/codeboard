@@ -65,6 +65,22 @@ codeboard animatic film.cboard --output animatic
 
 This exports frame images and a manifest for an external review or playback workflow. It is separate from the encoded MP4.
 
+## Repeated frame rendering
+
+```js
+import { createRenderSession } from 'codeboard-studio';
+const session = createRenderSession(project, 64 * 1024 * 1024);
+for (const frame of [0, 24, 48]) {
+  const canvas = session.frame(frame);
+  try { await writeFile(`frame-${frame}.png`, await canvas.toBuffer('png')); }
+  finally { canvas.getContext('2d').reset(); }
+}
+```
+
+A session freezes a validated snapshot and reuses a bounded artwork cache. Create a new session after edits; an old session intentionally keeps the old artwork. `session.panel(id, frame?)` renders one panel and `session.durationFrames` reports its timeline length. The cache limit is in bytes, not a reduction in artwork quality.
+
+Canvas-returning APIs leave the canvas to the caller; release its drawing state when finished. PNG-returning APIs handle their temporary canvases. Use exact-frame renders to compare preview and export. Differences in installed fonts, native library versions, or FFmpeg settings can still affect cross-machine results.
+
 ## Before delivery
 
 Check the first and last frame of each shot, transitions, the full playback, and audio sync. Keep the `.cboard` file and source scripts with your exports so future feedback can be addressed through code.

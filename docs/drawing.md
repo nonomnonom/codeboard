@@ -60,6 +60,25 @@ Use `vectorStroke(points, options)` for pressure-shaped vector lines. `outlineSt
 
 Vector contours retain their geometry. A raster stroke retains its pen samples and brush settings for replay. A pixel surface retains pixels. These representations have different editing operations.
 
+## Gradient fills, text, and contour tools
+
+```js
+const fill = {
+  kind: 'linear', from: { x: 220, y: 200 }, to: { x: 620, y: 510 },
+  stops: [{ offset: 0, color: '#ffc078' }, { offset: 1, color: '#bb5627' }],
+};
+ink.edit(contourId, element => ({ ...element, fill }));
+ink.text('Anticipation', 220, 570, {
+  color: '#242820', font: '24px sans-serif', align: 'left',
+});
+```
+
+Fills can be solid colors, linear gradients, or radial gradients. Radial endpoints also have a `radius`. Stops use offsets from 0 to 1. Text remains a text element and uses fonts available to the renderer; it is not an outlined path.
+
+`pathCommands` parses the absolute SVG-style `M L Q C Z` subset. Relative commands, arcs, and implicit repeated commands are unsupported. `pathBounds` returns a contour's bounds, `pathContains` tests a point against a closed contour, and `splitPathSegment(commands, index, t)` splits a segment at a fraction strictly between 0 and 1. These operate on source geometry; transform frame-space points back to local coordinates first.
+
+`combinePaths(a, b, operation)` returns new contour commands. Boolean operands must be closed contours. Assign the result with `layer.edit`, or use `layer.booleanPath` to replace an existing vector contour directly. Outlining a vector stroke changes its representation to a filled contour; subsequent width edits no longer act like stroke-width changes.
+
 ## Work with pixels
 
 ```js
@@ -76,3 +95,5 @@ rough.editPixels(surfaceId, { x: 20, y: 10, width: 40, height: 30 }, patch => {
 Pixel data uses RGBA bytes. `readPixels` reads a surface or region. Selection helpers include `polygonPixelSelection`, `colorPixelSelection`, `combinePixelSelections`, `invertPixelSelection`, and `featherPixelSelection`. Pass a selection to `fillPixels` to limit a fill.
 
 Continue with [brushes](brushes.md) and [layers](layers.md).
+
+For image import, color selections, polygon masks, feathering, patch editing and difference measurement, see [pixel surfaces](pixels.md). For every drawing function's parameters and return shape, use the [drawing API](api-drawing.md).

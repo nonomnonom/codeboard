@@ -22,9 +22,13 @@ Use stable IDs where later scripts need to find an object. A panel's duration is
 
 ## Task map
 
+The [project and artwork API](api-project.md), [production API](api-production.md), [drawing and math API](api-drawing.md), [rendering API](api-render.md), and [storage API](api-storage.md) list callable signatures. [API types](api-types.md) gives the data shapes. These references accompany the task guides below; they do not replace a runnable example.
+
 | Task | API and guide |
 | --- | --- |
 | Generate pen movement | `catmullRom`, `cubic`, `line`, `ellipse`, `samplePath`: [drawing](drawing.md) |
+| Work in local or frame coordinates | Matrix helpers, coordinate queries, two-bone IK: [math](math.md) |
+| Reuse a prop or character drawing | Component capture, instances, explicit refresh: [components](components.md) |
 | Paint or edit contours | `rasterStroke`, `erase`, `vectorStroke`, `path`, `edit`: [drawing](drawing.md) |
 | Edit pixels | `rasterSurface`, `readPixels`, `editPixels`, pixel selection helpers: [drawing](drawing.md#work-with-pixels) |
 | Author a brush | `customizeBrush`, `brushTipFromFunction`, `renderBrushSwatch`: [brushes](brushes.md) |

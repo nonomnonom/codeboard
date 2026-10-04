@@ -41,12 +41,12 @@ Open `output/first.png` to see the stroke. `output/first.cboard` keeps the edita
 - [Review](docs/review.md) exact frames, detail crops, sheets, and layer-specific onion skins.
 - [Export](docs/export.md) PNGs, storyboard PDFs, and movies with audio. MP4 export requires FFmpeg.
 
-[![Six scenes from LENGKAP](docs/media/lengkap-storyboard.png)](https://codeboard.nonom.xyz/examples/)
+[![Pose drawings from the Codeboard demo](website/public/art/code-board-demo/key-drawings.png)](https://codeboard.nonom.xyz/docs/code-board-demo/)
 
-**LENGKAP** is a 15-second film drawn through the public API. [Watch the examples](https://codeboard.nonom.xyz/examples/) or [read the source](examples/lengkap.ts).
+**The Codeboard demo** follows Clawd through a walk, pause, hop and landing. [Run the example](docs/code-board-demo.md), inspect its onion skins, and revise a drawing hold. The walkthrough includes downloadable source and an editable project.
 
 ## Contribute
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for building from source and running tests. Report reproducible problems through [GitHub Issues](https://github.com/nonomnonom/codeboard/issues), and security vulnerabilities through [SECURITY.md](SECURITY.md).
 
-Code: [MIT](LICENSE). Original example artwork and audio: CC0-1.0. Dependencies and imported resources have their own licenses; see [NOTICE](NOTICE).
+Code: [MIT](LICENSE). The Last Light and Lengkap original artwork and audio: CC0-1.0. The Clawd demo does not assert ownership of third-party character branding. Dependencies and imported resources have their own licenses; see [NOTICE](NOTICE).

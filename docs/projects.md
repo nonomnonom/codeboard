@@ -77,3 +77,23 @@ codeboard validate film.cboard
 ```
 
 Validation checks the container and its references. Keep backups of valuable work. If a file fails validation, retain the original for recovery instead of overwriting it with a new project.
+
+## Assets and source files
+
+`production.addAsset` registers an image or audio source; `updateAsset` revises its metadata or path. Linked paths resolve against `assetRoot` when saving. `project.readAsset(id)` reads embedded bytes from an opened project. With a store, `readAsset(id)` and `extractAssets(directory)` retrieve saved asset data.
+
+Adding an image asset does not place it on a layer. Decode its pixels and create a raster surface when you want it in the composition. Brush tips are retained with their stroke definitions. Save/open does not depend on rerunning authoring code or fetching an AI model.
+
+## Revisions and storage size
+
+`saveRevision` stores a named state that shares unchanged payloads. `readRevision(name)` reads that state without changing the active head; `readPanel(id, { revision: name })` reads one panel from it. `restoreRevision` changes the saved head and requires an expected version.
+
+Use `deleteRevision(name)` only when that checkpoint is no longer needed. `compact()` removes unreferenced stored data after revisions and artwork are discarded; it is a deliberate maintenance operation, not something to call after every small edit. Keep the project closed in other editing sessions while doing maintenance.
+
+The `.cboard` container separates structured metadata, binary artwork payloads, and embedded assets. `store.inspect()` reports storage information. File size depends on the actual artwork, assets, and retained revisions; an MP4's size is not a useful estimate of the editable project's size.
+
+## Version checks and undo boundaries
+
+Most production edits accept `{ expectedVersion }`; use the version observed before a coordinated edit to reject stale assumptions. A project transaction groups synchronous changes into one undoable unit and rolls back if an operation throws. Do file reads and asynchronous renders outside its callback.
+
+In-memory `undo()` and `redo()` do not substitute for named saved revisions across sessions. `toJSON()` materializes the document for interoperability and debugging; it is not the recommended persistence format or a bounded inspection call.

@@ -16,6 +16,10 @@ Set `SKIA_CANVAS_THREADS=2` on machines with limited memory. Movie tests run whe
 
 ## Make a focused change
 
+Public guides live in `docs/` and feed the Fumadocs site directly. After changing public signatures, run `node scripts/build-api-docs.mjs` to refresh the six API reference pages, then review the related task guides. The generator reads public exports and callable members; it excludes private and underscore-prefixed implementation methods.
+
+To regenerate the demo's documentation images, editable example, and source ZIP, build the engine and run `node scripts/build-doc-assets.mjs`. The original 48-second presentation video is curated separately; its public copy contains no audio. Test the downloaded example with `npx vitest run test/documentation-example.test.ts` and build the website with `npm run build --prefix website`.
+
 1. For an API redesign, storage change, or substantial new feature, open an issue describing a concrete authoring task first.
 2. Implement behavior in its owning module. Keep example-specific composition in `examples/`; engine code must work for other artwork too.
 3. Add a regression test for a bug or invariant. For rendering changes, also inspect actual images or playback. Compilation alone cannot establish visual quality.

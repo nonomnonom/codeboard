@@ -2,6 +2,10 @@
 
 Codeboard supports drawing substitutions, layer keyframes, and timed panel sequences. Timeline positions are global, zero-based integer frames. At 24 fps, 48 frames last two seconds.
 
+![Walk, anticipation, takeoff and landing drawings from the runnable character example](../website/public/art/code-board-demo/key-drawings.png)
+
+For a complete working sequence, follow [the Codeboard demo](code-board-demo.md). It separates changing character geometry from placement keys and holds drawings on twos.
+
 ## Arrange panels
 
 ```js
@@ -71,7 +75,32 @@ Adding a key on an occupied frame merges the supplied properties into that key. 
 project.production.setPanelDuration(first.id, 60, 'ripple');
 ```
 
-Ripple retiming changes the panel duration, remaps its interior animation times, and shifts following panels and associated timing. Audio start positions move with their timeline placement; audio samples are not time-stretched. Review sync after retiming. Codeboard does not silently shorten a later shot to retain the old total duration.
+Ripple retiming changes the panel duration, remaps its interior animation times, and shifts following panels and associated timing. Audio clips starting at or after the panel's old end move by the duration difference. Clips starting inside or before the panel keep their placement and source duration; audio is not time-stretched. Review internal cues and crossing ambience after retiming. Codeboard does not silently shorten a later shot to retain the old total duration.
+
+Retiming uses integer frame positions. If shrinking would collapse distinct keys or drawing exposures onto the same frame, it rejects the edit; remove or move the conflicting keys first. Locked affected audio can also block retiming. `preserve` mode rejects a duration change that would create a gap or overlap; it does not compensate another panel.
+
+## Layer visibility and independent tracks
+
+```js
+project.production.setExposure(track.id, { startFrame: 12, endFrame: 48 });
+```
+
+Exposure limits a layer and its descendants to an interval with an exclusive end. Pass `null` to remove that visibility window. A layer exposure does not select a drawing. Use separate drawing-sequence groups for independently timed eyes, hands, mouths, or wings.
+
+`duplicateDrawing(groupId, drawingId, name)` makes a separate editable pose in the same track. `setDrawingSequence(groupId, null)` removes substitution behavior; ordinary child layers then render according to their own visibility. It does not delete drawings.
+
+## Inspect and remove a channel
+
+```js
+import { evaluateLayer, evaluateDrawing } from 'codeboard-studio';
+const layer = project.production.layer(track.id);
+console.log(evaluateLayer(layer, 24));
+const sequence = project.production.drawingSequence(track.id);
+console.log(evaluateDrawing(sequence.keys ?? [], 24));
+project.production.removeLayerKeyframeChannels(track.id, startKey, ['opacity']);
+```
+
+Use channel removal on a key that contains that channel. Removing a whole key discards every channel on it; removing one channel preserves the others. Drawing substitutions are separate from transform keys.
 
 ## Transitions and stroke reveal
 
@@ -80,3 +109,5 @@ project.production.setTransition(first.id, { type: 'dissolve', durationFrames: 8
 ```
 
 Available transitions are `cut`, `dissolve`, `wipe-left`, and `wipe-right`. For a drawn-on stroke, supply `reveal: { startFrame: 0, endFrame: 24 }` when creating a raster stroke. Pen sample timestamps alone do not animate a stroke.
+
+Transition duration must fit inside its panel. Use `renderFramePNG` or a movie to review a transition: a single-panel render evaluates that panel's artwork, not the timeline blend. Stroke reveal is blank at its start frame and complete at its end frame. Arbitrary effect graphs, mesh deformation, and automatic in-between drawing generation are not currently provided.
