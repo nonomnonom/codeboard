@@ -14,6 +14,8 @@ Follow [the Codeboard demo](code-board-demo.md) from pose construction to exposu
 2. [Create your first drawing](quickstart.md) and render a PNG.
 3. [Review and revise](review.md) the saved artwork.
 
+Using Codex or Claude Code? [Install the agent plugin](agent-plugin.md) for operation skills and an offline API reference.
+
 ## Create artwork
 
 Use [drawing tools](drawing.md) for pressure-sensitive strokes, curves, contours, and pixels. Make [custom brushes](brushes.md) from your own tips or imported brush resources. Organize a panel with [layers, groups, and masks](layers.md).

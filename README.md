@@ -4,6 +4,8 @@
 
 Codeboard is a JavaScript/TypeScript toolkit for drawing, storyboards, and 2D animation. Your coding agent creates the artwork, renders it for review, and makes targeted revisions through code.
 
+The [agent plugin](plugin/README.md) gives Codex and Claude Code operation skills for drawing, brushes, storyboards, animation, camera, audio, revision, review, and debugging, grounded in this repository's documentation. Its source lives under `plugin/`.
+
 [Website](https://codeboard.nonom.xyz) · [Documentation](https://codeboard.nonom.xyz/docs/) · [Examples](https://codeboard.nonom.xyz/examples/) · [GitHub Releases](https://github.com/nonomnonom/codeboard/releases/latest)
 
 ## Install

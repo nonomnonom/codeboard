@@ -4,6 +4,10 @@ Changes are grouped by release. Unreleased work is not a claim of registry publi
 
 ## Unreleased
 
+- Add the agent plugin under `plugin/`, with Codex and Claude Code manifests, ten operation skills, and a generated offline reference bundle. `npm run docs:generate` updates API references and the bundle; validation rejects drift from the canonical documentation.
+- Document plugin installation, verification, first use, and updates for Codex and Claude Code in the public guides and agent workflow.
+- Use Fumadocs configuration-based collection imports for the website after the macro integration failed the local production build; keep root `docs/` as the shared documentation source.
+- Correct brush documentation to identify `brushParameterSchema` as JSON Schema data and use `production.createBrush` for engine validation.
 - Run all public examples with the installed v0.2.1 CLI, without engine source imports, local builds or tsx.
 - Publish the complete 48-second demo source with original synthesized Foley, review outputs and saved-frame verification; test the downloadable demo against published runtimes on Windows, macOS and Linux.
 
