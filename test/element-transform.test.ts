@@ -8,7 +8,7 @@ import {drawElement} from "../src/render/vector-renderer.js";
 
 const movement={x:126,y:35,scaleX:1.7,scaleY:.8,rotation:.6};
 function render(element:DrawingElement,transform?:Transform){
-  const canvas=new Canvas(320,240,{gpu:false}),ctx=canvas.getContext("2d");
+  const canvas=new Canvas(320,240);canvas.gpu=false;const ctx=canvas.getContext("2d");
   if(transform){
     const c=Math.cos(transform.rotation),s=Math.sin(transform.rotation);
     // Apply one affine matrix, matching native scalar rounding on CPU and GPU.
