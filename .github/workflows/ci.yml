@@ -68,6 +68,7 @@ jobs:
         with:
           node-version: '22.22.0'
           package-manager-cache: false
+      - run: npm ci --omit=dev --ignore-scripts
       - run: node scripts/test-installers.mjs
   gate:
     if: always()

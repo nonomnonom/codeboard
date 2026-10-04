@@ -62,7 +62,18 @@ sh install.sh --version 0.2.0
 
 ## Update or uninstall
 
-Run the installer again to select the latest release. Existing version directories are retained; installing a previous version selects it again. Your projects stay in their working folders and are not changed by the installer.
+Codeboard checks for a stable GitHub release when you run a command in an interactive terminal, at most once a day. If a newer version is available, it asks `Install update? [y/N]`. Type `y` to install, or press Enter to continue without updating. It does not install updates without your confirmation.
+
+```sh
+codeboard update --check
+codeboard update
+```
+
+`--check` checks immediately without installing. `update` asks for confirmation, verifies and runs the release installer, then switches your installed command to the new version. Use `codeboard update --yes` to explicitly authorize installation from a script. Existing version directories are retained. Your projects stay in their working folders and are not changed by the installer. A running command continues using its current version; new commands use the updated version.
+
+Automatic checks are skipped in CI, when output is redirected, and when `CODEBOARD_NO_UPDATE_CHECK=1` is set. A daily network check waits at most 1.5 seconds; a failed check never prevents your command from running. Explicit `update` commands still contact GitHub.
+
+For Codeboard 0.2.0 or a manually extracted archive, run the installer above to get a version with the update command. Source checkouts are updated through Git. To select an older version again, run the installer with its version number.
 
 To uninstall, remove the Codeboard installation directory and command wrapper, then remove its PATH entry from your shell profile or Windows user environment settings. Keep any `.cboard` files and authoring scripts you want to retain.
 
