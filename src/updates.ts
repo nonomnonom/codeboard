@@ -4,17 +4,14 @@ import { dirname, basename, join } from "node:path";
 import { homedir, tmpdir } from "node:os";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline/promises";
+import { gt, valid } from "semver";
 
 const repository = "https://github.com/nonomnonom/codeboard";
-const stableVersion = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
+const stableVersion = (value: string): boolean => valid(value) === value && !value.includes("-") && !value.includes("+");
 
 export function newerRelease(latest: string, current: string): boolean {
-  if (!stableVersion.test(latest)) throw new Error("GitHub returned an invalid stable release version.");
-  const base = current.split("-")[0]!;
-  if (!stableVersion.test(base)) return false;
-  const a = latest.split(".").map(BigInt), b = base.split(".").map(BigInt);
-  for (let i = 0; i < 3; i++) if (a[i] !== b[i]) return a[i]! > b[i]!;
-  return current.includes("-");
+  if (!stableVersion(latest)) throw new Error("GitHub returned an invalid stable release version.");
+  return valid(current) !== null && gt(latest, current);
 }
 
 async function download(url: string, timeout: number): Promise<Response> {
@@ -26,7 +23,7 @@ async function download(url: string, timeout: number): Promise<Response> {
 export async function latestRelease(timeout = 10000): Promise<string> {
   const response = await download("https://api.github.com/repos/nonomnonom/codeboard/releases/latest", timeout);
   const release = await response.json() as { tag_name?: unknown; draft?: boolean; prerelease?: boolean };
-  if (typeof release.tag_name !== "string" || !release.tag_name.startsWith("v") || !stableVersion.test(release.tag_name.slice(1)) || release.draft || release.prerelease) {
+  if (typeof release.tag_name !== "string" || !release.tag_name.startsWith("v") || !stableVersion(release.tag_name.slice(1)) || release.draft || release.prerelease) {
     throw new Error("GitHub did not return a stable Codeboard release.");
   }
   return release.tag_name.slice(1);
@@ -42,7 +39,7 @@ export async function cachedRelease(cachePath: string): Promise<string | undefin
   try {
     const cache = JSON.parse(await readFile(cachePath, "utf8")) as { checkedAt: number; latest?: string };
     if (Number.isFinite(cache.checkedAt) && now >= cache.checkedAt && now - cache.checkedAt < 86400000) {
-      return typeof cache.latest === "string" && stableVersion.test(cache.latest) ? cache.latest : undefined;
+      return typeof cache.latest === "string" && stableVersion(cache.latest) ? cache.latest : undefined;
     }
   } catch { /* A missing or damaged cache is safe to rebuild. */ }
   let latest: string | undefined;
@@ -99,7 +96,7 @@ export function verifyInstaller(bytes: Uint8Array, checksums: string, name: stri
 }
 
 export async function installUpdate(packagePath: string, current: string, latest: string): Promise<void> {
-  if (!stableVersion.test(latest)) throw new Error("Invalid release version.");
+  if (!stableVersion(latest)) throw new Error("Invalid release version.");
   const args = await installationArguments(packagePath, current, latest);
   const name = process.platform === "win32" ? "install.ps1" : "install.sh";
   const base = `${repository}/releases/download/v${latest}`;

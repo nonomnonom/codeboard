@@ -4,7 +4,7 @@ Changes are grouped by release. Unreleased work is not a claim of registry publi
 
 ## Unreleased
 
-## [0.3.0] - 2026-10-05
+## [0.2.1] - 2026-10-05
 
 - Check for stable GitHub updates once daily in interactive terminals, with an offline-safe timeout and an environment opt-out.
 - Offer an interactive update confirmation, plus `codeboard update --check` and `codeboard update --yes`; verify the release installer and reuse the existing versioned installation without changing projects.

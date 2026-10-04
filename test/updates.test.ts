@@ -39,6 +39,8 @@ test("stable versions compare numerically and do not downgrade", () => {
   expect(newerRelease("0.2.0", "0.2.0-beta.1")).toBe(true);
   expect(newerRelease("0.2.0", "0.3.0-beta.1")).toBe(false);
   expect(newerRelease("0.2.0", "0.2.0")).toBe(false);
+  expect(newerRelease("0.2.0", "0.2.0+build.42")).toBe(false);
+  expect(newerRelease("0.2.1", "0.2.0+build.42")).toBe(true);
   expect(() => newerRelease("../../evil", "0.2.0")).toThrow();
 });
 
