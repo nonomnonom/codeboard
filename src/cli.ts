@@ -7,6 +7,7 @@ import { writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { starter } from "./starter.js";
+import { confirmUpdate, installUpdate, latestRelease, newerRelease, notifyUpdate } from "./updates.js";
 import { exportMovie } from "./export/movie-export.js";
 import { StoryboardProject } from "./core/project.js";
 import { exportStoryboard } from "./export/storyboard-export.js";
@@ -23,6 +24,23 @@ const program = new Command()
   .enablePositionalOptions()
   .description("Draw, animate, and render through JavaScript or TypeScript")
   .version(version);
+
+program.hook("preAction", async (_command, action) => {
+  if (action.name() !== "update") await notifyUpdate(packagePath, version);
+});
+
+program.command("update")
+  .description("Check for and install the latest stable GitHub release")
+  .option("--check", "Check without installing")
+  .option("-y, --yes", "Install without an interactive confirmation")
+  .action(async (options: { check?: boolean; yes?: boolean }) => {
+    try {
+      const latest = await latestRelease();
+      if (!newerRelease(latest, version)) { console.log(`Codeboard ${version} is up to date (latest stable: ${latest}).`); return; }
+      console.log(`Codeboard ${latest} is available (installed: ${version}).`);
+      if (!options.check && (options.yes || await confirmUpdate())) await installUpdate(packagePath, version, latest);
+    } catch (error) { program.error(error instanceof Error ? error.message : String(error)); }
+  });
 
 program.command("init")
   .argument("[file]", "New JavaScript authoring file", "scene.mjs")

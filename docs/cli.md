@@ -13,6 +13,9 @@ Run `codeboard --help` to list commands or `codeboard COMMAND --help` for one co
 | `codeboard animatic <project>` | Export frame images and an animatic manifest |
 | `codeboard movie <project> --output <file>` | Export an MP4 using FFmpeg |
 | `codeboard --version` | Print the installed version |
+| `codeboard update --check` | Check GitHub for a newer stable release |
+| `codeboard update` | Install the latest stable release in an installer-managed installation |
+| `codeboard update --yes` | Authorize installation without an interactive prompt |
 
 ## Authoring
 
