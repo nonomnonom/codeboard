@@ -28,7 +28,7 @@ it("does not switch clipping to an earlier sibling across a hidden base",async()
   panel.addVectorLayer("Hidden base",{visible:false},group.id).path(shape,{fill:"#000000",strokeWidth:0});
   panel.addVectorLayer("Clipped paint",{clipToBelow:true},group.id).path(shape,{fill:"#ff0000",strokeWidth:0});
   const bytes=await sharp(await renderPanelPNG(project,panel.id,{annotations:false})).extract({left:32,top:32,width:1,height:1}).ensureAlpha().raw().toBuffer();
-  expect(Math.abs(bytes[0]!-128)).toBeLessThanOrEqual(1);
+  expect(Math.abs(bytes[0]!-128)).toBeLessThanOrEqual(2);
   expect(bytes[1]).toBe(bytes[0]);expect(bytes[2]).toBe(255);expect(bytes[3]).toBe(255);
 });
 

@@ -9,7 +9,11 @@ import {drawElement} from "../src/render/vector-renderer.js";
 const movement={x:126,y:35,scaleX:1.7,scaleY:.8,rotation:.6};
 function render(element:DrawingElement,transform?:Transform){
   const canvas=new Canvas(320,240),ctx=canvas.getContext("2d");
-  if(transform){ctx.translate(transform.x,transform.y);ctx.rotate(transform.rotation);ctx.scale(transform.scaleX,transform.scaleY);}
+  if(transform){
+    const c=Math.cos(transform.rotation),s=Math.sin(transform.rotation);
+    // Apply one affine matrix, matching native scalar rounding on CPU and GPU.
+    ctx.transform(c*transform.scaleX,s*transform.scaleX,-s*transform.scaleY,c*transform.scaleY,transform.x,transform.y);
+  }
   drawElement(ctx,element);
   return Buffer.from(ctx.getImageData(0,0,320,240).data);
 }

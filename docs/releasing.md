@@ -30,3 +30,5 @@ A `v*` tag triggers `.github/workflows/release.yml`. It verifies tag/package/loc
 Install a downloaded release archive with `npm install ./codeboard-studio-VERSION.tgz`. GitHub publication does not publish to the npm registry. Registry publishing requires separate account/package ownership and credentials or trusted publishing setup.
 
 Maintainers create version tags only from a reviewed commit with passing CI. Main branch requires the CI gate and pull requests; admins retain emergency bypass. Review the archive contents and licensing when adding assets or dependencies. Original example media has separate CC0 terms in `NOTICE`; application code is MIT.
+
+Rendering tests allow up to two channel levels for analytical alpha-compositing expectations across Skia CPU/GPU backends. Save/open and undo replay checks remain exact within the same runtime.
