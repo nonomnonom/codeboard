@@ -27,7 +27,9 @@ CI checks Linux, macOS and Windows, Node 22.22 and Node 24, plus FFmpeg integrat
 
 A `v*` tag triggers `.github/workflows/release.yml`. It verifies tag/package/lockfile/changelog agreement, builds, tests with FFmpeg, checks a clean package installation, and publishes a GitHub Release containing the npm-compatible `.tgz` and `SHA256SUMS`. Tags with a prerelease suffix are marked prerelease. Failed checks prevent publication. A failed run can be rerun from Actions; manual dispatch must target a version tag.
 
-Install a downloaded release archive with `npm install ./codeboard-studio-VERSION.tgz`. GitHub publication does not publish to the npm registry. Registry publishing requires separate account/package ownership and credentials or trusted publishing setup.
+Install a downloaded release archive with `npm install ./codeboard-studio-VERSION.tgz`. npm publication uses [trusted publishing](https://docs.npmjs.com/trusted-publishers/) and is disabled until the repository variable `NPM_TRUSTED_PUBLISHING` is `true`. No npm token is stored in GitHub.
+
+After the package has been published once by its owner, configure trust with `npx npm@11 trust github codeboard-studio --file release.yml --repo nonomnonom/codeboard --allow-publish --yes` and complete npm account verification. Then enable the repository variable with `gh variable set NPM_TRUSTED_PUBLISHING --body true`. Subsequent release tags publish to npm before creating the GitHub Release; prereleases use the `next` dist-tag. Keep the variable disabled until npm confirms the trust configuration.
 
 Maintainers create version tags only from a reviewed commit with passing CI. Main branch requires the CI gate and pull requests; admins retain emergency bypass. Review the archive contents and licensing when adding assets or dependencies. Original example media has separate CC0 terms in `NOTICE`; application code is MIT.
 
