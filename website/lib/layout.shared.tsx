@@ -8,7 +8,6 @@ export function baseOptions(): BaseLayoutProps {
     },
     links: [
       { text: 'Docs', url: '/docs', active: 'nested-url' },
-      { text: 'Download', url: '/download', active: 'url' },
       { text: 'Examples', url: '/examples', active: 'url' },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,

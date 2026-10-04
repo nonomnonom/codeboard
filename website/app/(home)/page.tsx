@@ -13,16 +13,16 @@ await project.save('clawd.cboard');`;
 export default function Home() {
   return <main id="main-content" className="site-main">
     <section className="intro">
-      <div className="intro-meta"><span>A drawing studio for your coding agent</span><Link href="/download">v{releaseVersion} · MIT</Link></div>
+      <div className="intro-meta"><span>A drawing studio for your coding agent</span><span>v{releaseVersion} · MIT</span></div>
       <div className="intro-columns">
         <h1>Draw with code.<br /><em>Tell a story.</em></h1>
         <div className="intro-copy"><p>Give your agent a direction. Let it draw, animate, inspect and revise through JavaScript. Keep every layer, stroke and timing decision editable.</p>
-          <div className="actions"><Link className="button primary" href="/docs">Read the docs</Link><Link className="button secondary" href="/download">Download Codeboard</Link></div>
+          <div className="actions"><Link className="button primary" href="/docs">Read the docs</Link></div>
           <p className="fine-print">Local tools. Your agent. No model subscription.</p>
         </div>
       </div>
     </section>
-    <figure className="hero-art"><video controls preload="none" playsInline poster={`${basePath}/art/code-board-demo/poster.png`} src={`${basePath}/art/code-board-demo/walkthrough.mp4`} aria-label="Codeboard: a 48-second walkthrough of character drawing and animation"><a href={`${basePath}/art/code-board-demo/walkthrough.mp4`}>Download the walkthrough</a></video>
+    <figure className="hero-art"><video controls preload="none" playsInline poster={`${basePath}/art/code-board-demo/poster.png`} src={`${basePath}/art/code-board-demo/walkthrough.mp4`} aria-label="Codeboard: a 48-second walkthrough of character drawing and animation"><a href={`${basePath}/art/code-board-demo/walkthrough.mp4`}>Watch the walkthrough</a></video>
       <figcaption><span><strong>CODEBOARD DEMO</strong> / 48-second walkthrough · original Foley</span><Link href="/docs/code-board-demo">Run the example</Link></figcaption>
     </figure>
     <section className="authoring-section">
