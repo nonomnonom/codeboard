@@ -1,6 +1,6 @@
 {
   "name": "codeboard",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Create, revise, inspect, and export editable drawings, storyboards, and 2D animation with Codeboard.",
   "skills": "./skills/",
   "interface": {

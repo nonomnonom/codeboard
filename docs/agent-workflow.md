@@ -4,7 +4,7 @@ Your agent writes and executes JavaScript or TypeScript. Codeboard supplies the 
 
 ## Set up the agent plugin
 
-[Install the Codeboard plugin](agent-plugin.md) in Codex or Claude Code to give your agent the operation skills and bundled API reference. The guide covers getting the plugin, host-specific installation commands, checking that skills are available, and updates. Install the [engine](install.md) separately, then open your agent in the folder where you want to keep the artwork.
+[Install the Codeboard skills](agent-plugin.md) in your compatible agent to add operation guidance and the bundled API reference. The guide covers plugin installation in Codex and Claude Code, portable skill folders for Cursor, Copilot, Gemini CLI, OpenCode and other hosts, verification, and updates. Install the [engine](install.md) separately in the agent's execution environment, then open your agent in the artwork folder.
 
 Ask the agent to use the `codeboard` skill for your first task. It establishes the runtime and documentation version and selects the relevant skills for drawing, animation, or revision. The installed reference travels with the plugin, so the agent does not need your source checkout to read it.
 

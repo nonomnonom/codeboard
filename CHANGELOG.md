@@ -4,6 +4,8 @@ Changes are grouped by release. Unreleased work is not a claim of registry publi
 
 ## Unreleased
 
+- Expand agent installation guidance with portable skill folders, documented discovery paths for additional hosts, reference verification, and remote-environment setup.
+
 - Add the agent plugin under `plugin/`, with Codex and Claude Code manifests, ten operation skills, and a generated offline reference bundle. `npm run docs:generate` updates API references and the bundle; validation rejects drift from the canonical documentation.
 - Document plugin installation, verification, first use, and updates for Codex and Claude Code in the public guides and agent workflow.
 - Use Fumadocs configuration-based collection imports for the website after the macro integration failed the local production build; keep root `docs/` as the shared documentation source.
