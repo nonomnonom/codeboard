@@ -11,8 +11,11 @@ function render(element:DrawingElement,transform?:Transform){
   const canvas=new Canvas(320,240);canvas.gpu=false;const ctx=canvas.getContext("2d");
   if(transform){
     const c=Math.cos(transform.rotation),s=Math.sin(transform.rotation);
-    // Apply one affine matrix, matching native scalar rounding on CPU and GPU.
-    ctx.transform(c*transform.scaleX,s*transform.scaleX,-s*transform.scaleY,c*transform.scaleY,transform.x,transform.y);
+    const a=c*transform.scaleX,b=s*transform.scaleX,d=c*transform.scaleY,e=-s*transform.scaleY;
+    const [m0,m1,m2,m3,m4,m5]=element.matrix??[1,0,0,1,0,0];
+    // Compose in JS before native conversion, including an existing pixel placement.
+    ctx.transform(a*m0+e*m1,b*m0+d*m1,a*m2+e*m3,b*m2+d*m3,a*m4+e*m5+transform.x,b*m4+d*m5+transform.y);
+    element=structuredClone(element);delete element.matrix;
   }
   drawElement(ctx,element);
   return Buffer.from(ctx.getImageData(0,0,320,240).data);
@@ -39,9 +42,7 @@ it("transforms whole artwork while preserving editable source geometry and pen d
     const layer=board.production.layer(handle.id);if(layer.kind==="group")throw new Error("Expected drawing");
     for(let i=0;i<elements.length;i++){
       const original=elements[i]!,placed=layer.elements[i]!;
-      const actual=render(placed),expected=render(original,movement);
-      const deltas=actual.map((value,index)=>Math.abs(value-expected[index]!));
-      expect(actual.equals(expected), `${original.kind}: max=${deltas.reduce((a,b)=>Math.max(a,b),0)}, changed=${deltas.filter(v=>v!==0).length}`).toBe(true);
+      expect(render(placed).equals(render(original,movement)),original.kind).toBe(true);
       const {matrix:oldMatrix,...source}=original,{matrix:newMatrix,...after}=placed;
       expect(after).toEqual(source);expect(newMatrix).not.toEqual(oldMatrix);
     }
