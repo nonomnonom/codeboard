@@ -8,7 +8,7 @@ const work=await mkdtemp(join(tmpdir(),'codeboard-installer-'));
 const target=join(work,"Artist's studio");
 const windows=process.platform==='win32';
 const launcher=join(target,'bin',windows?'codeboard.cmd':'codeboard');
-const run=(command,args)=>spawnSync(command,args,{encoding:'utf8',windowsHide:true,timeout:240000});
+const run=(command,args,cwd)=>spawnSync(command,args,{cwd,encoding:'utf8',windowsHide:true,timeout:240000});
 const install=version=>windows
   ?run('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',resolve('website/public/install.ps1'),'-Version',version,'-InstallDir',target,'-NoModifyPath'])
   :run('sh',[resolve('website/public/install.sh'),'--version',version,'--prefix',target,'--no-modify-path']);
@@ -19,7 +19,7 @@ try{
     assert.equal(result.status,0,result.stderr+result.stdout);
   }
   const result=windows
-    ?run(process.env.ComSpec??'cmd.exe',['/d','/c',`"${launcher}" --version`])
+    ?run(process.env.ComSpec??'cmd.exe',['/d','/c','codeboard.cmd','--version'],join(target,'bin'))
     :run(launcher,['--version']);
   assert.equal(result.status,0,result.stderr);
   assert.equal(result.stdout.trim(),'0.1.1');
