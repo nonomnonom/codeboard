@@ -110,13 +110,15 @@ jobs:
           & $installer -Version 0.2.1 -InstallDir "$env:RUNNER_TEMP/codeboard" -NoModifyPath
           "$env:RUNNER_TEMP/codeboard/bin" >> $env:GITHUB_PATH
       - name: Run public sources outside the checkout
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/example-work/code-board-demo"
-          cp -R examples "$RUNNER_TEMP/example-work/"
-          python -m zipfile -e website/public/art/code-board-demo/launch-source.zip "$RUNNER_TEMP/example-work"
-          cd "$RUNNER_TEMP/example-work"
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $work = Join-Path $env:RUNNER_TEMP 'example-work'
+          New-Item -ItemType Directory -Force $work | Out-Null
+          Copy-Item -Recurse examples $work
+          Expand-Archive -LiteralPath website/public/art/code-board-demo/launch-source.zip -DestinationPath $work
+          Set-Location $work
           codeboard --version
           codeboard run examples/quickstart.mjs
           codeboard run examples/code-board-demo/main.mjs
