@@ -2,107 +2,51 @@
 
 **Draw with code. Keep the artwork editable. Render the film.**
 
-Codeboard is a JavaScript/TypeScript toolkit for procedural drawing, storyboards, and 2D animation. Author strokes, layers, scenes, and timing through a public API; save an editable SQLite project; render stills, review sheets, and movies from the same artwork.
+Codeboard is a JavaScript/TypeScript toolkit for drawing, storyboards, and 2D animation. Your coding agent creates the artwork, renders it for review, and makes targeted revisions through code.
 
-No account, AI service, or manual editor is required. It works with ordinary scripts and can be operated by coding agents.
+[Website](https://codeboard.nonom.xyz) · [Documentation](https://codeboard.nonom.xyz/docs/) · [Examples](https://codeboard.nonom.xyz/examples/) · [GitHub Releases](https://github.com/nonomnonom/codeboard/releases/latest)
 
-[Website](https://codeboard.nonom.xyz) · [Documentation](https://codeboard.nonom.xyz/docs/) · [Download](https://codeboard.nonom.xyz/download/) · [Examples](examples/README.md) · [Contributing](CONTRIBUTING.md)
+## Install
 
-[![Six scenes from LENGKAP: a report filled with motorbike drawings, a red approval stamp, an empty warehouse, and the closing line “Di kertas, semuanya ada.”](docs/media/lengkap-storyboard.png)](https://github.com/nonomnonom/codeboard/blob/main/docs/media/lengkap.mp4)
-
-**LENGKAP** — a 15-second procedural brush film. [Watch the MP4](https://github.com/nonomnonom/codeboard/blob/main/docs/media/lengkap.mp4) · [Read the source](examples/lengkap.ts). Its artwork uses editable strokes and text, not generated video or six animated still images.
-
-## What you can make
-
-- **Draw:** pressure-sensitive brush strokes, custom bitmap tips, vector paths, masks, clipping, and pixel edits.
-- **Animate:** reusable frame-by-frame drawing sequences, holds and blanks, stroke write-on, layer/camera keyframes, transitions, and audio cues.
-- **Revise:** transactions, undo/redo, named project revisions, and targeted storage updates.
-- **Deliver:** PNG frames, storyboard sheets/PDFs, animatic packages, and MP4 through FFmpeg.
-
-Codeboard is pre-1.0 software. It is not a replacement for a mature hand-drawing editor, a generative video model, or an emulator of Photoshop/Krita brush engines. API and storage changes need compatibility review. See [implemented behavior and limits](docs/architecture.md).
-
-## Install a release
-
-Download the package for your OS from [GitHub Releases](https://github.com/nonomnonom/codeboard/releases/latest). Windows, Linux and macOS bundles include Node and native drawing dependencies; extract and run `codeboard --help` (`codeboard.cmd` on Windows). [Installation paths and commands for each OS](docs/install.md).
-
-Packages are distributed through GitHub, not the npm registry. FFmpeg is a separate requirement for movie export.
-
-## Try it locally
-
-Requires **Node.js 22.22+** and npm. Native rendering dependencies are installed by npm. FFmpeg is only needed for movie export.
+macOS or Linux:
 
 ```sh
-git clone https://github.com/nonomnonom/codeboard.git
-cd codeboard
-npm ci
-npm run build
-npm run example:quickstart
+curl -fsSL https://codeboard.nonom.xyz/install.sh | sh
 ```
 
-Open `examples/output/quickstart/first-stroke.png`. The same folder contains `first-stroke.cboard`, an editable two-second project. Regenerating this example replaces its generated output; keep independent edits elsewhere.
+Windows, in 64-bit PowerShell:
+
+```powershell
+& ([scriptblock]::Create((Invoke-RestMethod https://codeboard.nonom.xyz/install.ps1)))
+```
+
+The installer downloads a GitHub release, verifies its checksum, and sets up the `codeboard` command. Node is included; no npm account is required. [Supported systems and installation options](docs/install.md).
+
+## Draw something
+
+Open a new terminal in your working folder:
 
 ```sh
-node dist/src/cli.js preview examples/output/quickstart/first-stroke.cboard
+codeboard init
+codeboard run scene.mjs
 ```
 
-The read-only preview runs on loopback. To export its animation, install FFmpeg and run:
+Open `output/first.png` to see the stroke. `output/first.cboard` keeps the editable project. Change the script and run it again, or [reopen and revise the saved artwork](docs/projects.md).
 
-```sh
-node dist/src/cli.js movie examples/output/quickstart/first-stroke.cboard --output examples/output/quickstart/first-stroke.mp4
-```
+## Create and revise
 
-Use `--ffmpeg /path/to/ffmpeg` or `FFMPEG_PATH` when FFmpeg is not on PATH. On memory-constrained machines, set `SKIA_CANVAS_THREADS=2`. Font availability affects text rendering; see [setup and troubleshooting](docs/getting-started.md).
+- [Draw](docs/drawing.md) with pressure-sensitive paint, vector contours, and pixel surfaces.
+- [Make brushes](docs/brushes.md) using your own tips or supported external resources.
+- [Animate](docs/animation.md) with drawing substitutions, holds, keyframes, and camera motion.
+- [Review](docs/review.md) exact frames, detail crops, sheets, and layer-specific onion skins.
+- [Export](docs/export.md) PNGs, storyboard PDFs, and movies with audio. MP4 export requires FFmpeg.
 
-The npm package is named `codeboard-studio`. These instructions use the source checkout and do not assume it has been published to the registry. To use a locally built copy elsewhere: `npm install /absolute/path/to/codeboard`.
+[![Six scenes from LENGKAP](docs/media/lengkap-storyboard.png)](https://codeboard.nonom.xyz/examples/)
 
-## A stroke is editable data
-
-```js
-import { StoryboardProject, brushes, catmullRom } from 'codeboard-studio';
-
-const project = StoryboardProject.create({
-  title: 'First stroke', width: 960, height: 540, frameRate: 24,
-});
-const panel = project.addScene('A mark').addShot('Close-up')
-  .addPanel({ id: 'stroke', durationFrames: 48 });
-
-panel.addRasterLayer('Ink').rasterStroke(catmullRom([
-  { x: 150, y: 390, pressure: .2, time: 0 },
-  { x: 420, y: 180, pressure: 1, time: 300 },
-  { x: 800, y: 140, pressure: .1, time: 800 },
-], 32), { ...brushes.cleanInk, size: 44 }, {
-  seed: 12, reveal: { startFrame: 0, endFrame: 36 },
-});
-
-await project.save('first-stroke.cboard');
-```
-
-`time` is pen-input time in milliseconds; `reveal` uses global timeline frames. Completed strokes retain stable texture as time advances. `.cboard` stores editable structure and binary assets in SQLite, with revisions and integrity checks. It is not a folder of rendered frames or a renamed JSON dump.
-
-## Explore further
-
-| Start here | What it covers |
-| --- | --- |
-| [Quickstart source](examples/quickstart.mjs) | Draw, save, render, and preview a small project |
-| [LENGKAP](examples/lengkap/README.md) | Six scenes, custom brushes, stamp impact, original Foley, and an isolated revision |
-| [THE LAST LIGHT](examples/README.md#the-last-light) | A longer storyboard, reusable artwork, lighting, acting, and directed revision |
-| [Authoring guide](docs/authoring.md) | Drawing, persistence, inspection, pen input, and CLI usage |
-| [Agent review loop](docs/agent-workflow.md) | Coordinates, per-layer onion skin, pixel comparison and rejecting a trial |
-| [Animation properties](docs/animation-channels.md) | Independent layer channels, stable keys and targeted timing edits |
-| [Brush resources](docs/brush-resources.md) | Native tips and bounded import of external resources |
-| [Gradient fills](docs/gradient-fills.md) | Editable linear/radial contour fills and local placement |
-| [Storage](docs/storage.md) | SQLite design, partial reads, concurrency, and revisions |
+**LENGKAP** is a 15-second film drawn through the public API. [Watch the examples](https://codeboard.nonom.xyz/examples/) or [read the source](examples/lengkap.ts).
 
 ## Contribute
 
-```sh
-npm run check
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for building from source and running tests. Report reproducible problems through [GitHub Issues](https://github.com/nonomnonom/codeboard/issues), and security vulnerabilities through [SECURITY.md](SECURITY.md).
 
-This builds the project, runs tests, checks documentation links, and verifies the packed public API and CLI. Movie integration tests require `FFMPEG_PATH`. A separate `npm run test:install` checks a real clean-directory installation and needs network access.
-
-Bug reports should include a small reproduction and expected versus actual output. Visual changes should include rendered evidence. See [CONTRIBUTING.md](CONTRIBUTING.md), [the source map](docs/contributor-architecture.md), and [release preparation](docs/releasing.md).
-
-## License
-
-Code: [MIT](LICENSE). Original example artwork and synthesized audio: CC0-1.0. Dependencies, native libraries, fonts, and imported resources have their own terms; see [NOTICE](NOTICE). Report vulnerabilities through [SECURITY.md](SECURITY.md).
+Code: [MIT](LICENSE). Original example artwork and audio: CC0-1.0. Dependencies and imported resources have their own licenses; see [NOTICE](NOTICE).

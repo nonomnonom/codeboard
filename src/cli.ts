@@ -3,6 +3,10 @@ import { Command } from "commander";
 import { readFileSync } from "node:fs";
 import { findPackageJSON } from "node:module";
 import { resolve } from "node:path";
+import { writeFile } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { starter } from "./starter.js";
 import { exportMovie } from "./export/movie-export.js";
 import { StoryboardProject } from "./core/project.js";
 import { exportStoryboard } from "./export/storyboard-export.js";
@@ -16,8 +20,34 @@ const { version } = JSON.parse(readFileSync(packagePath, "utf8")) as { version: 
 
 const program = new Command()
   .name("codeboard")
-  .description("Render, validate, and preview code-authored storyboard projects")
+  .enablePositionalOptions()
+  .description("Draw, animate, and render through JavaScript or TypeScript")
   .version(version);
+
+program.command("init")
+  .argument("[file]", "New JavaScript authoring file", "scene.mjs")
+  .action(async (file: string) => {
+    await writeFile(resolve(file), starter, { flag: "wx" });
+    console.log(`Created ${file}. Run: codeboard run ${JSON.stringify(file)}`);
+  });
+
+program.command("run")
+  .argument("<script>", "JavaScript or TypeScript authoring file")
+  .argument("[arguments...]", "Arguments passed to your script")
+  .passThroughOptions()
+  .action(async (script: string, args: string[]) => {
+    const child = spawn(process.execPath, [fileURLToPath(new URL("./authoring-runner.js", import.meta.url)), resolve(script), ...args], {
+      stdio: "inherit", windowsHide: true,
+    });
+    const forward = () => child.kill("SIGINT");
+    process.on("SIGINT", forward);
+    try {
+      process.exitCode = await new Promise<number>((accept, reject) => {
+        child.once("error", reject);
+        child.once("exit", (code) => accept(code ?? 1));
+      });
+    } finally { process.off("SIGINT", forward); }
+  });
 
 program.command("render")
   .argument("<project>", "Path to a .cboard file")

@@ -33,6 +33,10 @@ Prefer small reproducible examples over large project dumps. Do not commit `dist
 - Partial storage operations do not overwrite unrelated artwork or bypass optimistic concurrency.
 - Imported resources retain provenance and report unsupported behavior rather than silently substituting assets.
 
-The source map is in [the contributor architecture guide](docs/contributor-architecture.md). Follow surrounding code style; avoid unrelated reformatting. AI-assisted contributions receive the same review: the contributor must understand and verify the change.
+The engine lives in `src/`: `core` owns authoring operations, `drawing` brush and geometry tools, `animation` timing, `render` images, `storage` project persistence, and `export` deliverables. `website/` builds the public site from `docs/`. Keep development notes out of the public guides. Follow surrounding code style; avoid unrelated reformatting. AI-assisted contributions receive the same review: the contributor must understand and verify the change.
+
+## Releases
+
+Use semantic versioning. Update the root package and lockfile versions, add a dated changelog entry, and merge through a passing pull request. Tag the merged commit as `vVERSION`; the Release workflow verifies, builds and smoke-tests each portable package, then publishes the archives, installers and checksums to GitHub Releases. No npm publishing is configured.
 
 There is no CLA. Contributions are accepted under the repository's MIT license; do not submit work you cannot license that way. Report security issues through [SECURITY.md](SECURITY.md), and follow the [Code of Conduct](CODE_OF_CONDUCT.md).

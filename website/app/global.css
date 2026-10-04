@@ -99,6 +99,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, video:focus-visible 
 .install-notes dd { min-width: 0; overflow-wrap: anywhere; }
 .install-notes dd span { display: block; color: var(--ink-soft); font-size: 12px; margin-top: 8px; }
 .release-notes { margin-top: 40px; }
+.installer-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-block: 48px 64px; }
+.installer-section h2 { font-size: 28px; }
+.installer-section p, .manual-downloads > p { color: var(--ink-soft); margin-top: 12px; font-size: 14px; line-height: 1.8; }
+.installer-section pre, .install-notes pre { overflow-x: auto; padding: 20px; margin-top: 18px; border: 1px solid var(--color-fd-border); background: var(--color-fd-card); font-size: 13px; line-height: 1.8; }
+.install-notes .button { margin-top: 20px; }
+.manual-downloads { margin-top: 70px; }
 .release-notes a { text-decoration: underline; text-underline-offset: 3px; }
 .example-project { margin-top: 70px; }
 .project-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
