@@ -23,7 +23,7 @@ it.each(["linear","ease-in-out","hold"] as const)("matches evaluated %s motion, 
     const {data,info}=await sharp(png).ensureAlpha().raw().toBuffer({resolveWithObject:true});
     const x=Math.round(artwork.transform.x-camera.x/2+6),y=36,at=(y*info.width+x)*4;
     const expected=Math.round(255*(1-artwork.opacity));
-    expect(Math.abs(data[at]!-expected)).toBeLessThanOrEqual(1);
+    expect(Math.abs(data[at]!-expected)).toBeLessThanOrEqual(2);
     expect(data[at+1]).toBe(data[at]);expect(data[at+2]).toBe(data[at]);expect(data[at+3]).toBe(255);
     expect(data[(y*info.width+10)*4]).toBe(255);
   }

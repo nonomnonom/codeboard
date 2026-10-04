@@ -8,8 +8,15 @@ import {drawElement} from "../src/render/vector-renderer.js";
 
 const movement={x:126,y:35,scaleX:1.7,scaleY:.8,rotation:.6};
 function render(element:DrawingElement,transform?:Transform){
-  const canvas=new Canvas(320,240),ctx=canvas.getContext("2d");
-  if(transform){ctx.translate(transform.x,transform.y);ctx.rotate(transform.rotation);ctx.scale(transform.scaleX,transform.scaleY);}
+  const canvas=new Canvas(320,240);canvas.gpu=false;const ctx=canvas.getContext("2d");
+  if(transform){
+    const c=Math.cos(transform.rotation),s=Math.sin(transform.rotation);
+    const a=c*transform.scaleX,b=s*transform.scaleX,d=c*transform.scaleY,e=-s*transform.scaleY;
+    const [m0,m1,m2,m3,m4,m5]=element.matrix??[1,0,0,1,0,0];
+    // Compose in JS before native conversion, including an existing pixel placement.
+    ctx.transform(a*m0+e*m1,b*m0+d*m1,a*m2+e*m3,b*m2+d*m3,a*m4+e*m5+transform.x,b*m4+d*m5+transform.y);
+    element=structuredClone(element);delete element.matrix;
+  }
   drawElement(ctx,element);
   return Buffer.from(ctx.getImageData(0,0,320,240).data);
 }
@@ -35,7 +42,7 @@ it("transforms whole artwork while preserving editable source geometry and pen d
     const layer=board.production.layer(handle.id);if(layer.kind==="group")throw new Error("Expected drawing");
     for(let i=0;i<elements.length;i++){
       const original=elements[i]!,placed=layer.elements[i]!;
-      expect(render(placed).equals(render(original,movement))).toBe(true);
+      expect(render(placed).equals(render(original,movement)),original.kind).toBe(true);
       const {matrix:oldMatrix,...source}=original,{matrix:newMatrix,...after}=placed;
       expect(after).toEqual(source);expect(newMatrix).not.toEqual(oldMatrix);
     }
