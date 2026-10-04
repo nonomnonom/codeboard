@@ -8,7 +8,7 @@ import {drawElement} from "../src/render/vector-renderer.js";
 
 const movement={x:126,y:35,scaleX:1.7,scaleY:.8,rotation:.6};
 function render(element:DrawingElement,transform?:Transform){
-  const canvas=new Canvas(320,240),ctx=canvas.getContext("2d");
+  const canvas=new Canvas(320,240,{gpu:false}),ctx=canvas.getContext("2d");
   if(transform){
     const c=Math.cos(transform.rotation),s=Math.sin(transform.rotation);
     // Apply one affine matrix, matching native scalar rounding on CPU and GPU.
@@ -39,7 +39,9 @@ it("transforms whole artwork while preserving editable source geometry and pen d
     const layer=board.production.layer(handle.id);if(layer.kind==="group")throw new Error("Expected drawing");
     for(let i=0;i<elements.length;i++){
       const original=elements[i]!,placed=layer.elements[i]!;
-      expect(render(placed).equals(render(original,movement))).toBe(true);
+      const actual=render(placed),expected=render(original,movement);
+      const deltas=actual.map((value,index)=>Math.abs(value-expected[index]!));
+      expect(actual.equals(expected), `${original.kind}: max=${deltas.reduce((a,b)=>Math.max(a,b),0)}, changed=${deltas.filter(v=>v!==0).length}`).toBe(true);
       const {matrix:oldMatrix,...source}=original,{matrix:newMatrix,...after}=placed;
       expect(after).toEqual(source);expect(newMatrix).not.toEqual(oldMatrix);
     }
