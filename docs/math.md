@@ -60,8 +60,8 @@ project.production.setTwoBoneRig(shoulder.id, {
   elbowId: elbow.id, upperLength: 80, lowerLength: 60,
 });
 const result = project.production.poseTwoBoneRig(shoulder.id, 0,
-  { x: 100, y: 40 }, { bend: 1, easing: 'hold' });
+  { x: 400, y: 340 }, { bend: 1, easing: 'hold' });
 console.log(result.reachable, project.production.twoBoneRig(shoulder.id));
 ```
 
-The target is measured relative to the root joint's origin, before its solved rotation. Posing writes rotation keys on the two joints. Removing the rig definition with `setTwoBoneRig(rootId, null)` removes the rig relationship; it does not automatically delete already-authored rotation keys.
+The target uses the root joint's parent coordinates. Here the shoulder is at `(300, 300)` and the target is 100 units right and 40 down from it. Posing writes rotation keys on the two joints. Removing the rig definition with `setTwoBoneRig(rootId, null)` removes the rig relationship; it does not automatically delete already-authored rotation keys.

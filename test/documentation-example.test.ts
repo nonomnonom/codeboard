@@ -45,3 +45,28 @@ test('downloaded documentation example runs outside the repository and revises o
     expect(ghost.subarray(1, 4).toString()).toBe('PNG');
   } finally { await rm(directory, { recursive: true, force: true }); }
 }, 60000);
+
+test('documented pixel, custom-tip and joint-rig recipes execute through the installed authoring runner', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'codeboard-doc-recipes-'));
+  try {
+    for (const [file, marker, assertion] of [
+      ['pixels', 'const polygon =', 'if (image.pixels.every(value => value === 0)) throw new Error("Empty pixel recipe");'],
+      ['brushes', 'const tip = brushTipFromFunction', 'if (tip.kind !== "bitmap") throw new Error("Missing custom tip");'],
+      ['math', 'const shoulder =', 'if (!result.reachable) throw new Error("Rig target should be reachable");'],
+    ]) {
+      const markdown = await readFile(`docs/${file}.md`, 'utf8');
+      const block = [...markdown.matchAll(/```js\r?\n([\s\S]*?)```/g)].find(match => match[1]!.includes(marker!))?.[1];
+      expect(block, `Missing ${file} recipe`).toBeDefined();
+      const script = join(directory, `${file}.mjs`);
+      await writeFile(script, `import * as cb from 'codeboard-studio';
+import { writeFile } from 'node:fs/promises';
+const { brushes, customizeBrush, renderBrushSwatch } = cb;
+const project = cb.StoryboardProject.create({title:'Documentation recipe',width:640,height:480});
+const panel = project.addScene('Study').addShot('Recipe').addPanel();
+const paint = panel.addRasterLayer('Paint');
+${block}\n${assertion}`);
+      const result = spawnSync(process.execPath, [resolve('dist/src/cli.js'), 'run', script], { cwd: directory, encoding: 'utf8', windowsHide: true, timeout: 15000 });
+      expect(result.status, `${file}: ${result.stderr}`).toBe(0);
+    }
+  } finally { await rm(directory, { recursive: true, force: true }); }
+}, 60000);
