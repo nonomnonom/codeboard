@@ -1,11 +1,11 @@
+import { renderFrameSheet } from 'codeboard-studio';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { Canvas } from 'skia-canvas';
-import { StoryboardProject, createRenderSession, exportMovie } from '../src/index.js';
-import { Art, paper, ink, red, rough, dry, fine, stampInk, charcoal, pastel, pencil, document, person, motor, emptyMotor, warehouse, stampPrint } from './lengkap/art.js';
-import { makeSound } from './lengkap/sound.js';
+import { StoryboardProject, createRenderSession, exportMovie } from 'codeboard-studio';
+import { Art, paper, ink, red, rough, dry, fine, stampInk, charcoal, pastel, pencil, document, person, motor, emptyMotor, warehouse, stampPrint } from './lengkap/art.ts';
+import { makeSound } from './lengkap/sound.ts';
 
 export const output=resolve('examples/output/lengkap');
 export function author(){
@@ -97,16 +97,7 @@ export function author(){
 
 export async function sheets(board:StoryboardProject){
   const session=createRenderSession(board),frames=[59,119,179,239,299,359];
-  const c=new Canvas(1920,890),ctx=c.getContext('2d');ctx.fillStyle=paper;ctx.fillRect(0,0,c.width,c.height);
-  ctx.fillStyle=ink;ctx.font='bold 38px Arial';ctx.fillText('LENGKAP',28,48);ctx.font='19px Arial';ctx.fillText('15 DETIK  /  6 SCENE',1610,44);
-  const titles=['MENULIS','MEMENUHI LAPORAN','MENGESAHKAN','MEMERIKSA KENYATAAN','TIDAK TERHUBUNG','PENUTUP'];
-  for(let i=0;i<6;i++){
-    const x=24+(i%3)*632,y=80+Math.floor(i/3)*398;
-    ctx.drawImage(session.frame(frames[i]!),x,y,608,342);
-    ctx.strokeStyle='#d7cfbd';ctx.lineWidth=1;ctx.strokeRect(x,y,608,342);
-    ctx.fillStyle=ink;ctx.font='17px Arial';ctx.fillText(`${String(i+1).padStart(2,'0')}  ${titles[i]}  /  ${(i*2.5).toFixed(1)}–${((i+1)*2.5).toFixed(1)}s`,x,y+370);
-  }
-  await writeFile(join(output,'lengkap-storyboard.png'),await c.toBuffer('png'));
+  await writeFile(join(output,'lengkap-storyboard.png'),await renderFrameSheet(board,frames,{columns:3,thumbnailWidth:608}));
   await writeFile(join(output,'lengkap-hero.png'),await session.frame(359).toBuffer('png'));
 }
 

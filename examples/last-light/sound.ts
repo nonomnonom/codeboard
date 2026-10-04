@@ -1,4 +1,4 @@
-import { encodeWav,type StoryboardProject } from "../../src/index.js";
+import { encodeWav,type StoryboardProject } from "codeboard-studio";
 
 export function fitRainBed(project:StoryboardProject,endFrame:number):void{
   const track=project.production.find({kind:"audio-track",name:"rain"}).find(track=>track.name==="rain");

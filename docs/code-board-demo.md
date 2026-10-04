@@ -4,7 +4,7 @@ Build the eight-second Clawd performance from the Codeboard launch demo: walk, n
 
 ![The character preparing for a hop, rendered from the editable example](../website/public/art/code-board-demo/frame.png)
 
-The [48-second walkthrough film](../website/public/art/code-board-demo/walkthrough.mp4) shows the larger workflow. Its terminal scenes are a scripted presentation, not a live agent recording. The public video is silent. The runnable example below contains the character performance, without the presentation scenes or third-party soundtrack.
+The [48-second walkthrough film](../website/public/art/code-board-demo/walkthrough.mp4) shows the larger workflow. Its terminal scenes are a scripted presentation, not a live agent recording. The film is rebuilt with the released CLI and original synthesized Foley. Download the complete presentation source below, or begin with the smaller eight-second performance. Neither requires external artwork or audio.
 
 ## Run it locally
 
@@ -19,6 +19,27 @@ codeboard run main.mjs
 This creates `clawd-output/clawd.cboard`, `frame.png`, `poses.png`, and `onion.png`. No FFmpeg or network connection is needed for these outputs. The example has a 1920 × 1080 canvas, runs at 24 fps, and lasts 192 frames. Running `main.mjs` again deliberately replaces its generated project; make revisions with `revise.mjs` instead.
 
 You can also download the [editable project](../website/public/art/code-board-demo/clawd.cboard) directly. The source is available in the repository under [examples/code-board-demo](../examples/code-board-demo/README.md).
+
+## Build the complete 48-second film
+
+Download the [full demo source ZIP](../website/public/art/code-board-demo/launch-source.zip), extract it, and open a terminal in `code-board-demo`. This source targets **Codeboard v0.2.1**. The installed `codeboard` command must be on PATH.
+
+```sh
+codeboard run src/run.ts author
+codeboard run src/run.ts render
+```
+
+`author` creates editable projects, original synthesized Foley, review sheets, pose crops, and verification reports. `render` repeats that work and exports the film; it requires FFmpeg on PATH or `FFMPEG_PATH` pointing to its executable. No npm dependencies or engine build are needed.
+
+Outputs go into `codeboard-demo-output/` in your working directory. `CODEBOARD_DEMO_OUTPUT` can select another output directory. Keep independent revisions elsewhere: running authoring again replaces its generated outputs.
+
+```sh
+codeboard run src/run.ts verify
+codeboard preview codeboard-demo-output/launch/codeboard-launch.cboard
+codeboard movie codeboard-demo-output/launch/codeboard-launch.cboard --output film.mp4
+```
+
+The [demo README](../code-board-demo/README.md) maps source files and outputs. Verification reopens saved projects, compares all 192 performance frames, checks planted-foot drift and drawing exposures, and checks turnaround contours. Arial, Consolas and Segoe Print are host fonts; text appearance can differ between operating systems.
 
 ## Separate shape from placement
 

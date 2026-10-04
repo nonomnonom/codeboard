@@ -1,41 +1,36 @@
 # LENGKAP
 
-Film satire fiktif 15 detik. Enam scene × 60 frame pada 24 fps; 1920 × 1080.
-Artwork berasal dari source TypeScript dan API publik Codeboard. Gambar referensi tidak dimasukkan ke film.
+A fictional 15-second satire: six scenes of 60 frames at 24 fps, drawn at 1920 × 1080. The project combines broad ink, pencil contours, charcoal accents, sparse red marks, and original synthesized Foley. It uses no external images or audio.
 
-## Menjalankan
+## Run
 
-```powershell
-$env:SKIA_CANVAS_THREADS='2'
-# Bila FFmpeg belum berada di PATH, isi lokasi executable yang tersedia:
-$env:FFMPEG_PATH='C:/path/to/ffmpeg.exe'
-npm run example:lengkap:movie
-npm run example:lengkap:verify
+[Install Codeboard](../../docs/install.md), then run these commands from the repository root. The source targets release **v0.2.1** and needs no engine build or npm dependencies.
+
+```sh
+codeboard run examples/lengkap.ts
+codeboard run examples/lengkap/verify.ts
 ```
 
-`example:lengkap:movie` sengaja mengganti proyek hasil generate. Salin proyek terlebih dahulu bila sudah diedit secara independen. Untuk mengekspor ulang proyek tersimpan tanpa authoring ulang:
+For a movie, install FFmpeg on PATH or set `FFMPEG_PATH` to its executable:
 
-```powershell
-npx tsx examples/lengkap/render.ts --movie
+```sh
+codeboard run examples/lengkap.ts --movie
 ```
 
-Hasil ada di `examples/output/lengkap/`: `lengkap.mp4`, `lengkap-storyboard.png`, `lengkap-hero.png`, dan `lengkap.cboard`.
+Outputs are in `examples/output/lengkap/`: `lengkap.cboard`, `lengkap-storyboard.png`, `lengkap-hero.png`, original audio, and `lengkap.mp4` when requested. Authoring replaces its generated project; keep independent edits elsewhere.
 
-[Film hasil render](../../docs/media/lengkap.mp4) dan [storyboard](../../docs/media/lengkap-storyboard.png) tersedia untuk ditinjau. Jalankan verifikasi di atas untuk memeriksa timing dan isolasi revisi dari source saat ini.
+To render the saved project without rebuilding artwork:
 
-## Source dan revisi
+```sh
+codeboard run examples/lengkap/render.ts --movie
+```
 
-- `../lengkap.ts`: komposisi, enam scene, keyframe, exposure, dan timing.
-- `art.ts`: enam jenis media procedural (tujuh preset). Artwork dasar tetap berupa massa tinta/dry brush. Layer bernama `Detail / …` menambahkan kontur pensil, aksen tepi arang, sapuan pastel pendek, detail jok/roda, sudut kertas, dan jejak tanah. Pena membentuk garis tegas; tinta cap tetap berpori. Tambahan merupakan stroke editable, bukan penggantian tekstur seluruh bidang. Tekanan serta lintasan bervariasi secara deterministik; finishing mengikuti timing scene. Motif motor konsisten. Siluet memakai batas vector editable sebagai mask untuk sapuan raster; bukan gambar tempelan.
-- `sound.ts`: Foley original deterministik, CC0-1.0; tidak memakai rekaman pihak lain.
-- `verify.ts`: durasi, saat cap muncul, tahanan penutup, integritas SQLite, serta revisi garis merah di scene 05. Membandingkan hash gambar dan struktur semua scene lain, menyimpan alternatif bernama `shorter-red-link-<hash>`, lalu undo ke versi film dan membuka ulang proyek. Suffix membedakan versi artwork tanpa menimpa revisi lama.
+## Edit and verify
 
-Referensi imagegen hanya digunakan saat pengembangan dan tidak menjadi dependensi film. Font: Arial dan Segoe Print dari sistem Windows; font tidak didistribusikan.
+`../lengkap.ts` owns composition and timing. `art.ts` provides reusable drawing functions and seven brush presets. `sound.ts` synthesizes the Foley.
 
-Penyimpanan `.cboard` memakai SQLite dan payload binary deduplicated. Tidak ada dump frame atau JSON monolitik.
+Verification checks the 360-frame duration, brush use, stamp contact at frame 134, and the held ending. It shortens one red stroke in scene five, compares every other scene before and after, saves a named alternative, then undoes the edit and reopens the original. Review sheets and evidence are written under `review/`.
 
-## Dukungan engine
+[Rendered film](../../docs/media/lengkap.mp4) · [Storyboard](../../docs/media/lengkap-storyboard.png)
 
-`rasterStroke(points, brush, { reveal: { startFrame, endFrame } })` menggambar urutan dab berdasarkan panjang lintasan. Frame bersifat global: kosong pada start, lengkap pada end. Timestamp titik tetap data input pena. Retiming dan reflow mengikuti range ini; capture component menyimpan artwork tanpa animasi. Seed, penempatan dab, dan taper memakai lintasan utuh sehingga bagian yang sudah terbentuk tetap stabil.
-
-Cache raster mengikuti skala tampilan, dan menyimpan piksel yang telah dirender. Data artwork sumber tetap editable. Ini kemampuan umum, tanpa cabang renderer yang menyebut LENGKAP.
+Source code is MIT; original artwork and Foley are CC0-1.0. Arial and Segoe Print are host fonts and are not bundled. Font substitution can change text on other operating systems.

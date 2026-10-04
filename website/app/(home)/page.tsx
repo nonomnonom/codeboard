@@ -22,8 +22,8 @@ export default function Home() {
         </div>
       </div>
     </section>
-    <figure className="hero-art"><video controls preload="none" playsInline poster={`${basePath}/art/code-board-demo/poster.png`} src={`${basePath}/art/code-board-demo/walkthrough.mp4`} aria-label="Codeboard: a 48-second silent walkthrough of character drawing and animation"><a href={`${basePath}/art/code-board-demo/walkthrough.mp4`}>Download the walkthrough</a></video>
-      <figcaption><span><strong>CODEBOARD DEMO</strong> / 48-second visual walkthrough · silent</span><Link href="/docs/code-board-demo">Run the example</Link></figcaption>
+    <figure className="hero-art"><video controls preload="none" playsInline poster={`${basePath}/art/code-board-demo/poster.png`} src={`${basePath}/art/code-board-demo/walkthrough.mp4`} aria-label="Codeboard: a 48-second walkthrough of character drawing and animation"><a href={`${basePath}/art/code-board-demo/walkthrough.mp4`}>Download the walkthrough</a></video>
+      <figcaption><span><strong>CODEBOARD DEMO</strong> / 48-second walkthrough · original Foley</span><Link href="/docs/code-board-demo">Run the example</Link></figcaption>
     </figure>
     <section className="authoring-section">
       <div><span className="section-label">From a mark to a moving scene</span><h2>The artwork is<br /><em>still yours to change.</em></h2><p>Write a stroke. Adjust its pressure. Replace a drawing. Hold a shot a little longer. Codeboard gives your agent the drawing and production controls to make those changes directly.</p><Link className="text-link" href="/docs/review">Follow the code → review → revise workflow</Link></div>

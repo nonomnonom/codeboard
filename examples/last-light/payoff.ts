@@ -1,5 +1,5 @@
-import {catmullRom, pathCommands, type LayerHandle, type PanelHandle,type StoryboardProject} from "../../src/index.js";
-import {amber,contour,dry,hatch,ink,keeper,paper,stroke} from "./art.js";
+import {catmullRom, pathCommands, type LayerHandle, type PanelHandle,type StoryboardProject} from "codeboard-studio";
+import {amber,contour,dry,hatch,ink,keeper,paper,stroke} from "./art.ts";
 
 type XY=[number,number];
 const project=(x:number,z:number,height=0):XY=>[872+700*x/z,302+700*(160-height)/z];

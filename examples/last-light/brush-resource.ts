@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { StoryboardProject, pathCommands, renderPanelPNG, importBrushResource, brushFromResource, brushes, catmullRom, type BrushPreset } from "../../src/index.js";
+import { StoryboardProject, pathCommands, renderPanelPNG, importBrushResource, brushFromResource, brushes, catmullRom, type BrushPreset } from "codeboard-studio";
 
 export async function makeBrushResource(directory:string):Promise<BrushPreset> {
   await mkdir(directory,{recursive:true});

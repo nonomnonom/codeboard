@@ -1,9 +1,9 @@
+import { renderFrameSheet } from 'codeboard-studio';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
-import { Canvas } from 'skia-canvas';
-import { StoryboardProject, ProjectStore, createRenderSession, renderFramePNG, type Layer } from '../../src/index.js';
+import { StoryboardProject, ProjectStore, createRenderSession, renderFramePNG, type Layer } from 'codeboard-studio';
 
 const root=resolve('examples/output/lengkap'),review=join(root,'review'),file=join(root,'lengkap.cboard');
 await mkdir(review,{recursive:true});
@@ -21,25 +21,25 @@ assert.ok(detailLayers.every(layers=>layers.length>0),'Every scene needs authore
 assert.deepEqual(before.panels.map(p=>[p.startFrame,p.durationFrames]),[[0,60],[60,60],[120,60],[180,60],[240,60],[300,60]]);
 const session=createRenderSession(board);
 assert.equal(session.durationFrames,360);
-const held=hash(await session.frame(311).toBuffer('png'));
-assert.equal(hash(await session.frame(359).toBuffer('png')),held);
+const held=hash(await renderFramePNG(board,311));
+assert.equal(hash(await renderFramePNG(board,359)),held);
 const stamp=walk(before.panels[2]!.layers).find(l=>l.name==='Cap / appears only at contact')!;
 assert.deepEqual(stamp.exposure,{startFrame:134,endFrame:180});
 const reds=(frame:number)=>{
-  const canvas=session.frame(frame),data=canvas.getContext('2d').getImageData(0,0,1920,1080).data;let n=0;
-  for(let i=0;i<data.length;i+=4)if(data[i]!>data[i+1]!*1.5&&data[i]!>100&&data[i+1]!<130)n++;
-  return n;
+  const canvas=session.frame(frame),ctx=canvas.getContext('2d');
+  try {
+    const data=ctx.getImageData(0,0,1920,1080).data;let n=0;
+    for(let i=0;i<data.length;i+=4)if(data[i]!>data[i+1]!*1.5&&data[i]!>100&&data[i+1]!<130)n++;
+    return n;
+  } finally {ctx.reset();}
 };
 assert.equal(reds(133),0);assert.ok(reds(134)>0);assert.ok(reds(160)>reds(134));
 const times=[0,5,14,27,40,59,61,76,92,109,115,119,120,129,133,134,139,146,152,170,180,194,203,239,240,250,260,267,273,299,300,304,308,311,335,359];
-const sheet=new Canvas(1920,Math.ceil(times.length/6)*210),ctx=sheet.getContext('2d');ctx.fillStyle='#f3eddf';ctx.fillRect(0,0,sheet.width,sheet.height);
-for(const [i,f] of times.entries()){
-  const x=(i%6)*320,y=Math.floor(i/6)*210;ctx.drawImage(session.frame(f),x,y,320,180);
-  ctx.font='14px Arial';ctx.fillStyle='#191916';ctx.fillText(`${f}f / ${(f/24).toFixed(3)}s`,x+10,y+200);
-}
-await writeFile(join(review,'timing-contact.png'),await sheet.toBuffer('png'));
+await writeFile(join(review,'timing-contact.png'),await renderFrameSheet(board,times,{columns:6,thumbnailWidth:320}));
 
-const hashes=await Promise.all(before.panels.map(async p=>hash(await renderFramePNG(board,p.startFrame+59))));
+// Bound rendering to one frame at a time; large brush surfaces otherwise compete for GPU resources.
+const hashes:string[]=[];
+for(const panel of before.panels)hashes.push(hash(await renderFramePNG(board,panel.startFrame+59)));
 const suffix=hash(Buffer.from(hashes.join(''))).slice(0,12),baseName=`lengkap-final-${suffix}`,variantName=`shorter-red-link-${suffix}`;
 const store=ProjectStore.open(file);try{store.verify();if(!store.listRevisions().some(r=>r.name===baseName))store.saveRevision(baseName,{expectedVersion:board.version});}finally{store.close();}
 const target=walk(before.panels[4]!.layers).find(l=>l.name==='Red / interrupted connection')!;
@@ -52,8 +52,9 @@ board.transaction('Revision proof / shorten outgoing red line by 36 design pixel
   });
 });
 const revised=board.toJSON();
-const afterHashes=await Promise.all(revised.panels.map(async p=>hash(await renderFramePNG(board,p.startFrame+59))));
-for(const i of [0,1,2,3,5]){assert.equal(hashes[i],afterHashes[i]);assert.deepEqual(before.panels[i],revised.panels[i]);}
+const afterHashes:string[]=[];
+for(const panel of revised.panels)afterHashes.push(hash(await renderFramePNG(board,panel.startFrame+59)));
+for(const i of [0,1,2,3,5]){assert.equal(hashes[i],afterHashes[i],`Unchanged scene ${i+1} render differs`);assert.deepEqual(before.panels[i],revised.panels[i]);}
 assert.notEqual(hashes[4],afterHashes[4]);assert.equal(createRenderSession(board).durationFrames,360);
 await board.save(file);
 const history=ProjectStore.open(file);try{if(!history.listRevisions().some(r=>r.name===variantName))history.saveRevision(variantName,{expectedVersion:board.version});}finally{history.close();}

@@ -1,5 +1,5 @@
-import type {PanelHandle,StoryboardProject} from '../../src/index.js';
-import {keeper} from './art.js';
+import type {PanelHandle,StoryboardProject} from 'codeboard-studio';
+import {keeper} from './art.ts';
 
 /** Authored replacement drawings, reused on threes; the support sole stays planted for each step. */
 export function walkingPerformance(panel:PanelHandle,project:StoryboardProject,start:number,duration:number,x:number,y:number,scale:number,name='Keeper / walking performance'){

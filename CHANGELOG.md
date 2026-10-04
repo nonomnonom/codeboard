@@ -4,6 +4,9 @@ Changes are grouped by release. Unreleased work is not a claim of registry publi
 
 ## Unreleased
 
+- Run all public examples with the installed v0.2.1 CLI, without engine source imports, local builds or tsx.
+- Publish the complete 48-second demo source with original synthesized Foley, review outputs and saved-frame verification; test the downloadable demo against published runtimes on Windows, macOS and Linux.
+
 ## [0.2.1] - 2026-10-05
 
 - Check for stable GitHub updates once daily in interactive terminals, with an offline-safe timeout and an environment opt-out.

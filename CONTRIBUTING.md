@@ -9,7 +9,6 @@ Use Node.js 22.22 or later and npm. Clone your fork, then run:
 ```sh
 npm ci
 npm run check
-npm run example:quickstart
 ```
 
 Set `SKIA_CANVAS_THREADS=2` on machines with limited memory. Movie tests run when `FFMPEG_PATH` points to FFmpeg. For example, `FFMPEG_PATH=ffmpeg npm test` on macOS/Linux, or `$env:FFMPEG_PATH='ffmpeg'; npm test` in PowerShell. CI runs these integration tests on Linux.
@@ -18,7 +17,7 @@ Set `SKIA_CANVAS_THREADS=2` on machines with limited memory. Movie tests run whe
 
 Public guides live in `docs/` and feed the Fumadocs site directly. After changing public signatures, run `node scripts/build-api-docs.mjs` to refresh the six API reference pages, then review the related task guides. The generator reads public exports and callable members; it excludes private and underscore-prefixed implementation methods.
 
-To regenerate the demo's documentation images, editable example, and source ZIP, build the engine and run `node scripts/build-doc-assets.mjs`. The original 48-second presentation video is curated separately; its public copy contains no audio. Test the downloaded example with `npx vitest run test/documentation-example.test.ts` and build the website with `npm run build --prefix website`.
+Install the published CLI before running user examples; `npm run example:quickstart` invokes that installation. Examples must also run from a folder outside this checkout, without its dependencies. To regenerate the demo documentation images and editable example, run `codeboard run scripts/build-doc-assets.mjs`. Then run `node scripts/package-examples.mjs` to package source downloads. The complete presentation is authored with `codeboard run code-board-demo/src/run.ts render`; its soundtrack is original synthesized Foley. Test the downloaded example with `npx vitest run test/documentation-example.test.ts` and build the website with `npm run build --prefix website`.
 
 1. For an API redesign, storage change, or substantial new feature, open an issue describing a concrete authoring task first.
 2. Implement behavior in its owning module. Keep example-specific composition in `examples/`; engine code must work for other artwork too.

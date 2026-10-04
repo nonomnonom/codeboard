@@ -1,4 +1,4 @@
-import { encodeWav } from '../../src/index.js';
+import { encodeWav } from 'codeboard-studio';
 
 /** Original deterministic Foley synthesis, CC0. No recordings, speech or music. */
 export function makeSound(){

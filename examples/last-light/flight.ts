@@ -1,7 +1,7 @@
-import {flightLegRigs} from "./legs.js";
-import type {PanelHandle,StoryboardProject} from "../../src/index.js";
-import {contour,hatch,ink,insect,stroke} from "./art.js";
-import {flightWingCycle} from "./wings.js";
+import {flightLegRigs} from "./legs.ts";
+import type {PanelHandle,StoryboardProject} from "codeboard-studio";
+import {contour,hatch,ink,insect,stroke} from "./art.ts";
+import {flightWingCycle} from "./wings.ts";
 
 export function flight(p:PanelHandle,board:StoryboardProject,start:number,duration:number){
   const sky=p.addVectorLayer("Flight / opening above the roofs",{depth:5});

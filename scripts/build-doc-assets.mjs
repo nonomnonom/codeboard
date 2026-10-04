@@ -1,6 +1,5 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { zipSync } from 'fflate';
 import { createDemo, saveReview } from '../examples/code-board-demo/main.mjs';
 import { StoryboardProject, brushes, customizeBrush, renderBrushSwatch, renderFramePNG, renderContactSheet, renderDetail } from 'codeboard-studio';
 import { at, drawing } from '../examples/code-board-demo/poses.mjs';
@@ -30,10 +29,4 @@ await writeFile(new URL('key-drawings.png', directory), await renderContactSheet
 for (const [name, brush] of Object.entries({ pencil: brushes.roughPencil, ink: brushes.cleanInk, dry: customizeBrush(brushes.charcoal, { texture: 'dry-brush', textureStrength: .75 }) })) {
   await writeFile(new URL(`brush-${name}.png`, directory), await renderBrushSwatch(brush));
 }
-const files = {};
-for (const name of ['main.mjs', 'revise.mjs', 'art.mjs', 'poses.mjs', 'README.md']) {
-  files[`code-board-demo/${name}`] = await readFile(new URL(`../examples/code-board-demo/${name}`, import.meta.url));
-}
-files['code-board-demo/LICENSE'] = await readFile(new URL('../LICENSE', import.meta.url));
-await writeFile(new URL('source.zip', directory), zipSync(files, { level: 9 }));
-console.log('Rendered Codeboard walkthrough, revision comparison, brush swatches and source archive.');
+console.log('Rendered walkthrough, revision comparison and brush swatches.');

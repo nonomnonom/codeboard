@@ -1,9 +1,7 @@
-# Codeboard documentation media
+# Codeboard demo assets
 
-`walkthrough.mp4` is the video stream of `code-board-demo/delivery/codeboard-launch-C-funk.mp4`, with all audio removed and MP4 fast-start enabled. It is the 48-second, 1920×1080, 24 fps scripted presentation. `poster.png` is its frame at 1.5 seconds. The original video and its audio remain untouched. No HeyGen audio is included here.
+The 48-second `walkthrough.mp4` is rendered from the public [launch source](../../../../code-board-demo/README.md) using installed Codeboard v0.2.1. Its terminal scenes are scripted. The soundtrack is original synthesized Foley (CC0-1.0), without the locally selected third-party music. `launch-source.zip` contains the full authoring and verification source and MIT license.
 
-The character performance source was extracted from `code-board-demo/src/poses.ts` and `art.ts` into `examples/code-board-demo/`. The eight-second downloadable example is a separate self-contained teaching project using those original pose and contour functions. It does not reconstruct all presentation scenes.
+The eight-second `clawd.cboard`, review images, and `source.zip` come from [the performance study](../../../../examples/code-board-demo/README.md). Regenerate artwork with `codeboard run scripts/build-doc-assets.mjs`; package downloads with `node scripts/package-examples.mjs` as a repository maintenance task.
 
-`node scripts/build-doc-assets.mjs` regenerates `clawd.cboard`, the frame/pose/onion/revision PNGs, three brush swatches, and `source.zip` from that public example through the Codeboard API. The source archive includes the MIT license. Rendering uses fonts installed on the host; no font files or reference bitmap are distributed.
-
-Clawd is the character shown in the user-supplied demo. This material does not assert ownership of third-party character branding or endorsement by Anthropic. The source code is under the repository's MIT license; the previous blanket CC0 statement for other examples does not apply to third-party branding.
+Fonts are provided by the host. Clawd and Claude branding belong to their respective owners; no endorsement is claimed. The source's MIT license does not relicense third-party branding.

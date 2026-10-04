@@ -1,4 +1,4 @@
-import { brushes, customizeBrush, brushTipFromFunction, catmullRom, ellipse, pathCommands, type Point, type LayerHandle, type PanelHandle, type StoryboardProject } from '../../src/index.js';
+import { brushes, customizeBrush, brushTipFromFunction, catmullRom, ellipse, pathCommands, type Point, type LayerHandle, type PanelHandle, type StoryboardProject } from 'codeboard-studio';
 
 export const paper='#f3eddf', ink='#191916', red='#b73824';
 const grain=Array.from({length:128*128},(_,i)=>{
@@ -72,7 +72,11 @@ export const stampInk=customizeBrush(rough,{
 type XY=readonly [number,number];
 export class Art {
   readonly root:LayerHandle;
-  constructor(readonly board:StoryboardProject,readonly panel:PanelHandle,readonly start:number){
+  readonly board:StoryboardProject;
+  readonly panel:PanelHandle;
+  readonly start:number;
+  constructor(board:StoryboardProject,panel:PanelHandle,start:number){
+    this.board=board;this.panel=panel;this.start=start;
     this.root=panel.addGroup('Artwork / 1280 × 720 design coordinates',{transform:{scaleX:1.5,scaleY:1.5}});
   }
   layer(name:string,parent=this.root.id){return this.panel.addRasterLayer(name,{},parent);}
