@@ -9,13 +9,9 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  release:
-    if: startsWith(github.ref, 'refs/tags/v')
+  validate:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    permissions:
-      contents: write
-      id-token: write
     env:
       SKIA_CANVAS_THREADS: '2'
       FFMPEG_PATH: ffmpeg
@@ -28,6 +24,7 @@ jobs:
           node-version: '22.22.0'
           package-manager-cache: false
       - name: Verify release version
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
@@ -44,18 +41,60 @@ jobs:
       - run: npm run check
       - run: npm run test:install
       - run: npm pack --ignore-scripts
-      - run: sha256sum *.tgz > SHA256SUMS
-      - name: Publish npm through trusted publishing
-        if: vars.NPM_TRUSTED_PUBLISHING == 'true'
-        run: |
-          npm install --global npm@11.21.0
-          channel=latest
-          if [[ "$GITHUB_REF_NAME" == *-* ]]; then channel=next; fi
-          npm publish *.tgz --access public --tag "$channel"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: sdk
+          path: '*.tgz'
+          if-no-files-found: error
+          retention-days: 3
+  portable:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: windows-latest, platform: windows-x64, arch: x64}
+          - {os: ubuntu-24.04, platform: linux-x64, arch: x64}
+          - {os: macos-15, platform: macos-arm64, arch: arm64}
+          - {os: macos-15-intel, platform: macos-x64, arch: x64}
+    env:
+      SKIA_CANVAS_THREADS: '2'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.22.0'
+          architecture: ${{ matrix.arch }}
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm run package:portable
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: portable-${{ matrix.platform }}
+          path: release/*
+          if-no-files-found: error
+          retention-days: 3
+  publish:
+    needs: [validate, portable]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          path: release
+          merge-multiple: true
       - name: Publish GitHub release
+        working-directory: release
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
+          sha256sum *.tgz *.zip *.tar.gz > SHA256SUMS
           args=()
           if [[ "$GITHUB_REF_NAME" == *-* ]]; then args+=(--prerelease); fi
-          gh release create "$GITHUB_REF_NAME" *.tgz SHA256SUMS --verify-tag --title "Codeboard $GITHUB_REF_NAME" --generate-notes "${args[@]}"
+          gh release create "$GITHUB_REF_NAME" *.tgz *.zip *.tar.gz SHA256SUMS --verify-tag --title "Codeboard $GITHUB_REF_NAME" --generate-notes "${args[@]}"

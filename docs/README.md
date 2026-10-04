@@ -4,6 +4,7 @@ Start with [getting started](getting-started.md), then run the [small authoring 
 
 | Task | Guide |
 | --- | --- |
+| Install a portable release | [Per-OS installation](install.md) |
 | Draw, save, inspect, and export | [Authoring](authoring.md) |
 | Understand implemented features and limits | [Behavior and boundaries](architecture.md) |
 | Design/import brushes | [Brush resources](brush-resources.md) |
