@@ -5,6 +5,7 @@ import { registerInspectionCommands } from "./cli/inspection.js";
 import { registerDeliveryCommands } from "./cli/delivery.js";
 import { registerAudioCommands } from "./cli/audio.js";
 import { registerFrameJobCommands } from "./cli/frame-jobs.js";
+import { registerDocsCommands } from "./cli/docs.js";
 import { readFileSync } from "node:fs";
 import { findPackageJSON } from "node:module";
 import { resolve } from "node:path";
@@ -35,6 +36,7 @@ registerAuthoringCommands(program);
 registerInspectionCommands(program);
 registerAudioCommands(program);
 registerFrameJobCommands(program);
+registerDocsCommands(program, version);
 
 program
   .command("run")

@@ -1,34 +1,34 @@
-# Codeboard agent plugin
+# Codeboard agent skills
 
-Kumpulan Agent Skills untuk mengoperasikan Codeboard, dengan paket plugin Codex/Claude Code dan pemasangan folder skill untuk host lain yang kompatibel. Setiap skill membantu agent memilih operasi, menjalankan pekerjaan, dan memeriksa hasil berdasarkan kemampuan engine. Paket membawa manual dan referensi API Codeboard 1.0.0, quickstart, serta source demo karakter. Agent tidak perlu mengakses repo atau internet untuk membacanya.
+Ten skills help a coding agent draw, animate, review and revise editable Codeboard projects. The engine is installed separately from npm.
 
-Versi plugin: **1.0.0**. Dasar desain, kepemilikan instruksi, serta audit panduan ada di [catatan desain](docs/design.md).
+[Install and use the skills](../docs/start/agent-setup.md).
 
-Engine dan CLI dipasang lewat npm: `npm install -g codeboard-studio`, dengan Node.js 22.22 atau lebih baru. Untuk dependency project, gunakan `npm install --save-exact codeboard-studio` dan jalankan `npx codeboard`. Pemasangan plugin mengikuti mekanisme host agent.
+## Build the installable plugin
 
-## Skill
+From the repository root, run:
 
-| Skill | Pekerjaan |
+```sh
+npm run plugin:build
+```
+
+Install from `release/codeboard-plugin/`. That generated directory contains the host manifests, all ten skills and their offline references. The `plugin/` directory is authoring source and is not an installable distribution.
+
+Edit skill behavior in `skills/*/SKILL.md`, framework guides in `docs/` at the repository root. The build copies those sources into the distribution; no second reference source is checked in. Example projects remain separate and are not plugin prerequisites or bundled runtime assets.
+
+## Skill ownership
+
+| Skill | Responsibility |
 | --- | --- |
-| [codeboard](skills/codeboard/SKILL.md) | Menentukan konteks, memilih skill, dan mengerjakan brief sampai delivery |
-| [codeboard-draw](skills/codeboard-draw/SKILL.md) | Gambar, vector, raster, pixel editing, layer, mask, komponen |
-| [codeboard-brushes](skills/codeboard-brushes/SKILL.md) | Brush custom, import resource, swatch, dan revisi stroke |
-| [codeboard-storyboard](skills/codeboard-storyboard/SKILL.md) | Beat cerita, scene, shot, panel, caption, kontinuitas |
-| [codeboard-animate](skills/codeboard-animate/SKILL.md) | Pose, drawing substitutions, keyframe, hold, IK, retiming |
-| [codeboard-camera](skills/codeboard-camera/SKILL.md) | Framing, camera move, multiplane parallax |
-| [codeboard-audio](skills/codeboard-audio/SKILL.md) | Cue, trim, split, mix, dan sinkronisasi suara |
-| [codeboard-revise](skills/codeboard-revise/SKILL.md) | Revisi terarah pada project tersimpan, checkpoint, konflik |
-| [codeboard-review](skills/codeboard-review/SKILL.md) | Critique berbukti, pemeriksaan visual, ekspor, delivery |
-| [codeboard-debug](skills/codeboard-debug/SKILL.md) | Diagnosis runtime, render, timing, persistence, dan export |
+| [codeboard](skills/codeboard/SKILL.md) | Session context and operation selection |
+| [codeboard-draw](skills/codeboard-draw/SKILL.md) | Artwork, layers, pixels and components |
+| [codeboard-brushes](skills/codeboard-brushes/SKILL.md) | Brushes, imported resources and swatches |
+| [codeboard-storyboard](skills/codeboard-storyboard/SKILL.md) | Story beats, panels and captions |
+| [codeboard-animate](skills/codeboard-animate/SKILL.md) | Poses, drawings, rigs and timing |
+| [codeboard-camera](skills/codeboard-camera/SKILL.md) | Framing and camera movement |
+| [codeboard-audio](skills/codeboard-audio/SKILL.md) | Cues, trim, mixing and synchronization |
+| [codeboard-revise](skills/codeboard-revise/SKILL.md) | Saved-state protection and conflicts |
+| [codeboard-review](skills/codeboard-review/SKILL.md) | Visual inspection and delivery evidence |
+| [codeboard-debug](skills/codeboard-debug/SKILL.md) | Diagnosis |
 
-Skill spesialis bisa dipilih langsung; `codeboard` menetapkan konteks runtime/docs sekali per sesi. Referensi antar-skill memakai nama yang ditampilkan host, bukan path relatif. Instruksi keselamatan revisi dimiliki `codeboard-revise`, sedangkan bukti review dan delivery dimiliki `codeboard-review`.
-
-## Pasang dan gunakan
-
-[Panduan instalasi](skills/codeboard/references/engine/docs/agent-plugin.md) memuat jalur plugin dan folder skill, lokasi host yang didukung dokumentasinya, verifikasi, contoh brief, update, dan troubleshooting. Panduan yang sama tersedia di [website Codeboard](https://codeboard.nonom.xyz/docs/agent-plugin/). Salin seluruh sepuluh folder skill beserta referensinya untuk pemasangan portabel. Engine dipasang terpisah.
-
-## Verifikasi
-
-Dari root repo, `npm run check:plugin` memeriksa manifest, katalog, trigger, nama dependensi skill, duplikasi paragraf, target docs, dan kesesuaian bundle dengan dokumentasi sumber. Edit panduan hanya di `/docs`, lalu jalankan `npm run docs:generate` untuk memperbarui referensi API dan bundle beserta hash sumbernya. Jangan edit bundle manual. `npm run check` menolak hasil generate yang tertinggal; CI dan validasi rilis menjalankan perintah tersebut.
-
-[Panduan eval](evals/README.md) menyediakan fixture, tugas agent, grader artefak, dan probe kemampuan/discovery. [Hasil eval](evals/results.md) memisahkan hasil baseline, kandidat, kegagalan yang ditemukan, dan keterbatasan. Hasil juga mencatat demo end-to-end yang sudah dibuat menggunakan plugin: proyek editable, film 48 detik, dan laporan verifikasi artefak. Tes ini tidak menjamin agent bebas halusinasi. Instalasi dan eksekusi paket terisolasi telah diuji di Codex; instalasi host lain dan pemilihan skill otomatis oleh sesi host bersih belum diverifikasi lewat pengujian yang setara.
+Run `npm run check:plugin` to build and validate the distribution. [Evaluation instructions](evals/README.md) and [dated results](evals/results.md) describe the separate agent evaluations and their limits. Documentation maintenance is covered in [the contributor guide](../contributing/documentation.md).

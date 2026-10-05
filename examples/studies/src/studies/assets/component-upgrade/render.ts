@@ -7,11 +7,11 @@ import {
   createShotRenderSession,
 } from "codeboard-studio";
 import { blue, save } from "../../../shared.ts";
-import { report, sheet } from "../../../shared/artifacts.ts";
+import { report, comparison } from "../../../shared/artifacts.ts";
 import { author } from "./author.ts";
 import { capturePerformance } from "./performance.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project, panel, componentId, instanceId, source, local } = author();
   const original = await renderPanelPNG(project, panel.id);
   const elementId = local.elements[0]!.id;
@@ -76,7 +76,7 @@ export async function render(output: string): Promise<void> {
     output,
     "component-upgrade",
     reopened,
-    await sheet("Library upgrade with retained local paint", [
+    await comparison(output, "Update the shape, keep your paint", [
       { label: "Library version 1", png: original },
       { label: "Local paint correction", png: corrected },
       { label: "Version 2 · correction retained", png: await renderPanelPNG(reopened, panel.id) },

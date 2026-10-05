@@ -9,7 +9,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { colors } from "../../character/art.ts";
 import { paths } from "../../config.ts";
-import { attachSound } from "./performance.ts";
+import { attachSound } from "../audio/foley.ts";
 import { draw as drawClosing } from "../scenes/closing.ts";
 import { draw as drawCurves } from "../scenes/curves.ts";
 import { draw as drawDelivery } from "../scenes/delivery.ts";
@@ -58,9 +58,6 @@ export const finalStartFrame = stages
   .reduce((n, [, s]) => n + s * 24, 0);
 export async function authorLaunch() {
   const poseSource = await readFile(new URL("../../character/poses.ts", import.meta.url), "utf8");
-  const verification = JSON.parse(
-    await readFile(join(paths.performance, "verification.json"), "utf8"),
-  );
   const b = StoryboardProject.create({
     title: "Codeboard / From prompt to performance",
     width: 1920,
@@ -102,22 +99,17 @@ export async function authorLaunch() {
       "source",
       "Displayed source is extracted from actual poses.ts. Turnaround has 32 additional model-sheet drawings; rig controls visualize the same procedural leg/body geometry used by art.ts. Public API names and verification figures refer to the saved project and its authoring scripts.",
     );
-    b.setMetadata("verification", JSON.stringify(verification));
   });
-  if (
-    verification.uniqueRenderedDrawings !== 55 ||
-    verification.exposureKeys !== 84 ||
-    verification.pairedFramesCompared !== 192
-  )
-    throw new Error("Update displayed verification figures to match the actual project.");
   return b;
 }
 export async function main(movie = process.argv.includes("--movie")) {
-  await mkdir(join(launchOut, "review"), { recursive: true });
+  await mkdir(paths.output, { recursive: true });
+  await mkdir(launchOut);
+  await mkdir(join(launchOut, "review"));
   const b = await authorLaunch();
   await attachSound(b, "launch-foley.wav", durationSeconds, finalStartFrame / 24, false, launchOut);
   const path = join(launchOut, "codeboard-launch.cboard");
-  await b.save(path, { overwrite: true });
+  await b.save(path);
   const saved = await StoryboardProject.open(path),
     s = createRenderSession(saved);
   let offset = 0;

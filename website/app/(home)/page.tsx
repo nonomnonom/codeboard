@@ -30,7 +30,7 @@ export default function Home() {
               JavaScript. Keep every layer, stroke and timing decision editable.
             </p>
             <div className="actions">
-              <Link className="button primary" href="/docs/install">
+              <Link className="button primary" href="/docs/start/installation">
                 Start with Codeboard
               </Link>
               <Link className="button secondary" href="/examples">
@@ -59,7 +59,9 @@ export default function Home() {
           <span>
             <strong>CODEBOARD DEMO</strong> / 48-second walkthrough · original Foley
           </span>
-          <Link href="/docs/code-board-demo">Run the example</Link>
+          <Link href="https://github.com/nonomnonom/codeboard/blob/main/examples/code-board-demo/TUTORIAL.md">
+            Run the example
+          </Link>
         </figcaption>
       </figure>
       <section className="authoring-section">
@@ -75,7 +77,7 @@ export default function Home() {
             Codeboard gives your agent the drawing and production controls to make those changes
             directly.
           </p>
-          <Link className="text-link" href="/docs/review">
+          <Link className="text-link" href="/docs/workflow/review">
             Follow the code → review → revise workflow
           </Link>
         </div>
@@ -86,7 +88,7 @@ export default function Home() {
           </pre>
           <p>
             Change one exposure range. Keep the surrounding performance.{" "}
-            <Link href="/docs/code-board-demo#revise-the-anticipation">
+            <Link href="https://github.com/nonomnonom/codeboard/blob/main/examples/code-board-demo/TUTORIAL.md#revise-the-anticipation">
               See the before and after.
             </Link>
           </p>
@@ -95,7 +97,7 @@ export default function Home() {
       <section className="guide-section">
         <h2>Put your agent to work.</h2>
         <div className="guide-list">
-          <Link href="/docs/brushes">
+          <Link href="/docs/drawing/brushes">
             <span>01</span>
             <div>
               <h3>Make your own marks</h3>
@@ -103,7 +105,7 @@ export default function Home() {
             </div>
             <span aria-hidden="true">↗</span>
           </Link>
-          <Link href="/docs/animation">
+          <Link href="/docs/animation/timing">
             <span>02</span>
             <div>
               <h3>Give drawings time</h3>
@@ -111,7 +113,7 @@ export default function Home() {
             </div>
             <span aria-hidden="true">↗</span>
           </Link>
-          <Link href="/docs/projects">
+          <Link href="/docs/workflow/projects">
             <span>03</span>
             <div>
               <h3>Keep the decisions editable</h3>

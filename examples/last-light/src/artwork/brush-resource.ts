@@ -43,7 +43,7 @@ export async function makeBrushResource(directory: string): Promise<BrushPreset>
         { stroke: "#dddddd", strokeWidth: 1.4 },
       );
   });
-  await tipProject.save(join(directory, "feather-tip.source.cboard"), { overwrite: true });
+  await tipProject.save(join(directory, "feather-tip.source.cboard"));
   await writeFile(
     join(directory, "feather-tip.png"),
     await renderPanelPNG(tipProject, panel.id, { annotations: false }),
@@ -159,7 +159,7 @@ export async function makeBrushResource(directory: string): Promise<BrushPreset>
       { font: "17px sans-serif", color: "#41494a" },
     );
   });
-  await swatch.save(join(directory, "swatch.cboard"), { overwrite: true });
+  await swatch.save(join(directory, "swatch.cboard"));
   await writeFile(
     join(directory, "swatch.png"),
     await renderPanelPNG(swatch, s.id, { annotations: false }),

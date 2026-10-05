@@ -2,7 +2,10 @@ import { author } from "../project/author.ts";
 import { revise } from "../project/revise.ts";
 import { review, movie } from "../review/export.ts";
 
-const command = process.argv.filter((argument) => argument !== "--").at(-1);
+const args = process.argv.slice(2).filter((argument) => argument !== "--");
+if (args.length !== 1)
+  throw new Error("Choose exactly one action: author, revise, review or export");
+const [command] = args;
 switch (command) {
   case "author":
     console.log(`Saved ${(await author()).id}`);

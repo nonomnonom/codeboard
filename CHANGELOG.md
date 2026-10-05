@@ -48,6 +48,9 @@ editorial assembly, audio, review and delivery through the JavaScript/TypeScript
   migration regression fixtures plus package/install checks.
 - Organize implementation by domain, consolidate example workspace configuration,
   and ship generated API documentation and matching offline plugin references.
+- Bundle version-matched documentation in the npm package. Add offline `docs search`
+  and `docs read` with exact symbol lookup, task-guide search, JSON source references
+  and bounded continuation. Queries need no network, model, renderer or plugin.
 - Require media studies in release validation, synchronize version metadata and
   deploy website documentation after a successful published engine release.
 

@@ -18,5 +18,11 @@
       "codeboard-studio": ["./src/index.ts"]
     }
   },
-  "include": ["src/**/*.ts", "examples/**/*.ts", "test/**/*.ts", "scripts/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "examples/**/*.ts",
+    "test/**/*.ts",
+    "scripts/**/*.ts",
+    "vitest.config.ts"
+  ]
 }

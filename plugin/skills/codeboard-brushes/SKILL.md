@@ -7,7 +7,7 @@ description: Use when a Codeboard brush mark needs tuning, a custom tip is neede
 
 Prerequisite: codeboard session context.
 
-Read `docs/brushes.md`; for imported files read `docs/brush-resources.md`. Check `docs/api-drawing.md` and `docs/api-types.md` for preset and import shapes.
+Read `docs/drawing/brushes.md`; for imported files read `docs/drawing/import-brushes.md`. Check `docs/reference/api/drawing.md` and `docs/reference/api/types.md` for preset and import shapes.
 
 Start with the desired visible change: edge, taper, buildup, pressure response, directional texture, or paper grain. Compare on one fixed path and seed at the intended stroke size.
 

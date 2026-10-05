@@ -5,21 +5,21 @@ description: Use when starting Codeboard work, selecting an operation, or when t
 
 # Operate Codeboard
 
-Establish one session context, then load the skill for the actual operation. Keep the engine's API reference authoritative.
+Establish session context, then load the operation skill. Keep the API reference authoritative.
 
 ## Session context
 
-Record the artwork directory, project and runtime version. Install with `npm install -g codeboard-studio`, or use a project dependency via `npx codeboard`. Check `codeboard --version`. Run scripts through the matching CLI's `run` command and import from `codeboard-studio`; see `docs/install.md` for source-checkout usage.
+Record the artwork directory, project and runtime version. Install with `npm install -g codeboard-studio`, or use a project dependency via `npx codeboard`. Check `codeboard --version`. Run scripts through the matching CLI's `run` command and import from `codeboard-studio`; see `docs/start/installation.md` for source-checkout usage.
 
-The documentation ships with this skill. Open [bundle metadata](references/engine/bundle.json) and [the manual index](references/engine/docs/index.md). The reference root is `references/engine/` beside this SKILL.md; every `docs/` or `examples/` path in these skills is relative to that root, not the user's working directory. No repository checkout or internet is required to read the API guides. Load only relevant pages.
+Prefer `codeboard docs search "English keywords"` or an exact qualified symbol, then `codeboard docs read "returned-id"`. Results carry the installed version and docs hash. Follow `nextLine` using `--from-line` before relying on truncated code or constraints. Empty results do not prove unsupported behavior. See `docs/reference/docs-query.md` for filters and browsing.
 
-Compare the bundle's engine version with the installed CLI. For a mismatch, check the installed public declarations or obtain matching documentation before using a changed API. Optional online documentation is at https://codeboard.nonom.xyz/docs/. Missing bundled files are a packaging fault; report it instead of guessing calls.
+For older runtimes without `docs`, open `references/engine/bundle.json` beside this SKILL.md and compare its engine version with the CLI. Every `docs/` path in these skills is relative to that reference root, not the artwork or specialist's directory. Read only relevant pages. If versions differ, obtain matching docs or inspect installed declarations. Missing/corrupt CLI or skill bundles are packaging faults; report them instead of guessing or silently substituting another version.
 
-Read `docs/agent-workflow.md` and `docs/cli.md` once. For installation use `docs/install.md`; for a new script use `docs/quickstart.md`. Resolve unfamiliar signatures and return shapes through `docs/reference.md`, the relevant `api-*.md`, and `docs/api-types.md`. If a runtime export needs checking, inspect the public module or installed declaration; a function in an example is not automatically an engine export. Copy bundled examples to the artwork directory before running or adapting them.
+For installation use `docs/start/installation.md`; for a new script use `docs/start/first-drawing.md`; for commands use `docs/reference/cli.md`. Resolve unfamiliar signatures and return shapes through the relevant page in `docs/reference/api/`, using `docs/reference/api/types.md` to locate data shapes. The installed public exports and declarations define the API. Author for the user's project; demonstration code, IDs, geometry and assets are not framework defaults.
 
-Prefer `production.summary()` and bounded `production.query()` pages over document dumps. A query returns `{version, items, nextCursor?}`; restart after edits or reopening. `production.inspect()` is a larger overview. For CLI query/version checks and error recovery, follow `docs/agent-workflow.md`.
+Prefer `production.summary()` and bounded `production.query()` pages over document dumps. A query returns `{version, items, nextCursor?}`; restart after edits or reopening. `production.inspect()` is a larger overview. For query/version checks read `docs/reference/object-queries.md`; for recovery read `docs/reference/errors.md`.
 
-Use `codeboard capabilities` before choosing a workflow. Add `--probe-dependencies` for FFmpeg startup inspection; this does not qualify encoders or output. Older runtimes may lack this command; use matching declarations and docs.
+Use `codeboard capabilities` when capability support is uncertain. Add `--probe-dependencies` when a media dependency needs checking; startup inspection does not qualify encoders or output. Older runtimes may lack this command; use matching declarations and docs.
 
 ## Select by the requested change
 

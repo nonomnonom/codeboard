@@ -5,9 +5,11 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const result = spawnSync(
   process.execPath,
   [
-    fileURLToPath(new URL("../node_modules/jest/bin/jest.js", import.meta.url)),
-    "test/studies-assets.test.ts",
-    "--runInBand",
+    fileURLToPath(new URL("../node_modules/vitest/vitest.mjs", import.meta.url)),
+    "run",
+    "--project",
+    process.env.FFMPEG_PATH && process.env.FFPROBE_PATH ? "media" : "e2e",
+    "test/e2e/studies-assets.test.ts",
   ],
   {
     cwd: root,

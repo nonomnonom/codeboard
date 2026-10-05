@@ -11,7 +11,7 @@ const expected = [
   255, 255,
 ];
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("ICC artwork import", 640, 370);
   const panel = project
     .addScene("Color")
@@ -19,7 +19,7 @@ export async function render(output: string): Promise<void> {
     .addPanel({ durationFrames: 1 });
   const backdrop = panel.addVectorLayer("Light and dark alpha backdrops");
   const labels = panel.addVectorLayer("Input profile labels");
-  text(labels, "sRGB RGBA8 after import", 20, 30, 22);
+  text(labels, "Imported colors on light and dark backgrounds", 20, 30, 22);
   const records = [];
   for (const [row, name] of ["srgb-8", "srgb-16", "p3-8", "p3-16"].entries()) {
     const input = await readFile(new URL(`../../fixtures/color/${name}.png`, import.meta.url));

@@ -1,6 +1,6 @@
 import { readFile, writeFile, readdir, mkdir, mkdtemp } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { join, dirname } from "node:path";
+import { join, dirname, relative, sep } from "node:path";
 import { spawnSync } from "node:child_process";
 import { zipSync } from "fflate";
 const root = new URL("../", import.meta.url);
@@ -13,6 +13,13 @@ await mkdir(packRoot, { recursive: true });
 const packDirectory = await mkdtemp(join(packRoot, "build-"));
 const npm =
   process.env.npm_execpath ?? join(dirname(process.execPath), "node_modules/npm/bin/npm-cli.js");
+const docsBuild = spawnSync(
+  process.execPath,
+  [fileURLToPath(new URL("scripts/build-docs-index.mjs", root))],
+  { cwd: fileURLToPath(root), stdio: "inherit", windowsHide: true },
+);
+if (docsBuild.error) throw docsBuild.error;
+if (docsBuild.status !== 0) throw new Error("Cannot bundle engine documentation");
 const packed = spawnSync(
   process.execPath,
   [npm, "pack", "--ignore-scripts", "--json", "--pack-destination", packDirectory],
@@ -76,6 +83,7 @@ for (const project of projects) {
       module: "NodeNext",
       moduleResolution: "NodeNext",
       strict: true,
+      verbatimModuleSyntax: true,
       noUncheckedIndexedAccess: true,
       exactOptionalPropertyTypes: true,
       noEmit: true,
@@ -87,7 +95,28 @@ for (const project of projects) {
   };
   files[`${project.name}/package.json`] = Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`);
   files[`${project.name}/tsconfig.json`] = Buffer.from(`${JSON.stringify(config, null, 2)}\n`);
-  files[`${project.name}/README.md`] = await readFile(new URL(`${base}README.md`, root));
+  for (const entry of await readdir(new URL(base, root), { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith(".md")) continue;
+    const source = new URL(`${base}${entry.name}`, root);
+    const markdown = await readFile(source, "utf8");
+    const standalone = markdown.replace(
+      /(!?\[[^\]]*\]\()([^\s)]+)(\))/g,
+      (match, start, href, end) => {
+        if (/^(?:[a-z]+:|\/|#)/i.test(href)) return match;
+        const destination = new URL(href, source);
+        const local = relative(fileURLToPath(new URL(base, root)), fileURLToPath(destination));
+        if (local !== ".." && !local.startsWith(`..${sep}`)) return match;
+        const path = relative(fileURLToPath(root), fileURLToPath(destination)).split(sep).join("/");
+        if (path === ".." || path.startsWith("../"))
+          throw new Error(`Documentation link leaves repository: ${href}`);
+        const host = start.startsWith("!")
+          ? "https://raw.githubusercontent.com/nonomnonom/codeboard/main/"
+          : "https://github.com/nonomnonom/codeboard/blob/main/";
+        return `${start}${host}${path}${destination.hash}${end}`;
+      },
+    );
+    files[`${project.name}/${entry.name}`] = Buffer.from(standalone);
+  }
   files[`${project.name}/LICENSE`] = await readFile(new URL("LICENSE", root));
   await writeFile(new URL(`${project.name}.zip`, target), zipSync(files, { level: 9 }));
 }

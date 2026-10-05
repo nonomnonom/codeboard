@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { StoryboardProject, renderFramePNG, planPaletteMerge } from "codeboard-studio";
 import { join } from "node:path";
 import { amber, blue, ink, make, rect, save, text } from "../../shared.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { sheet, comparison, report } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Shared palette and local override");
   const panel = project
     .addScene("Study")
@@ -64,12 +64,13 @@ export async function render(output: string): Promise<void> {
     output,
     "palettes",
     reopened,
-    await sheet(
-      "Shared palette merge",
+    await comparison(
+      output,
+      "Recolor a group, keep one exception",
       [
-        { label: "Baseline", png: before },
-        { label: "Local cloth correction", png: after },
-        { label: "Incoming trim + local cloth", png: await renderFramePNG(reopened, 0) },
+        { label: "Two shared coats, one exception", png: before },
+        { label: "Change the shared cloth to blue", png: after },
+        { label: "Update the trim separately", png: await renderFramePNG(reopened, 0) },
       ],
       3,
     ),

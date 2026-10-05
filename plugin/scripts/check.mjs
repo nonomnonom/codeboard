@@ -4,9 +4,12 @@ import { dirname, resolve, join, relative, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const distribution = resolve(root, "../release/codeboard-plugin");
 const read = (path) => readFile(join(root, path), "utf8");
 const json = async (path) => JSON.parse(await read(path));
 const portable = await json("plugin.json");
+const engine = JSON.parse(await readFile(resolve(root, "../package.json"), "utf8"));
+assert.equal(portable.version, engine.version, "Plugin version differs from the engine");
 for (const file of [".codex-plugin/plugin.json", ".claude-plugin/plugin.json"]) {
   const manifest = await json(file);
   for (const key of ["name", "version", "description"])
@@ -56,29 +59,32 @@ for (const name of skillDirs) {
     if (["codeboard-studio", "codeboard-demo"].includes(match[0])) continue;
     assert.ok(skillDirs.includes(match[0]), `${name}: unknown skill ${match[0]}`);
   }
-  for (const match of content.matchAll(/`(docs\/[a-z0-9-]+\.md)`/g)) {
-    await stat(resolve(root, "skills/codeboard/references/engine", match[1]));
+  for (const match of content.matchAll(/`(docs\/[a-z0-9/-]+\.md)`/g)) {
+    await stat(resolve(distribution, "skills/codeboard/references/engine", match[1]));
     docTargets.add(match[1]);
   }
 }
-async function checkLinks(directory) {
+async function checkLinks(directory, boundary) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (entry.isDirectory()) await checkLinks(path);
+    // Source skills gain their reference bundle only in the generated distribution.
+    if (path === join(root, "skills")) continue;
+    if (entry.isDirectory()) await checkLinks(path, boundary);
     else if (entry.name.endsWith(".md")) {
       const content = await readFile(path, "utf8");
       for (const match of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
         const target = match[1].split("#")[0];
         if (!target || /^https?:/.test(target)) continue;
         const absolute = resolve(dirname(path), target);
-        const local = relative(root, absolute);
+        const local = relative(boundary, absolute);
         assert.ok(!local.startsWith("..") && !isAbsolute(local), `Link escapes plugin: ${target}`);
         await stat(absolute);
       }
     }
   }
 }
-await checkLinks(root);
+await checkLinks(root, resolve(root, ".."));
+await checkLinks(distribution, distribution);
 console.log(
   `PASS: manifests, catalogs, ${skillDirs.length} skills, named dependencies, local references, ${docTargets.size} engine doc targets`,
 );

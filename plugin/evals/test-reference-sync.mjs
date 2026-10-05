@@ -8,15 +8,27 @@ const plugin = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const parent = resolve(plugin, "../.preview");
 await mkdir(parent, { recursive: true });
 const fixture = await mkdtemp(join(parent, "reference-sync-"));
-for (const path of ["docs", "examples/code-board-demo", "plugin/scripts"]) {
+for (const path of [
+  "docs",
+  "scripts",
+  "examples/code-board-demo",
+  "plugin/scripts",
+  "plugin/skills",
+  "plugin/.agents",
+  "plugin/.codex-plugin",
+  "plugin/.claude-plugin",
+]) {
   await mkdir(join(fixture, path), { recursive: true });
 }
 await cp(
   join(plugin, "scripts/sync-reference.mjs"),
   join(fixture, "plugin/scripts/sync-reference.mjs"),
 );
+await cp(join(plugin, "../scripts/docs-source.mjs"), join(fixture, "scripts/docs-source.mjs"));
 for (const [path, text] of Object.entries({
   "package.json": JSON.stringify({ name: "codeboard-studio", version: "0.2.1" }),
+  "plugin/plugin.json": JSON.stringify({ name: "codeboard", version: "0.2.1" }),
+  "plugin/skills/example/SKILL.md": "# Example skill\n",
   "docs/index.md":
     "# Manual\n\n[Guide](guide.md)\n[Source](../examples/quickstart/src/cli/run.ts)\n![Media](../website/public/art/demo.png)\n",
   "docs/guide.md": "# Guide\n",
@@ -30,7 +42,7 @@ for (const [path, text] of Object.entries({
   await mkdir(dirname(join(fixture, path)), { recursive: true });
   await writeFile(join(fixture, path), text);
 }
-const bundle = join(fixture, "plugin/skills/codeboard/references/engine");
+const bundle = join(fixture, "release/codeboard-plugin/skills/codeboard/references/engine");
 function run(check = false, success = true) {
   const result = spawnSync(
     process.execPath,
@@ -42,12 +54,28 @@ function run(check = false, success = true) {
 }
 run();
 run(true);
+const packagedSkill = join(fixture, "release/codeboard-plugin/skills/example/SKILL.md");
+assert.equal(await readFile(packagedSkill, "utf8"), "# Example skill\n");
+await writeFile(packagedSkill, "# Changed distribution\n");
+run(true, false);
+run();
+await unlink(join(fixture, "plugin/skills/example/SKILL.md"));
+run(true, false);
+run();
+await assert.rejects(access(packagedSkill), { code: "ENOENT" });
+run(true);
 await writeFile(join(fixture, "NOTICE"), "Notice\r\n");
 run(true);
 const index = await readFile(join(bundle, "docs/index.md"), "utf8");
 assert.ok(
-  index.includes("[Guide](guide.md)") && index.includes("../examples/quickstart/src/cli/run.ts"),
+  index.includes("[Guide](guide.md)") &&
+    index.includes(
+      "https://github.com/nonomnonom/codeboard/blob/v0.2.1/examples/quickstart/src/cli/run.ts",
+    ),
 );
+await assert.rejects(access(join(bundle, "examples/quickstart/src/cli/run.ts")), {
+  code: "ENOENT",
+});
 assert.ok(index.includes("https://codeboard.nonom.xyz/art/demo.png"));
 await writeFile(join(fixture, "docs/guide.md"), "# Updated once\n");
 run(true, false);

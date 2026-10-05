@@ -1,4 +1,5 @@
 import { basePath, repository } from "@/lib/shared";
+import Image from "next/image";
 export const metadata = { title: "Examples" };
 export default function Examples() {
   return (
@@ -39,17 +40,20 @@ export default function Examples() {
           character depicted in the supplied demo; no endorsement by Anthropic is claimed.
         </p>
         <p>
-          <a className="text-link" href={`${basePath}/docs/code-board-demo/`}>
+          <a
+            className="text-link"
+            href="https://github.com/nonomnonom/codeboard/blob/main/examples/code-board-demo/TUTORIAL.md"
+          >
             How the demo is made
           </a>
         </p>
-        <img
+        <Image
           className="demo-pose-sheet"
           src={`${basePath}/art/code-board-demo/poses.png`}
           alt="Eight performance frames: walk, notice, crouch, push, flight, landing, recovery and settle"
           loading="lazy"
-          width="1760"
-          height="576"
+          width={1760}
+          height={576}
         />
       </section>
       <section id="last-light" className="example-project">

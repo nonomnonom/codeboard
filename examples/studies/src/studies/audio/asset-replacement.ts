@@ -16,7 +16,7 @@ import { report } from "../../shared/artifacts.ts";
 
 const checksum = (bytes: Buffer) => createHash("sha256").update(bytes).digest("hex");
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project } = motion("Replace missing audio safely", 24);
   const before = createToneWav({
     frequency: 220,
@@ -95,12 +95,12 @@ export async function render(output: string): Promise<void> {
     .addShot("Waveforms")
     .addPanel()
     .addVectorLayer("Decoded samples");
-  text(layer, "Replacement rejects missing bytes, then retries", 30, 36, 23);
+  text(layer, "Replace a low tone with a high tone", 30, 36, 23);
   for (const [index, samples] of [originalMix.channels[0], replacementMix.channels[0]].entries()) {
     const y = 128 + index * 154;
     text(
       layer,
-      index === 0 ? "Original · 220 Hz" : "Reopened replacement · 880 Hz",
+      index === 0 ? "Before: low tone, 220 Hz" : "After: high tone, 880 Hz",
       30,
       y - 47,
       19,

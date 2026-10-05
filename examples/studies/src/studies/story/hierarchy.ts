@@ -1,6 +1,6 @@
 import { renderFramePNG } from "codeboard-studio";
 import { amber, make, save, text } from "../../shared.ts";
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Project hierarchy diagram", 960, 500);
   const panel = project.addScene("Diagram").addShot("Ownership").addPanel({ durationFrames: 1 });
   const layer = panel.addVectorLayer("Diagram");

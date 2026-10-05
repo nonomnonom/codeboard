@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { basePath, getPageImageUrl, getPageMarkdownUrl, gitConfig } from "@/lib/shared";
 import { CreatorCredit } from "@/components/creator-credit";
+import { resolveDocLink } from "@/lib/doc-links";
 
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const params = await props.params;
@@ -42,17 +43,8 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
         <MDX
           components={getMDXComponents({
             a: ({ href, ...props }) => {
-              if (href?.startsWith("../website/public/"))
-                return (
-                  <a href={`${basePath}/${href.slice("../website/public/".length)}`} {...props} />
-                );
-              if (href?.startsWith("../"))
-                return (
-                  <a
-                    href={`https://github.com/nonomnonom/codeboard/blob/main/${href.slice(3)}`}
-                    {...props}
-                  />
-                );
+              const resolved = href ? resolveDocLink(page.path, href, basePath) : href;
+              if (resolved !== href) return <a href={resolved} {...props} />;
               const relativeHref =
                 href && !/^(?:[a-z][a-z\d+.-]*:|\/|#|\?|\.)/i.test(href) ? `./${href}` : href;
               return <RelativeLink href={relativeHref} {...props} />;

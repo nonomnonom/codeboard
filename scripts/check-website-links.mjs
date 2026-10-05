@@ -31,6 +31,7 @@ function decodeAttribute(value) {
 await collect(output);
 const errors = new Set();
 const checkedTargets = new Map();
+const pageAnchors = new Map();
 let checked = 0;
 for (const [file, html] of pages) {
   const route = relative(output, file)
@@ -71,9 +72,13 @@ for (const [file, html] of pages) {
     if (!found) errors.add(`${route}: missing target ${href}`);
     else if (url.hash && pages.has(found)) {
       const id = decodeURIComponent(url.hash.slice(1));
-      const ids = new Set(
-        [...pages.get(found).matchAll(/\bid="([^"]*)"/g)].map((m) => decodeAttribute(m[1])),
-      );
+      let ids = pageAnchors.get(found);
+      if (!ids) {
+        ids = new Set(
+          [...pages.get(found).matchAll(/\bid="([^"]*)"/g)].map((m) => decodeAttribute(m[1])),
+        );
+        pageAnchors.set(found, ids);
+      }
       if (!ids.has(id)) errors.add(`${route}: missing anchor ${href}`);
     }
   }

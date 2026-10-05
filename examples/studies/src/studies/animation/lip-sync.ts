@@ -10,9 +10,9 @@ import {
   StoryboardProject,
 } from "codeboard-studio";
 import { amber, ink, make, rect, save } from "../../shared.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { sheet, comparison, report } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Editable mouth cues");
   const panel = project.addScene("Study").addShot("Mouth mapping").addPanel({ durationFrames: 24 });
   const face = panel.addVectorLayer("Face");
@@ -52,11 +52,12 @@ export async function render(output: string): Promise<void> {
     output,
     "lip-sync",
     project,
-    await sheet(
-      "Mouth cues",
+    await comparison(
+      output,
+      "Hold a mouth shape, then correct it",
       await Promise.all(
         frames.map(async (frame) => ({
-          label: `Frame ${frame}${frame === 10 ? " — manual correction" : ""}`,
+          label: `Frame ${frame}: ${frame === 10 ? "manual closure" : frame === 4 || frame === 13 ? "mouth open" : "mouth at rest"}`,
           png: await renderShotFramePNG(animation, frame),
         })),
       ),

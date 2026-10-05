@@ -134,8 +134,8 @@ export function combinePaths(
     throw new Error(`Unsupported path operation: ${operation}`);
   const left = contourPath(a, true),
     right = contourPath(b, true);
-  // Native operation results can carry even-odd fill semantics, absent from command arrays.
-  return commandsOf(left[operation](right).unwind());
+  // Resolve touching boundaries before converting even-odd results to command arrays.
+  return commandsOf(left[operation](right).simplify("evenodd").unwind());
 }
 
 export function pathBounds(commands: readonly PathCommand[]) {

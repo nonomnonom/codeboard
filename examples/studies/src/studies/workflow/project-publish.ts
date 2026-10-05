@@ -11,10 +11,10 @@ import {
   createToneWav,
 } from "codeboard-studio";
 import { motion } from "../../shared/motion.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 import { save } from "../../shared.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project, panel } = motion("Pinned publish survives source relocation");
   const source = join(output, "source.cboard"),
     tonePath = join(output, "tone.wav");
@@ -86,7 +86,7 @@ export async function render(output: string): Promise<void> {
     output,
     "project-publish",
     working,
-    await sheet("Published source and resumed work", [
+    await comparison(output, "Hand off a project with its assets", [
       { label: "Published source", png: before },
       { label: "Source paths unavailable", png: copied },
       { label: "Separate working copy revised", png: revised },

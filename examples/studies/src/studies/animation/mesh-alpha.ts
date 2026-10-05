@@ -7,9 +7,9 @@ import {
   decodePixels,
 } from "codeboard-studio";
 import { make, rect, save } from "../../shared.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Transparent mesh coverage", 128, 128);
   project.configure({ canvas: { background: "transparent" } });
   const panel = project.addScene("Alpha").addShot("Mesh edge").addPanel({ durationFrames: 24 });
@@ -72,9 +72,9 @@ export async function render(output: string): Promise<void> {
     output,
     "mesh-alpha",
     reopened,
-    await sheet("One translucent surface across triangle edges", [
+    await comparison(output, "Bend a transparent surface", [
       { label: "Unbound artwork", png: before },
-      { label: "Identity mesh · same pixels", png: identity },
+      { label: "Mesh added, appearance unchanged", png: identity },
       { label: "Deformed surface", png: deformed },
     ]),
   );

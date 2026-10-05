@@ -11,10 +11,10 @@ import {
   exportShotMovie,
 } from "codeboard-studio";
 import { make, ink } from "../../shared.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 import { pinnedTitle } from "./font-preflight/pinned.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Check text dependencies before a render job");
   const panel = project.addScene("Titles").addShot("Title card").addPanel({ durationFrames: 2 });
   const layer = panel.addVectorLayer("Editable title");
@@ -71,14 +71,15 @@ export async function render(output: string): Promise<void> {
   const pinned = await pinnedTitle(output);
   await writeFile(
     join(output, "font-preflight.png"),
-    await sheet(
-      "Font dependency preflight",
+    await comparison(
+      output,
+      "Keep the title you intended",
       [
-        { label: "Missing family · fallback preview", png: fallback },
-        { label: "Explicit serif · checked job", png: checked },
-        { label: "Pinned DM Sans · checksum checked", png: pinned.png },
+        { label: "Requested font missing: fallback", png: fallback },
+        { label: "Choose an available serif font", png: checked },
+        { label: "Bundle DM Sans with the project", png: pinned.png },
       ],
-      2,
+      3,
     ),
   );
   await report(output, "fonts", {

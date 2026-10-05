@@ -12,9 +12,9 @@ import {
   importScriptFDX,
 } from "codeboard-studio";
 import { make, text, save } from "../../shared.ts";
-import { report, sheet } from "../../shared/artifacts.ts";
+import { report, comparison } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Script staging and caption import");
   const shot = project.addScene("Study").addShot("Explicit board staging");
   const fdx = `<?xml version="1.0" encoding="UTF-8"?>
@@ -73,11 +73,16 @@ export async function render(output: string): Promise<void> {
   const diagram = make("Actual script and caption records");
   const cards = diagram.addScene("Inspection").addShot("Data after staging");
   const rows = [
-    ["Script record", "line:dialogue", "B: Come in.", "Stable ID + panel link"],
-    ["Staged caption", "panel:dialogue", before.dialogue, "36 frames; empty artwork"],
+    ["Original script", "Source dialogue", "B: Come in.", "The sentence in the script"],
     [
-      "Imported caption",
-      "panel:dialogue",
+      "Caption copied to the panel",
+      "Panel dialogue",
+      before.dialogue,
+      "Text only, no drawing generated",
+    ],
+    [
+      "Caption after your edit",
+      "Revised panel dialogue",
       project.panelCaptions("panel:dialogue").dialogue,
       "Script remains unchanged",
     ],
@@ -91,7 +96,12 @@ export async function render(output: string): Promise<void> {
     text(layer, note!, 22, 220, 17);
     samples.push({ label: title!, png: await renderFramePNG(diagram, samples.length) });
   }
-  await save(output, "script-board", project, await sheet("Script and caption records", samples));
+  await save(
+    output,
+    "script-board",
+    project,
+    await comparison(output, "Script text and panel captions", samples),
+  );
   await report(output, "records", {
     script: project.scriptEntries(),
     captions: project.toJSON().panels.map((panel) => project.panelCaptions(panel.id)),

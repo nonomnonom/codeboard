@@ -8,9 +8,9 @@ import {
   resolveEditorialFrame,
 } from "codeboard-studio";
 import { amber, blue, make, rect, save, text } from "../../shared.ts";
-import { report, sheet } from "../../shared/artifacts.ts";
+import { report, comparison } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("OTIO source trim and media binding");
   const scene = project.addScene("Mapped animations");
   for (const [index, color] of [amber, blue].entries()) {
@@ -64,7 +64,12 @@ export async function render(output: string): Promise<void> {
       png,
     });
   }
-  await save(output, "otio-conform", project, await sheet("OTIO conform", samples, 2));
+  await save(
+    output,
+    "otio-conform",
+    project,
+    await comparison(output, "Rebuild the cut sequence", samples, 2),
+  );
   await writeFile(join(output, "conformed.otio"), exported.json);
   await report(output, "conform", {
     media,

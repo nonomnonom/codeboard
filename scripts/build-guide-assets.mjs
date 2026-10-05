@@ -55,6 +55,7 @@ await writeFile(join(target, "studies.json"), `${JSON.stringify(published, null,
 await writeFile(join(generation, "quickstart.ts"), starter);
 run(["run", join(generation, "quickstart.ts")], generation);
 await copyFile(join(generation, "output/first.png"), join(target, "quickstart.png"));
+run(["run", join(root, "scripts/write-studies-guide.ts")], root);
 await import("./package-examples.mjs");
 console.log(
   `Generated ${images + 1} guide images and ${movies} videos; validated study projects and packaged source.`,

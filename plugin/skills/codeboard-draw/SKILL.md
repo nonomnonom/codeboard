@@ -7,7 +7,7 @@ description: Use when constructing or correcting Codeboard artwork, including ve
 
 Prerequisite: codeboard session context.
 
-Read `docs/drawing.md` and `docs/layers.md`. For pixels read `docs/pixels.md`; for reuse read `docs/components.md`; for coordinate conversion read `docs/math.md`. Resolve calls in `docs/api-project.md` and `docs/api-drawing.md`.
+Read `docs/drawing/marks.md` and `docs/drawing/layers.md`. For pixels read `docs/drawing/pixels.md`; for reuse read `docs/drawing/components.md`; for coordinate conversion read `docs/drawing/geometry.md`. Resolve calls in `docs/reference/api/project.md` and `docs/reference/api/drawing.md`.
 
 ## Choose the representation
 

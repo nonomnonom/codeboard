@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build && node ../scripts/check-website-links.mjs",
+    "build": "next build && node ../scripts/normalize-website-export.mjs && node ../scripts/check-website-links.mjs",
     "dev": "next dev",
     "start": "serve out",
     "types:check": "next typegen && tsc --noEmit"

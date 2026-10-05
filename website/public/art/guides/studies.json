@@ -43,6 +43,7 @@
       "feature": "storyboard",
       "status": "supported",
       "studies": [
+        "motion-notes",
         "script-board"
       ],
       "constraints": [
@@ -53,6 +54,14 @@
       "feature": "drawing",
       "status": "supported",
       "studies": [
+        "brush-import",
+        "stroke-outline",
+        "layer-order",
+        "gradient-fills",
+        "vector-booleans",
+        "brush-dynamics",
+        "layer-effects",
+        "blend-modes",
         "representations",
         "color-import",
         "selections",
@@ -66,6 +75,10 @@
       "feature": "animation.curves",
       "status": "supported",
       "studies": [
+        "easing",
+        "pivots",
+        "stroke-reveal",
+        "drawing-holds",
         "controller-exchange",
         "weighted-pose",
         "drawing-timing"
@@ -78,12 +91,14 @@
       "feature": "animation.coordinates",
       "status": "supported",
       "studies": [
+        "envelope",
+        "skin-weights",
         "deformer-resolution",
         "mesh-warp",
         "camera-depth"
       ],
       "constraints": [
-        "Affine local/parent transforms reject mesh ancestry; unstable affine inverse is null. Shot point queries traverse meshes and return all bounded face candidates; unsafe inverses reject. Signed local frames; geometry only, no visibility filtering; mesh/render parity awaits runtime qualification"
+        "Affine local/parent transforms reject mesh ancestry; unstable affine inverse is null. Shot point queries traverse meshes and return all bounded face candidates; unsafe inverses reject. Signed local frames; geometry only, no visibility filtering"
       ]
     },
     {
@@ -101,11 +116,12 @@
       "feature": "animation.shot-retime",
       "status": "partial",
       "studies": [
+        "retiming",
         "frame-jobs"
       ],
       "constraints": [
         "Detached duration-ratio preview and timing.retime edit cover camera, layers, drawings, reveal, controllers, deformers and compositing; explicit rounding rejects collisions; audio cue starts preserve seconds or scale by physical duration",
-        "No audio sample stretching or automatic editorial cut conform; runtime timing, persistence and playback qualification pending"
+        "No audio sample stretching or automatic editorial cut conform"
       ]
     },
     {
@@ -116,13 +132,14 @@
         "ik-reach"
       ],
       "constraints": [
-        "Two-bone IK and persisted rest-pose capture/apply; explicit reject/clamp reach policy. layer.mesh authors vertex deformation; layer.curve stores a cubic ribbon; layer.envelope stores a four-boundary Coons patch. layer.skin binds explicit weights to animated joint layers; named controllers blend numeric layer poses over base keys. Runtime qualification pending; no automatic weights, arbitrary envelope cages, curve chains or full rig/artwork performance packages; numeric controller packages support checksum validation and explicit target mapping"
+        "Two-bone IK and persisted rest-pose capture/apply; explicit reject/clamp reach policy. layer.mesh authors vertex deformation; layer.curve stores a cubic ribbon; layer.envelope stores a four-boundary Coons patch. layer.skin binds explicit weights to animated joint layers; named controllers blend numeric layer poses over base keys. No automatic weights, arbitrary envelope cages, curve chains or full rig/artwork performance packages; numeric controller packages support checksum validation and explicit target mapping"
       ]
     },
     {
       "feature": "camera",
       "status": "supported",
       "studies": [
+        "camera-framing",
         "camera-depth"
       ],
       "constraints": [
@@ -157,6 +174,7 @@
       "feature": "render.jobs",
       "status": "partial",
       "studies": [
+        "output-profiles",
         "frame-jobs",
         "font-preflight"
       ],
@@ -181,6 +199,8 @@
       "feature": "review",
       "status": "partial",
       "studies": [
+        "perspective-guides",
+        "onion-skin",
         "review-tools"
       ],
       "constraints": [
@@ -198,7 +218,7 @@
       ],
       "constraints": [
         "SQLite atomic writes and optimistic versions; actor locks coordinate edits and are not authentication",
-        "Full-container publish retains history/media; single-shot native export selects component/origin/palette/media dependencies and starts independent history. Pinned source, new project ID, 1 GiB maximum and no overwrite; external fonts remain declarations; cross-project resource/ID import and handoff runtime qualification remain incomplete"
+        "Full-container publish retains history/media; single-shot native export selects component/origin/palette/media dependencies and starts independent history. Pinned source, new project ID, 1 GiB maximum and no overwrite; external fonts remain declarations; cross-project resource/ID import requires caller reconciliation"
       ]
     },
     {
@@ -217,6 +237,7 @@
       "feature": "editorial.shot-local",
       "status": "partial",
       "studies": [
+        "transitions",
         "controller-exchange",
         "editorial-cuts",
         "shot-merge"
@@ -224,7 +245,7 @@
       "constraints": [
         "Persisted studio payloads/checkpoints with shot-local artwork, rational-rate editorial clips and explicit initial picture holds; shot audio starts after the hold while sequence audio remains independent",
         "Three-way shot merge preserves independent local fields; native handoff adapter checks baseline provenance and resource compatibility. Whole-shot duplication remaps owned rig/controller/audio identities. Structure/retiming conflicts require explicit choices; no automatic dependency import or full production qualification",
-        "Per-animation/sequence plans and bounded element/pixel edits; panel capture preserves local curves with remapped identities and explicit pre/post-roll handles; full-board plans use incoming holds and explicit audio conversion/omission; picture/audio/persistence qualification pending"
+        "Per-animation/sequence plans and bounded element/pixel edits; panel capture preserves local curves with remapped identities and explicit pre/post-roll handles; full-board plans use incoming holds and explicit audio conversion/omission"
       ]
     },
     {
@@ -275,6 +296,7 @@
       "feature": "compositing.effects",
       "status": "partial",
       "studies": [
+        "masks",
         "deformer-resolution",
         "mesh-alpha",
         "mesh-warp",
@@ -282,18 +304,19 @@
       ],
       "constraints": [
         "Blend modes, clipping, masks, mesh surfaces and persisted ordered layer/group effects: brightness, contrast, saturation, hue rotation, Gaussian blur and colored drop shadows with keyed blur/offset/opacity",
-        "Effects use separate ordered passes on the 8-bit Canvas backend after layer mask and before sibling clipping/opacity/blend; at most 16 effects per layer and 64 indexed channel values per key; blur/shadow margins crop back and reject effective blur above 512 pixels, shadow offsets above 4096 pixels and expanded surfaces above 32 megapixels; shadow RGB is static; mesh triangle coverage is unchanged; no OCIO pipeline; CPU mesh coverage is capped at 268435456 sample tests per warp; effect pixel qualification pending"
+        "Effects use separate ordered passes on the 8-bit Canvas backend after layer mask and before sibling clipping/opacity/blend; at most 16 effects per layer and 64 indexed channel values per key; blur/shadow margins crop back and reject effective blur above 512 pixels, shadow offsets above 4096 pixels and expanded surfaces above 32 megapixels; shadow RGB is static; mesh triangle coverage is unchanged; no OCIO pipeline; CPU mesh coverage is capped at 268435456 sample tests per warp"
       ]
     },
     {
       "feature": "compositing.graph",
       "status": "partial",
       "studies": [
+        "render-passes",
         "frame-jobs"
       ],
       "constraints": [
         "Typed source/effects/blend/alpha-mask DAG stored on shots through compositing.set, inherited by editorial rendering, or overridden in shot render options; source/job identity pins effective configuration; duplication remaps source layers",
-        "32 nodes, 32 KiB graph including curves and 256 megapixel-passes per frame; effect values and blend opacity have shot-local eased keys; explicit layer sources and one reachable output; ports are cropped post-camera RGBA frames; topology/modes/RGB static; no separate editorial-level graph; runtime pixel/seek/job/duplication qualification pending"
+        "32 nodes, 32 KiB graph including curves and 256 megapixel-passes per frame; effect values and blend opacity have shot-local eased keys; explicit layer sources and one reachable output; ports are cropped post-camera RGBA frames; topology/modes/RGB static; no separate editorial-level graph"
       ]
     },
     {
@@ -330,10 +353,302 @@
       ]
     }
   ],
+  "coverageMeaning": "Declared study associations, not runtime coverage or feature certification",
   "results": [
+    {
+      "id": "brush-import",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 8,
+        "imageWidth": 792,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "brush-import.png"
+    },
+    {
+      "id": "stroke-outline",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 7,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "stroke-outline.png"
+    },
+    {
+      "id": "layer-order",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 10,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "layer-order.png"
+    },
+    {
+      "id": "masks",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 14,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "masks.png"
+    },
+    {
+      "id": "transitions",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 14,
+        "imageWidth": 792,
+        "imageHeight": 864
+      },
+      "kind": "artwork",
+      "image": "transitions.png",
+      "video": "transitions.mp4"
+    },
+    {
+      "id": "envelope",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 30,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "envelope.png",
+      "video": "envelope.mp4"
+    },
+    {
+      "id": "skin-weights",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 16,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "skin-weights.png",
+      "video": "skin-weights.mp4"
+    },
+    {
+      "id": "motion-notes",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 13,
+        "imageWidth": 792,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "motion-notes.png"
+    },
+    {
+      "id": "render-passes",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 13,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "render-passes.png"
+    },
+    {
+      "id": "output-profiles",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 7,
+        "imageWidth": 1176,
+        "imageHeight": 376
+      },
+      "kind": "artwork",
+      "image": "output-profiles.png"
+    },
+    {
+      "id": "perspective-guides",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 16,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "perspective-guides.png"
+    },
+    {
+      "id": "gradient-fills",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 11,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "gradient-fills.png"
+    },
+    {
+      "id": "vector-booleans",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 19,
+        "imageWidth": 792,
+        "imageHeight": 1252
+      },
+      "kind": "artwork",
+      "image": "vector-booleans.png"
+    },
+    {
+      "id": "brush-dynamics",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 11,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "brush-dynamics.png"
+    },
+    {
+      "id": "layer-effects",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 44,
+        "imageWidth": 1176,
+        "imageHeight": 864
+      },
+      "kind": "artwork",
+      "image": "layer-effects.png"
+    },
+    {
+      "id": "blend-modes",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 32,
+        "imageWidth": 1176,
+        "imageHeight": 864
+      },
+      "kind": "artwork",
+      "image": "blend-modes.png"
+    },
+    {
+      "id": "onion-skin",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 10,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "onion-skin.png",
+      "video": "onion-skin.mp4"
+    },
+    {
+      "id": "easing",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 22,
+        "imageWidth": 792,
+        "imageHeight": 784
+      },
+      "kind": "artwork",
+      "image": "easing.png",
+      "video": "easing.mp4"
+    },
+    {
+      "id": "pivots",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 20,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "pivots.png"
+    },
+    {
+      "id": "stroke-reveal",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 5,
+        "imageWidth": 792,
+        "imageHeight": 864
+      },
+      "kind": "artwork",
+      "image": "stroke-reveal.png",
+      "video": "stroke-reveal.mp4"
+    },
+    {
+      "id": "drawing-holds",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 9,
+        "imageWidth": 792,
+        "imageHeight": 1252
+      },
+      "kind": "artwork",
+      "image": "drawing-holds.png",
+      "video": "drawing-holds.mp4"
+    },
+    {
+      "id": "camera-framing",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 11,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "camera-framing.png",
+      "video": "camera-framing.mp4"
+    },
+    {
+      "id": "retiming",
+      "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 13,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
+      "kind": "artwork",
+      "image": "retiming.png",
+      "video": "retiming.mp4"
+    },
     {
       "id": "component-upgrade",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 13,
+        "imageWidth": 1176,
+        "imageHeight": 505
+      },
       "kind": "artwork",
       "image": "component-upgrade.png",
       "video": "component-upgrade.mp4"
@@ -341,6 +656,12 @@
     {
       "id": "deformer-resolution",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 22,
+        "imageWidth": 1176,
+        "imageHeight": 516
+      },
       "kind": "artwork",
       "image": "deformer-resolution.png",
       "video": "deformer-resolution.mp4"
@@ -348,6 +669,12 @@
     {
       "id": "controller-exchange",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 220,
+        "imageWidth": 792,
+        "imageHeight": 864
+      },
       "kind": "artwork",
       "image": "controller-exchange.png",
       "video": "controller-exchange.mp4"
@@ -355,6 +682,12 @@
     {
       "id": "mesh-alpha",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 9,
+        "imageWidth": 1176,
+        "imageHeight": 556
+      },
       "kind": "artwork",
       "image": "mesh-alpha.png",
       "video": "mesh-alpha.mp4"
@@ -362,6 +695,12 @@
     {
       "id": "mesh-warp",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 64,
+        "imageWidth": 1176,
+        "imageHeight": 436
+      },
       "kind": "artwork",
       "image": "mesh-warp.png",
       "video": "mesh-warp.mp4"
@@ -369,6 +708,12 @@
     {
       "id": "rig-rest",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 15,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "rig-rest.png",
       "video": "rig-rest.mp4"
@@ -376,6 +721,12 @@
     {
       "id": "weighted-pose",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 11,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "weighted-pose.png",
       "video": "weighted-pose.mp4"
@@ -383,42 +734,84 @@
     {
       "id": "representations",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 11,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "representations.png"
     },
     {
       "id": "color-import",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 86,
+        "imageWidth": 640,
+        "imageHeight": 370
+      },
       "kind": "artwork",
       "image": "color-import.png"
     },
     {
       "id": "clipping",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 17,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "clipping.png"
     },
     {
       "id": "selections",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 8,
+        "imageWidth": 792,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "selections.png"
     },
     {
       "id": "components",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 22,
+        "imageWidth": 900,
+        "imageHeight": 360
+      },
       "kind": "artwork",
       "image": "components.png"
     },
     {
       "id": "psd-import",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 4,
+        "imageWidth": 792,
+        "imageHeight": 556
+      },
       "kind": "artwork",
       "image": "psd-import.png"
     },
     {
       "id": "drawing-timing",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 11,
+        "imageWidth": 1176,
+        "imageHeight": 864
+      },
       "kind": "artwork",
       "image": "drawing-timing.png",
       "video": "drawing-timing.mp4"
@@ -426,30 +819,60 @@
     {
       "id": "ik-reach",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 38,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "ik-reach.png"
     },
     {
       "id": "audio-placement",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 41,
+        "imageWidth": 960,
+        "imageHeight": 400
+      },
       "kind": "diagram",
       "image": "audio-placement.png"
     },
     {
       "id": "hierarchy",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 22,
+        "imageWidth": 960,
+        "imageHeight": 500
+      },
       "kind": "diagram",
       "image": "hierarchy.png"
     },
     {
       "id": "palettes",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 24,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "palettes.png"
     },
     {
       "id": "lip-sync",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 15,
+        "imageWidth": 1176,
+        "imageHeight": 864
+      },
       "kind": "artwork",
       "image": "lip-sync.png",
       "video": "lip-sync.mp4"
@@ -457,6 +880,12 @@
     {
       "id": "editorial-cuts",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 24,
+        "imageWidth": 792,
+        "imageHeight": 864
+      },
       "kind": "artwork",
       "image": "editorial-cuts.png",
       "video": "editorial-cuts.mp4"
@@ -464,6 +893,12 @@
     {
       "id": "camera-depth",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 27,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "camera-depth.png",
       "video": "camera-depth.mp4"
@@ -471,42 +906,84 @@
     {
       "id": "script-board",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 5,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "inspection",
       "image": "script-board.png"
     },
     {
       "id": "saved-revision",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 15,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "saved-revision.png"
     },
     {
       "id": "review-tools",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 12,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "review-tools.png"
     },
     {
       "id": "frame-jobs",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 13,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "frame-jobs.png"
     },
     {
       "id": "migration",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 17,
+        "imageWidth": 792,
+        "imageHeight": 1492
+      },
       "kind": "artwork",
       "image": "migration.png"
     },
     {
       "id": "project-publish",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 15,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "project-publish.png"
     },
     {
       "id": "font-preflight",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 8,
+        "imageWidth": 1176,
+        "imageHeight": 476
+      },
       "kind": "artwork",
       "image": "font-preflight.png",
       "video": "font-preflight.mp4"
@@ -514,6 +991,12 @@
     {
       "id": "asset-replacement",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 15,
+        "imageWidth": 840,
+        "imageHeight": 370
+      },
       "kind": "inspection",
       "image": "asset-replacement.png",
       "video": "asset-replacement.mp4"
@@ -521,6 +1004,12 @@
     {
       "id": "shot-merge",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 16,
+        "imageWidth": 792,
+        "imageHeight": 1252
+      },
       "kind": "artwork",
       "image": "shot-merge.png",
       "video": "shot-merge.mp4"
@@ -528,6 +1017,12 @@
     {
       "id": "otio-conform",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 20,
+        "imageWidth": 792,
+        "imageHeight": 864
+      },
       "kind": "artwork",
       "image": "otio-conform.png",
       "video": "otio-conform.mp4"
@@ -535,6 +1030,12 @@
     {
       "id": "audio-delivery",
       "status": "generated",
+      "evidence": {
+        "projectId": "project:1",
+        "version": 17,
+        "imageWidth": 960,
+        "imageHeight": 400
+      },
       "kind": "inspection",
       "image": "audio-delivery.png",
       "video": "audio-delivery.mp4"

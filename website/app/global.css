@@ -205,11 +205,6 @@ video:focus-visible {
   font-weight: 600;
   color: var(--color-fd-foreground);
 }
-.hero-art figcaption a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  padding-block: 12px;
-}
 .authoring-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -275,15 +270,6 @@ video:focus-visible {
   gap: 20px;
   padding: 24px 0;
   border-top: 1px solid var(--color-fd-border);
-}
-.guide-list > a:hover h3 {
-  text-decoration: underline;
-  text-underline-offset: 5px;
-}
-.guide-list > a > span {
-  font-size: 12px;
-  color: var(--ink-soft);
-  padding-top: 5px;
 }
 .guide-list h3 {
   font-size: 18px;
@@ -382,32 +368,25 @@ video:focus-visible {
   min-width: 0;
   overflow-wrap: anywhere;
 }
-.install-notes dd span {
-  display: block;
-  color: var(--ink-soft);
-  font-size: 12px;
-  margin-top: 8px;
-}
 .release-notes {
   margin-top: 40px;
 }
-.installer-section {
+.installation-options {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 40px;
   margin-block: 48px 64px;
 }
-.installer-section h2 {
+.installation-options h2 {
   font-size: 28px;
 }
-.installer-section p,
-.manual-downloads > p {
+.installation-options p {
   color: var(--ink-soft);
   margin-top: 12px;
   font-size: 14px;
   line-height: 1.8;
 }
-.installer-section pre,
+.installation-options pre,
 .install-notes pre {
   overflow-x: auto;
   padding: 20px;
@@ -420,12 +399,14 @@ video:focus-visible {
 .install-notes .button {
   margin-top: 20px;
 }
-.manual-downloads {
-  margin-top: 70px;
-}
 .release-notes a {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.hero-art figcaption a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding-block: 12px;
 }
 .example-project {
   margin-top: 70px;
@@ -440,6 +421,17 @@ video:focus-visible {
 .project-heading > span {
   font-size: 12px;
   color: var(--ink-soft);
+}
+.install-notes dd span {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 12px;
+  margin-top: 8px;
+}
+.guide-list > a > span {
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding-top: 5px;
 }
 .example-project video {
   width: 100%;
@@ -505,6 +497,9 @@ video:focus-visible {
   .hero-art figcaption {
     align-items: start;
   }
+  .site-footer > span {
+    flex-basis: 100%;
+  }
   .hero-art figcaption > span {
     max-width: 65%;
   }
@@ -536,15 +531,14 @@ video:focus-visible {
     align-items: start;
     flex-direction: column;
   }
-  .site-footer > span {
-    flex-basis: 100%;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: Reduced motion must override component scrolling rules. */
     scroll-behavior: auto !important;
+    /* biome-ignore lint/complexity/noImportantStyles: Reduced motion must override component transitions regardless of specificity. */
     transition: none !important;
   }
 }
@@ -577,6 +571,10 @@ html {
 .codeboard-doc-page h3 {
   font-size: 20px;
   line-height: 1.35;
+}
+.guide-list > a:hover h3 {
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }
 .codeboard-doc-page .prose {
   font-size: 16px;
@@ -732,9 +730,4 @@ figure.shiki button[aria-live] > .sr-only {
 ::selection {
   background: var(--color-fd-primary);
   color: var(--color-fd-primary-foreground);
-}
-
-html > body[data-scroll-locked] {
-  margin-right: 0px !important;
-  --removed-body-scroll-bar-size: 0px !important;
 }

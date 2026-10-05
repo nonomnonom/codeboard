@@ -153,7 +153,7 @@ const report = {
       .digest("hex"),
   },
   qualification:
-    "Preview-resolution picture workload with cooperative interruption; not full M6 production, audio, clean-machine or artistic acceptance",
+    "Preview-resolution picture workload with cooperative interruption; not long-form production, audio, clean-machine or artistic acceptance",
 };
 await writeFile(join(output, "report.json"), `${JSON.stringify(report, null, 2)}\n`, {
   flag: "wx",

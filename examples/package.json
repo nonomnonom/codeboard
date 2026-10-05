@@ -29,6 +29,7 @@
     "studio-timing:author": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- author",
     "studio-timing:revise": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- revise",
     "studio-timing:review": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- review",
-    "studio-timing:export": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- export"
+    "studio-timing:export": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- export",
+    "quickstart:render": "node --import tsx src/cli/run.ts quickstart src/cli/render.ts"
   }
 }
