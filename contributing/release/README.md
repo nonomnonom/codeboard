@@ -3,10 +3,10 @@
 The active objective is to launch Codeboard v1.0.0: the code-first 2D engine,
 npm package, matching docs, examples, plugin and website.
 
-The user resumed release work on 2026-10-06 and authorized review, fixes and
-publication. Validate the final combined tree, then publish through release CI
-and verify the matching website and public installation. Version 1.0.0 remains
-a candidate until publication succeeds.
+Codeboard 1.0.0 is published. The user resumed release work on 2026-10-06;
+the validated package, matching website and synchronized plugin were released.
+See the [publication record](acceptance.md#publication-record--2026-10-06)
+for the tag, commit, workflow evidence and public installation checks.
 
 The [distribution/runtime audit](distribution-audit.md) records the current npm-only
 pipeline, feature/test map, corrections and local evidence.

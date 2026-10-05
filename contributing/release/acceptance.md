@@ -1,10 +1,10 @@
 # Codeboard v1.0.0 release objective
 
 Target version confirmed by the user: **1.0.0**, 2026-10-06.
-Current stage: **final review and authorized publication**. On 2026-10-06 the
-user resumed release work, confirmed parallel edits had ended, and authorized
-review, fixes and publication. Validate the final combined tree before release.
-A local version of 1.0.0 remains a candidate until publication is verified.
+Current stage: **published and verified**. On 2026-10-06 the user resumed
+release work, confirmed parallel edits had ended, and authorized review, fixes
+and publication. The publication record below supersedes the historical
+candidate and hold statuses retained in this audit.
 
 Before returning to release work, finish the local implementation audit across
 API/CLI, storage/migration, rendering/audio, examples/docs and plugin. Resolve
@@ -108,7 +108,7 @@ distributed downloads must still install and run with the matching bundled engin
   Changesets status resolves to 1.0.0, matching the confirmed user objective.
   Run versioning and inspect private file-dependency warnings before
   publication. Use the repository's versioning flow; do not reuse 0.3.0.
-- [ ] Publish the validated artifact through release CI, deploy matching docs,
+- [x] Publish the validated artifact through release CI, deploy matching docs,
   verify public installation and URLs, and record the released commit/tag/version.
   Repository workflows alone do not prove remote deployment is configured or passed.
 
@@ -244,3 +244,34 @@ Plugin validation covered ten skills, 132 bundled sources and 43 engine targets.
 Logs are retained locally in `.preview/final-release/`. These results supersede
 the earlier local counts; remote CI, publication and deployment still require
 their own successful runs before the release gate can be marked complete.
+
+## Publication record — 2026-10-06
+
+Released [v1.0.0](https://github.com/nonomnonom/codeboard/releases/tag/v1.0.0)
+from commit `a7ca1e99bfb49c7ff681655cbe67d7ec131f218e` after
+[PR CI](https://github.com/nonomnonom/codeboard/actions/runs/37378118819)
+passed all gates. The [release workflow](https://github.com/nonomnonom/codeboard/actions/runs/37378787696)
+validated the package and installed the same tarball on Linux, Windows and
+macOS before npm publication with provenance.
+
+Public installation of `codeboard-studio@1.0.0` in a clean temporary directory
+passed API import, drawing, save/reopen parity, partial revision, integrity,
+CLI authoring and documentation search/read checks. The registry integrity
+matches the CI-tested tarball exactly:
+`sha512-iV0HZMRXj8WT/xbFyXuDP2XMwlfLIkZjsN7Als27fB9ZnzOelYU5gdUbpz2NJmtnvLnSlkhR6Qu2xkfdmJrQXw==`.
+
+The [website deployment](https://github.com/nonomnonom/codeboard/actions/runs/37379575611)
+succeeded after npm registry propagation. The first attempt correctly refused
+to deploy while npm was still processing the accepted publication; a rerun
+succeeded once the version was available. Subsequent workflows wait for that
+propagation within a bounded retry window. Public home, installation, docs-query,
+agent-setup and envelope guide pages returned HTTP 200, and the downloaded
+quickstart ZIP matched the committed release artifact.
+
+The release includes `codeboard-plugin-1.0.0.zip`: ten skills, 132 synchronized
+reference sources and 43 engine targets. It was rebuilt from the release tag,
+passed manifest/reference/drift checks, and its public download matched SHA-256
+`27919864f09df02a177a3c5e7b95e2aa05fba3070880d8cb5be89c79d8cb481f`.
+Local command logs and downloaded verification artifacts are retained in
+`.preview/final-release/`; published workflow runs and release assets provide
+the durable remote evidence.
