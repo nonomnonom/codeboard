@@ -7,11 +7,11 @@ This is the unmodified starter output. After changing brush size or color, compa
 [Install Codeboard from npm](install.md) with `npm install -g codeboard-studio`, then open a terminal in an empty working folder. Node.js 22.22 or later is required. If you installed Codeboard as a project dependency, use `npx codeboard` for the commands below.
 
 ```sh
-codeboard init
-codeboard run scene.mjs
+codeboard init scene.ts
+codeboard run scene.ts
 ```
 
-`init` creates `scene.mjs`. It refuses to overwrite an existing file. `run` executes the script and makes the Codeboard API available as `codeboard-studio`.
+`init scene.ts` creates an erasable TypeScript module. It refuses to overwrite an existing file. `run` executes the script and makes the Codeboard API available as `codeboard-studio`.
 
 The starter creates two files:
 
@@ -22,12 +22,12 @@ The starter creates two files:
 
 ## Change the drawing
 
-Open `scene.mjs` in your coding agent or text editor. The stroke is a curve through four points. Each point has a position and pressure; the brush controls how those samples become paint.
+Open `scene.ts` in your coding agent or text editor. The stroke is a curve through four points. Each point has a position and pressure; the brush controls how those samples become paint.
 
 Change `size: 44` to `size: 70`, or replace the stroke color `#191916` with `#b77528`. Run the script again:
 
 ```sh
-codeboard run scene.mjs
+codeboard run scene.ts
 ```
 
 The starter deliberately regenerates its two output files. Save subsequent edits under a different filename if you want to keep both versions. [Reopening a saved project](projects.md) lets you revise existing artwork without rebuilding the scene.

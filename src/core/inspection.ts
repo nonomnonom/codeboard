@@ -1,61 +1,139 @@
-import {pageBounds} from "../model/query.js";
-import type {Layer,ObjectQuery,ObjectSummary,StoryboardDocument} from "../model/types.js";
+import { pageBounds } from "../model/query.js";
+import { CodeboardError } from "../model/errors.js";
+import { z } from "zod";
+import { createHash } from "node:crypto";
+import { findObjects, objectQuerySchema, boundObjectPage } from "../model/inspection/objects.js";
+import type {
+  ObjectQuery,
+  ObjectPageQuery,
+  ObjectPage,
+  StoryboardDocument,
+} from "../model/types.js";
 
-/** Bounded metadata traversal; source artwork is neither cloned nor returned. */
-export function findObjects(document:StoryboardDocument,query:ObjectQuery):ObjectSummary[]{
-  const {limit:maximum,offset}=pageBounds(query),name=query.name?.toLowerCase();
-  function* layers(entries:Layer[],parentId:string,panelId?:string):Generator<ObjectSummary>{
-    for(const layer of entries){
-      yield {id:layer.id,kind:layer.kind,name:layer.name,parentId,...(panelId?{panelId}:{})};
-      if(layer.kind==="group")yield* layers(layer.children,layer.id,panelId);
-      else for(const element of layer.elements)yield {id:element.id,kind:element.kind,name:element.name??"",parentId:layer.id,...(panelId?{panelId}:{})};
+export {
+  objectEntries,
+  findObjects,
+  objectQuerySchema,
+  boundObjectPage,
+  projectSummarySchema,
+  summarizeProject,
+} from "../model/inspection.js";
+
+const pageQuerySchema = objectQuerySchema
+  .omit({ offset: true })
+  .extend({ cursor: z.string().max(4096).optional() });
+const cursorSchema = z
+  .object({ snapshot: z.string(), filter: z.string(), offset: z.number().int().nonnegative() })
+  .strict();
+
+export function queryObjects(
+  document: StoryboardDocument,
+  input: ObjectPageQuery,
+  snapshot: string,
+): ObjectPage {
+  const parsed = pageQuerySchema.safeParse(input);
+  if (!parsed.success)
+    throw new CodeboardError("INVALID_ARGUMENT", "Invalid object query", {
+      details: { issues: parsed.error.issues },
+    });
+  const { cursor, ...values } = parsed.data;
+  const query = Object.fromEntries(
+    Object.entries(values).filter(([, value]) => value !== undefined),
+  ) as ObjectQuery;
+  const { limit } = pageBounds(query);
+  const filter = createHash("sha256")
+    .update(
+      JSON.stringify([
+        query.id ?? null,
+        query.parentId ?? null,
+        query.panelId ?? null,
+        query.kind ?? null,
+        query.name?.toLowerCase() ?? null,
+      ]),
+    )
+    .digest("hex");
+  let offset = 0;
+  if (cursor !== undefined) {
+    let data: z.infer<typeof cursorSchema>;
+    try {
+      if (!/^[A-Za-z0-9_-]+$/.test(cursor)) throw new Error("Invalid base64url");
+      data = cursorSchema.parse(JSON.parse(Buffer.from(cursor, "base64url").toString("utf8")));
+    } catch (cause) {
+      throw new CodeboardError("INVALID_CURSOR", "Invalid query cursor", { cause });
     }
+    if (data.snapshot !== snapshot)
+      throw new CodeboardError(
+        "STALE_CURSOR",
+        "Query cursor belongs to a different project session or edit state; restart the query",
+      );
+    if (data.filter !== filter)
+      throw new CodeboardError("INVALID_CURSOR", "Query cursor filters differ; restart the query");
+    offset = data.offset;
   }
-  function* entries():Generator<ObjectSummary>{
-    for(const panel of document.panels){
-      if(query.panelId&&query.panelId!==panel.id)continue;
-      yield {id:panel.id,kind:"panel",name:panel.title,panelId:panel.id,parentId:panel.shotId};
-      yield* layers(panel.layers,panel.id,panel.id);
-    }
-    if(query.panelId)return;
-    for(const component of document.components){
-      yield {id:component.id,kind:"component",name:component.name};
-      yield* layers(component.layers,component.id);
-    }
-    for(const asset of document.assets)yield {id:asset.id,kind:`asset:${asset.kind}`,name:asset.name};
-    for(const brush of document.brushes)yield {id:brush.id,kind:"brush",name:brush.name};
-    for(const track of document.audioTracks){
-      yield {id:track.id,kind:"audio-track",name:track.name};
-      for(const clip of track.clips)yield {id:clip.id,kind:"audio-clip",name:clip.name,parentId:track.id};
-    }
-  }
-  const result:ObjectSummary[]=[];let skipped=0;
-  for(const entry of entries()){
-    if(name&&!entry.name.toLowerCase().includes(name)||query.kind&&entry.kind!==query.kind)continue;
-    if(skipped++<offset)continue;
-    result.push(entry);if(result.length===maximum)break;
-  }
-  return result;
+  const items = findObjects(document, { ...query, limit, offset });
+  const nextOffset = offset + items.length;
+  const hasMore =
+    items.length === limit &&
+    findObjects(document, { ...query, limit: 1, offset: nextOffset }).length > 0;
+  return boundObjectPage({
+    version: document.version,
+    items,
+    ...(hasMore
+      ? {
+          nextCursor: Buffer.from(
+            JSON.stringify({ snapshot, filter, offset: nextOffset }),
+          ).toString("base64url"),
+        }
+      : {}),
+  });
 }
 
-export function inspectProject(document:StoryboardDocument) {
-    return structuredClone({
-      schemaVersion: document.schemaVersion,
-      version: document.version,
-      frameRate: document.frameRate,
-      durationFrames: document.panels.reduce((maximum, panel) => Math.max(maximum, panel.startFrame + panel.durationFrames), 0),
-      scenes: document.scenes.map((scene) => ({ ...scene, shots: scene.shotIds.map((id) => document.shots.find((shot) => shot.id === id)) })),
-      sequences:document.sequences,
-      assets: document.assets,
-      audioTracks: document.audioTracks,
-      locks: document.locks,
-      openComments: document.comments.filter((comment) => comment.status === "open"),
-      capabilities: {
-        vectorFill:"solid-linear-radial-local-coordinates",
-        rasterPainting: "working", vectorStrokeEditing: "working", vectorBooleans:"closed-contours-skia", vectorStrokeOutlining:"explicit-editable-contour-conversion", pixelRegionEditing: "rgba8-source-rectangles", pixelSelections:"polygon-color-flood-combination-gaussian-feather",pixelFill:"source-over-copy-destination-out-source-atop",
-        timeline: "working", camera2d: "independent-property-keys-and-easing", layerAnimation: "independent-property-keys-and-easing", animationEasing:"linear-smoothstep-hold-bounded-cubic-bezier", layerPivots:"permanent-local-joints", twoBoneIK:"stored-cutout-rig-baked-rotation-keys", drawingSequences:"reusable-drawings-holds-blanks", audioPlacement: "working",
-        multiplane:"independent-root-depth-keys-2d-parallax", audioMixdown: "ffmpeg", audioInspection:"paged-tracks-clips-and-frame-filter", animaticFrameExport: "working", movieExport: "ffmpeg",
-        referenceAssets: "partial", onionSkin: "layer-selection-tint-frame-samples", coordinateInspection:"animated-local-frame-matrices", renderComparison:"premultiplied-pixel-deltas", compositionGuides:"frame-space-review-overlay", reviewLocks: "working",
-      },
-    } as const);
+export function inspectProject(document: StoryboardDocument) {
+  return structuredClone({
+    schemaVersion: document.schemaVersion,
+    version: document.version,
+    frameRate: document.frameRate,
+    durationFrames: document.panels.reduce(
+      (maximum, panel) => Math.max(maximum, panel.startFrame + panel.durationFrames),
+      0,
+    ),
+    scenes: document.scenes.map((scene) => ({
+      ...scene,
+      shots: scene.shotIds.map((id) => document.shots.find((shot) => shot.id === id)),
+    })),
+    sequences: document.sequences,
+    assets: document.assets,
+    audioTracks: document.audioTracks,
+    locks: document.locks,
+    openComments: document.comments.filter((comment) => comment.status === "open"),
+    capabilities: {
+      vectorFill: "solid-linear-radial-local-coordinates",
+      rasterPainting: "working",
+      vectorStrokeEditing: "working",
+      vectorBooleans: "closed-contours-skia",
+      vectorStrokeOutlining: "explicit-editable-contour-conversion",
+      pixelRegionEditing: "rgba8-source-rectangles",
+      pixelSelections: "polygon-color-flood-combination-gaussian-feather",
+      pixelFill: "source-over-copy-destination-out-source-atop",
+      timeline: "working",
+      camera2d: "independent-property-keys-and-easing",
+      layerAnimation: "independent-property-keys-and-easing",
+      animationEasing: "linear-smoothstep-hold-bounded-cubic-bezier",
+      layerPivots: "permanent-local-joints",
+      twoBoneIK: "stored-cutout-rig-baked-rotation-keys",
+      drawingSequences: "reusable-drawings-holds-blanks",
+      audioPlacement: "working",
+      multiplane: "independent-root-depth-keys-2d-parallax",
+      audioMixdown: "ffmpeg",
+      audioInspection: "paged-tracks-clips-and-frame-filter",
+      animaticFrameExport: "working",
+      movieExport: "ffmpeg",
+      referenceAssets: "partial",
+      onionSkin: "layer-selection-tint-frame-samples",
+      coordinateInspection: "animated-local-frame-matrices",
+      renderComparison: "premultiplied-pixel-deltas",
+      compositionGuides: "frame-space-review-overlay",
+      reviewLocks: "working",
+    },
+  } as const);
 }

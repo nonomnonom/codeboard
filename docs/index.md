@@ -4,6 +4,13 @@ Draw, build storyboards, and animate with JavaScript or TypeScript. Give your co
 
 Codeboard runs on your computer with Node.js 22.22 or later. Install the CLI and library from npm; no npm account or AI service is required.
 
+## Understand the fundamentals
+
+Start with [what Codeboard can do](fundamentals.md): editable drawings, storyboards, 2D animation,
+reusable assets, review, sound, and delivery, with the current limits of each workflow.
+Then learn [how a project works](concepts.md) and [how to take a brief through saved revisions
+to an export](production-workflow.md).
+
 ## Start a project
 
 ![Drawings from the Codeboard character performance](../website/public/art/code-board-demo/key-drawings.png)

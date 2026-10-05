@@ -9,7 +9,7 @@ Establish one session context, then load the skill for the actual operation. Kee
 
 ## Session context
 
-Record the artwork directory, current project, and runtime version. Install the runtime from npm with `npm install -g codeboard-studio`, or use a project dependency and `npx codeboard`. Check `codeboard --version` (or `npx codeboard --version` for a local dependency); an optional source build uses `node <checkout>/dist/src/cli.js`. Run authored scripts through that CLI's `run` command and import from `codeboard-studio`. This works outside the engine directory and avoids platform-specific absolute ESM imports.
+Record the artwork directory, project and runtime version. Install with `npm install -g codeboard-studio`, or use a project dependency via `npx codeboard`. Check `codeboard --version`. Run scripts through the matching CLI's `run` command and import from `codeboard-studio`; see `docs/install.md` for source-checkout usage.
 
 The documentation ships with this skill. Open [bundle metadata](references/engine/bundle.json) and [the manual index](references/engine/docs/index.md). The reference root is `references/engine/` beside this SKILL.md; every `docs/` or `examples/` path in these skills is relative to that root, not the user's working directory. No repository checkout or internet is required to read the API guides. Load only relevant pages.
 
@@ -17,7 +17,9 @@ Compare the bundle's engine version with the installed CLI. For a mismatch, chec
 
 Read `docs/agent-workflow.md` and `docs/cli.md` once. For installation use `docs/install.md`; for a new script use `docs/quickstart.md`. Resolve unfamiliar signatures and return shapes through `docs/reference.md`, the relevant `api-*.md`, and `docs/api-types.md`. If a runtime export needs checking, inspect the public module or installed declaration; a function in an example is not automatically an engine export. Copy bundled examples to the artwork directory before running or adapting them.
 
-Check return shapes as well as method names. `production.inspect()` is an overview, not a document with a top-level `panels` array. Use bounded object queries or `ProjectStore.listPanels()` when panel records are needed.
+Prefer `production.summary()` and bounded `production.query()` pages over document dumps. A query returns `{version, items, nextCursor?}`; restart after edits or reopening. `production.inspect()` is a larger overview. For CLI query/version checks and error recovery, follow `docs/agent-workflow.md`.
+
+Use `codeboard capabilities` before choosing a workflow. Add `--probe-dependencies` for FFmpeg startup inspection; this does not qualify encoders or output. Older runtimes may lack this command; use matching declarations and docs.
 
 ## Select by the requested change
 
@@ -26,7 +28,7 @@ Check return shapes as well as method names. `production.inspect()` is an overvi
 | Shape, paint, pixels, masks, components | codeboard-draw |
 | Brush behavior or imported brush resource | codeboard-brushes |
 | Story beats and panel structure | codeboard-storyboard |
-| Drawings, placement, holds, joints, timing | codeboard-animate |
+| Drawings, deformation, controllers, performance, timing | codeboard-animate |
 | Framing and parallax | codeboard-camera |
 | Sound placement and mix | codeboard-audio |
 | Changing a saved project | codeboard-revise plus the operation skill |

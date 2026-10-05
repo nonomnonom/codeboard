@@ -1,0 +1,12 @@
+export async function cancellable<T>(work: (signal: AbortSignal) => Promise<T>): Promise<T> {
+  const controller = new AbortController();
+  const abort = () => controller.abort();
+  process.on("SIGINT", abort);
+  process.on("SIGTERM", abort);
+  try {
+    return await work(controller.signal);
+  } finally {
+    process.off("SIGINT", abort);
+    process.off("SIGTERM", abort);
+  }
+}

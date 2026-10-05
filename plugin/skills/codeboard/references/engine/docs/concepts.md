@@ -21,7 +21,7 @@ Start here when a snippet mentions a panel, layer, frame, or drawing ID that you
 
 You can start with `project.addScene(...)` without explicitly creating a sequence. Groups do not draw by themselves: add layers and elements inside them. Panel captions describe artwork but do not create it.
 
-```js
+```ts
 import { StoryboardProject, pathCommands } from 'codeboard-studio';
 
 const project = StoryboardProject.create({
@@ -50,7 +50,14 @@ Raster strokes and pixel surfaces can share a raster layer, but they have differ
 
 ## Frames are positions, durations are counts
 
-At 24 fps, a 48-frame panel occupies two seconds. The first panel spans frames 0 through 47; the next starts at 48. Timeline keys, camera keys and audio placement use global frames, including in later panels.
+At 24 fps, a 48-frame board panel occupies two seconds. The first panel spans frames 0 through 47; the next starts at 48. Board layer keys, camera keys and audio placement use global frames, including in later panels.
+
+Studio animation has a separate time model. A shot animation owns its local artwork, keys,
+camera and exposures. An editorial clip places a range of that animation into an edit;
+its position is not a replacement for the shot's local frame number. Studio audio retains
+source sample ranges and uses explicit rational placement. Moving an editorial cut does
+not mean moving all of the source shot's keys. See [animation](animation.md) and [audio](audio.md)
+for the operations in each domain.
 
 Ranges use an exclusive end: `[12, 24)` includes 12 through 23. To request the last frame of a 48-frame project, render 47, not 48. Pen-point `time` is in milliseconds and controls brush speed dynamics; it is separate from animation frames.
 
@@ -59,7 +66,10 @@ Ranges use an exclusive end: `[12, 24)` includes 12 through 23. To request the l
 | Canvas position, brush size, layer translation | Canvas units |
 | Layer/camera rotation | Radians |
 | Pressure, opacity | 0 to 1 |
-| Timeline keys, durations, audio trims | Integer frames |
+| Board keys, panel durations, board audio trims | Integer frames on the global board timeline |
+| Shot animation keys and drawing holds | Integer frames local to that animation |
+| Editorial position and source range | Frames in their declared editorial/shot rate domains |
+| Studio audio source trim | Integer samples at the declared source sample rate |
 | Pen sample time | Milliseconds |
 | Pixel patch coordinates | Source-image pixels |
 
@@ -78,3 +88,6 @@ Give important panels and layers stable IDs and retain IDs returned by creation 
 For generated artwork, edit the authoring source and regenerate only its designated outputs. For a project that has been independently revised, open the latest `.cboard` and edit that state. Rerunning an older generator can discard those revisions.
 
 A `.cboard` retains editable artwork and embedded assets. A PNG, PDF or MP4 is an output for viewing or delivery. Keep source, lockfile, assets and the project together when handing work to another person. See [projects and revisions](projects.md) for stale-write protection, named revisions and asset handling.
+
+Continue with [the authoring and revision workflow](production-workflow.md), or use
+[what Codeboard can do](fundamentals.md) to choose a task guide.

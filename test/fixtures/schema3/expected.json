@@ -1,0 +1,593 @@
+{
+  "writerCommit": "c666f4df8984ad0af55b555f190126b25b86b046",
+  "schemaVersion": 3,
+  "fileSha256": "517bd7f2d724a0a0f32ca6f3938d57bd263c30977f8efce3e04e8f191453b53e",
+  "audioSha256": "e22435c779b4acedfe32cb9f9fec5d6749b9fd5ffc0ba306ecd0daccc8feda2a",
+  "assetId": "legacy-cue",
+  "document": {
+    "schemaVersion": 3,
+    "version": 17,
+    "id": "project:1",
+    "title": "Schema 3 migration fixture",
+    "createdAt": "2026-10-05T06:46:16.294Z",
+    "updatedAt": "2026-10-05T06:46:16.340Z",
+    "canvas": {
+      "width": 64,
+      "height": 64,
+      "background": "#ffffff"
+    },
+    "seed": 1,
+    "frameRate": 24,
+    "idCounter": 33,
+    "scenes": [
+      {
+        "id": "scene:1",
+        "name": "Legacy scene",
+        "sequenceId": "sequence:main",
+        "shotIds": ["shot:3", "shot:7"]
+      }
+    ],
+    "sequences": [
+      {
+        "id": "sequence:main",
+        "name": "Main sequence",
+        "sceneIds": ["scene:1"]
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot:3",
+        "sceneId": "scene:1",
+        "name": "First",
+        "panelIds": ["panel:5"],
+        "cameraKeyframes": []
+      },
+      {
+        "id": "shot:7",
+        "sceneId": "scene:1",
+        "name": "Second",
+        "panelIds": ["panel:9"],
+        "cameraKeyframes": []
+      }
+    ],
+    "panels": [
+      {
+        "id": "panel:5",
+        "shotId": "shot:3",
+        "number": "1",
+        "title": "Untitled panel",
+        "width": 64,
+        "height": 64,
+        "durationFrames": 24,
+        "startFrame": 0,
+        "transition": {
+          "type": "dissolve",
+          "durationFrames": 4
+        },
+        "status": "working",
+        "action": "",
+        "dialogue": "",
+        "camera": "",
+        "notes": "",
+        "layers": [
+          {
+            "id": "layer:11",
+            "name": "Mark",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "source-over",
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "scaleX": 1,
+              "scaleY": 1,
+              "rotation": 0
+            },
+            "clipToBelow": false,
+            "keyframes": [
+              {
+                "id": "layer-key:15",
+                "frame": 0,
+                "easing": "linear",
+                "transform": {
+                  "x": 0
+                }
+              },
+              {
+                "id": "layer-key:17",
+                "frame": 23,
+                "easing": "linear",
+                "transform": {
+                  "x": 20
+                }
+              }
+            ],
+            "depth": 1,
+            "exposure": null,
+            "kind": "vector",
+            "elements": [
+              {
+                "kind": "vector-path",
+                "commands": [
+                  {
+                    "op": "M",
+                    "x": 4,
+                    "y": 4
+                  },
+                  {
+                    "op": "L",
+                    "x": 20,
+                    "y": 4
+                  },
+                  {
+                    "op": "L",
+                    "x": 20,
+                    "y": 20
+                  },
+                  {
+                    "op": "Z"
+                  }
+                ],
+                "strokeWidth": 0,
+                "opacity": 1,
+                "visible": true,
+                "fill": "red",
+                "id": "element:13"
+              }
+            ]
+          }
+        ],
+        "motion": [],
+        "revision": 6
+      },
+      {
+        "id": "panel:9",
+        "shotId": "shot:7",
+        "number": "2",
+        "title": "Untitled panel",
+        "width": 64,
+        "height": 64,
+        "durationFrames": 24,
+        "startFrame": 24,
+        "transition": {
+          "type": "cut",
+          "durationFrames": 0
+        },
+        "status": "working",
+        "action": "",
+        "dialogue": "",
+        "camera": "",
+        "notes": "",
+        "layers": [
+          {
+            "id": "layer:19",
+            "name": "Mark",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "source-over",
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "scaleX": 1,
+              "scaleY": 1,
+              "rotation": 0
+            },
+            "clipToBelow": false,
+            "keyframes": [
+              {
+                "id": "layer-key:23",
+                "frame": 24,
+                "easing": "linear",
+                "transform": {
+                  "x": 0
+                }
+              },
+              {
+                "id": "layer-key:25",
+                "frame": 47,
+                "easing": "linear",
+                "transform": {
+                  "x": 20
+                }
+              }
+            ],
+            "depth": 1,
+            "exposure": null,
+            "kind": "vector",
+            "elements": [
+              {
+                "kind": "vector-path",
+                "commands": [
+                  {
+                    "op": "M",
+                    "x": 4,
+                    "y": 4
+                  },
+                  {
+                    "op": "L",
+                    "x": 20,
+                    "y": 4
+                  },
+                  {
+                    "op": "L",
+                    "x": 20,
+                    "y": 20
+                  },
+                  {
+                    "op": "Z"
+                  }
+                ],
+                "strokeWidth": 0,
+                "opacity": 1,
+                "visible": true,
+                "fill": "blue",
+                "id": "element:21"
+              }
+            ]
+          }
+        ],
+        "motion": [],
+        "revision": 5
+      }
+    ],
+    "brushes": [
+      {
+        "id": "brush:rough-pencil",
+        "name": "Rough pencil",
+        "version": 1,
+        "tip": {
+          "kind": "ellipse",
+          "aspect": 0.72,
+          "angle": -0.3,
+          "rotationMode": "stylus"
+        },
+        "size": 8,
+        "opacity": 0.62,
+        "flow": 0.24,
+        "hardness": 0.58,
+        "spacing": 0.12,
+        "taperStart": 0.08,
+        "taperEnd": 0.16,
+        "texture": "graphite",
+        "textureStrength": 0.58,
+        "dynamics": {
+          "pressureSize": 0.72,
+          "pressureOpacity": 0.78,
+          "speedSize": 0,
+          "speedOpacity": -0.18,
+          "tiltShape": 0.22,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:clean-ink",
+        "name": "Clean ink",
+        "version": 1,
+        "tip": {
+          "kind": "round",
+          "aspect": 1,
+          "angle": 0,
+          "rotationMode": "stroke"
+        },
+        "size": 7,
+        "opacity": 1,
+        "flow": 0.92,
+        "hardness": 0.96,
+        "spacing": 0.08,
+        "taperStart": 0.12,
+        "taperEnd": 0.3,
+        "texture": "none",
+        "textureStrength": 0,
+        "dynamics": {
+          "pressureSize": 0.88,
+          "pressureOpacity": 0.08,
+          "speedSize": -0.12,
+          "speedOpacity": 0,
+          "tiltShape": 0,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:shade",
+        "name": "Dry shading",
+        "version": 1,
+        "tip": {
+          "kind": "rake",
+          "aspect": 0.62,
+          "angle": -0.5,
+          "rotationMode": "stylus"
+        },
+        "size": 24,
+        "opacity": 0.42,
+        "flow": 0.12,
+        "hardness": 0.35,
+        "spacing": 0.16,
+        "taperStart": 0.04,
+        "taperEnd": 0.08,
+        "texture": "dry-brush",
+        "textureStrength": 0.68,
+        "dynamics": {
+          "pressureSize": 0.55,
+          "pressureOpacity": 0.72,
+          "speedSize": 0,
+          "speedOpacity": 0,
+          "tiltShape": 0.7,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:charcoal",
+        "name": "Charcoal",
+        "version": 1,
+        "tip": {
+          "kind": "chisel",
+          "aspect": 0.42,
+          "angle": -0.55,
+          "rotationMode": "stylus"
+        },
+        "size": 18,
+        "opacity": 0.66,
+        "flow": 0.18,
+        "hardness": 0.48,
+        "spacing": 0.2,
+        "taperStart": 0.05,
+        "taperEnd": 0.08,
+        "texture": "charcoal",
+        "textureStrength": 0.8,
+        "dynamics": {
+          "pressureSize": 0.65,
+          "pressureOpacity": 0.68,
+          "speedSize": 0,
+          "speedOpacity": 0,
+          "tiltShape": 0.45,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:soft-eraser",
+        "name": "Soft eraser",
+        "version": 1,
+        "tip": {
+          "kind": "round",
+          "aspect": 1,
+          "angle": 0,
+          "rotationMode": "fixed"
+        },
+        "size": 32,
+        "opacity": 0.7,
+        "flow": 0.22,
+        "hardness": 0.28,
+        "spacing": 0.1,
+        "taperStart": 0,
+        "taperEnd": 0,
+        "texture": "none",
+        "textureStrength": 0,
+        "dynamics": {
+          "pressureSize": 0.45,
+          "pressureOpacity": 0.5,
+          "speedSize": 0,
+          "speedOpacity": 0,
+          "tiltShape": 0,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      }
+    ],
+    "assets": [
+      {
+        "id": "legacy-cue",
+        "name": "Cue",
+        "kind": "audio",
+        "path": "cue.wav",
+        "source": "linked",
+        "mimeType": "audio/wav"
+      }
+    ],
+    "audioTracks": [
+      {
+        "id": "audio-track:29",
+        "name": "Sound",
+        "muted": false,
+        "locked": false,
+        "clips": [
+          {
+            "id": "audio-clip:31",
+            "assetId": "legacy-cue",
+            "name": "Trimmed cue",
+            "startFrame": 3,
+            "sourceInFrame": 2,
+            "durationFrames": 30,
+            "volume": 0.5,
+            "fadeInFrames": 2,
+            "fadeOutFrames": 3
+          }
+        ]
+      }
+    ],
+    "comments": [],
+    "locks": [],
+    "changes": [
+      {
+        "id": "change:2",
+        "version": 1,
+        "actor": "agent:local",
+        "operation": "add scene",
+        "targetIds": ["project:1"],
+        "timestamp": "2026-10-05T06:46:16.304Z"
+      },
+      {
+        "id": "change:4",
+        "version": 2,
+        "actor": "agent:local",
+        "operation": "add shot",
+        "targetIds": ["scene:1"],
+        "timestamp": "2026-10-05T06:46:16.306Z"
+      },
+      {
+        "id": "change:6",
+        "version": 3,
+        "actor": "agent:local",
+        "operation": "add panel",
+        "targetIds": ["shot:3", "panel:5"],
+        "timestamp": "2026-10-05T06:46:16.309Z"
+      },
+      {
+        "id": "change:8",
+        "version": 4,
+        "actor": "agent:local",
+        "operation": "add shot",
+        "targetIds": ["scene:1"],
+        "timestamp": "2026-10-05T06:46:16.310Z"
+      },
+      {
+        "id": "change:10",
+        "version": 5,
+        "actor": "agent:local",
+        "operation": "add panel",
+        "targetIds": ["shot:7", "panel:9"],
+        "timestamp": "2026-10-05T06:46:16.311Z"
+      },
+      {
+        "id": "change:12",
+        "version": 6,
+        "actor": "agent:local",
+        "operation": "add layer",
+        "targetIds": ["panel:5", "panel:5"],
+        "timestamp": "2026-10-05T06:46:16.315Z"
+      },
+      {
+        "id": "change:14",
+        "version": 7,
+        "actor": "agent:local",
+        "operation": "add drawing element",
+        "targetIds": ["panel:5", "layer:11", "panel:5"],
+        "timestamp": "2026-10-05T06:46:16.319Z"
+      },
+      {
+        "id": "change:16",
+        "version": 8,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:11", "panel:5"],
+        "timestamp": "2026-10-05T06:46:16.321Z"
+      },
+      {
+        "id": "change:18",
+        "version": 9,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:11", "panel:5"],
+        "timestamp": "2026-10-05T06:46:16.322Z"
+      },
+      {
+        "id": "change:20",
+        "version": 10,
+        "actor": "agent:local",
+        "operation": "add layer",
+        "targetIds": ["panel:9", "panel:9"],
+        "timestamp": "2026-10-05T06:46:16.323Z"
+      },
+      {
+        "id": "change:22",
+        "version": 11,
+        "actor": "agent:local",
+        "operation": "add drawing element",
+        "targetIds": ["panel:9", "layer:19", "panel:9"],
+        "timestamp": "2026-10-05T06:46:16.323Z"
+      },
+      {
+        "id": "change:24",
+        "version": 12,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:19", "panel:9"],
+        "timestamp": "2026-10-05T06:46:16.325Z"
+      },
+      {
+        "id": "change:26",
+        "version": 13,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:19", "panel:9"],
+        "timestamp": "2026-10-05T06:46:16.326Z"
+      },
+      {
+        "id": "change:27",
+        "version": 14,
+        "actor": "agent:local",
+        "operation": "set transition",
+        "targetIds": ["panel:5", "panel:5"],
+        "timestamp": "2026-10-05T06:46:16.327Z"
+      },
+      {
+        "id": "change:28",
+        "version": 15,
+        "actor": "agent:local",
+        "operation": "add asset",
+        "targetIds": [],
+        "timestamp": "2026-10-05T06:46:16.337Z"
+      },
+      {
+        "id": "change:30",
+        "version": 16,
+        "actor": "agent:local",
+        "operation": "add audio track",
+        "targetIds": [],
+        "timestamp": "2026-10-05T06:46:16.339Z"
+      },
+      {
+        "id": "change:32",
+        "version": 17,
+        "actor": "agent:local",
+        "operation": "add audio clip",
+        "targetIds": ["audio-track:29"],
+        "timestamp": "2026-10-05T06:46:16.340Z"
+      }
+    ],
+    "metadata": {},
+    "components": []
+  },
+  "frames": [
+    {
+      "frame": 0,
+      "sha256": "8ec46687c877097a891be795bcaab87c7ba5e04fb738136c21b0004587c7f585"
+    },
+    {
+      "frame": 12,
+      "sha256": "53d80087ec247dd9b0fb4859a17f9807eb4e0ef6e84b6304a00ecc60a6c5fa2f"
+    },
+    {
+      "frame": 20,
+      "sha256": "5d31fd3df265c6786b83c20317a0045a27ff4da1af8b41d0e0f6cbbacc23b99d"
+    },
+    {
+      "frame": 22,
+      "sha256": "d33357a0fab6c537a39a7c00aa75e8ebe761e626b326cdc403b396541ef7c068"
+    },
+    {
+      "frame": 23,
+      "sha256": "99aaaf850a20620d7d2534d18bc6f219fb9e376daf9493939a66ca40f0a763e5"
+    },
+    {
+      "frame": 24,
+      "sha256": "b6299a7ac0015fffbac706ae2f6c9d5d6102344c7ba838debcaec0f930da11ce"
+    },
+    {
+      "frame": 36,
+      "sha256": "9326888f199eba0fdabda4aaea1ba77c1b95955992f79c29c058a1172f5f471d"
+    },
+    {
+      "frame": 47,
+      "sha256": "1de904e6cfd1c4f160ea9a486c4412ca8a6826ed870168441f8b094ea59d11f9"
+    }
+  ]
+}

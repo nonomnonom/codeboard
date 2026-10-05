@@ -1,6 +1,6 @@
 {
   "name": "codeboard-studio",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Code-first drawing and storyboard tools for JavaScript and TypeScript",
   "repository": {
     "type": "git",
@@ -37,32 +37,46 @@
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "vitest run",
+    "test": "jest",
     "test:package": "node scripts/verify-package.mjs",
     "test:install": "node scripts/verify-package.mjs --install",
+    "test:studies:install": "node scripts/verify-studies-install.mjs",
     "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
     "docs:generate": "node scripts/build-api-docs.mjs && node plugin/scripts/sync-reference.mjs",
     "check:docs": "node scripts/build-api-docs.mjs --check && node scripts/check-doc-links.mjs",
     "check:plugin": "node plugin/scripts/sync-reference.mjs --check && node plugin/scripts/check.mjs && node plugin/evals/test-reference-sync.mjs",
     "prepack": "npm run build",
-    "example:quickstart": "codeboard run examples/quickstart.mjs",
-    "check": "npm run build && npm test && npm run check:docs && npm run check:plugin && npm run test:package",
-    "example": "codeboard run examples/last-light.ts",
-    "example:movie": "codeboard run examples/last-light.ts --movie",
-    "example:revise": "codeboard run examples/revise-last-light.ts",
-    "example:lengkap": "codeboard run examples/lengkap.ts",
-    "example:lengkap:movie": "codeboard run examples/lengkap.ts --movie",
-    "example:lengkap:verify": "codeboard run examples/lengkap/verify.ts",
-    "preview": "codeboard preview examples/output/last-light/last-light.cboard",
+    "example:quickstart": "npm run quickstart:author --workspace @codeboard/examples",
+    "check": "npm run build && npm run lint && npm run format:check && npm run check:architecture && npm run workspaces:check && npm run examples:typecheck && npm test && npm run check:docs && npm run check:plugin && npm run test:package",
+    "example": "npm run last-light:author --workspace @codeboard/examples",
+    "example:movie": "npm run last-light:render --workspace @codeboard/examples -- --movie",
+    "example:revise": "npm run last-light:revise --workspace @codeboard/examples",
+    "example:lengkap": "npm run lengkap:author --workspace @codeboard/examples",
+    "example:lengkap:movie": "npm run lengkap:render --workspace @codeboard/examples -- --movie",
+    "example:lengkap:verify": "npm run lengkap:verify --workspace @codeboard/examples",
+    "preview": "node dist/src/cli.js preview examples/last-light/output/last-light.cboard",
     "verify": "npm run build && npm test && npm run example",
-    "demo:typecheck": "tsc -p code-board-demo/tsconfig.json",
-    "demo:author": "codeboard run code-board-demo/src/run.ts author",
-    "demo:verify": "codeboard run code-board-demo/src/run.ts verify",
-    "demo:render": "codeboard run code-board-demo/src/run.ts render",
-    "demo:review-script": "codeboard run code-board-demo/src/run.ts review-script",
+    "demo:typecheck": "npm run typecheck --workspace @codeboard/examples",
+    "demo:author": "npm run code-board-demo:presentation:author --workspace @codeboard/examples",
+    "demo:verify": "npm run code-board-demo:presentation:verify --workspace @codeboard/examples",
+    "demo:render": "npm run code-board-demo:presentation:render --workspace @codeboard/examples",
+    "demo:review-script": "npm run code-board-demo:presentation:review-script --workspace @codeboard/examples",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts --no-audit --no-fund && node scripts/sync-release-version.mjs && npm run docs:generate",
-    "docs:assets": "npm run build && node scripts/build-guide-assets.mjs"
+    "docs:assets": "npm run build && node scripts/build-guide-assets.mjs",
+    "dev": "tsc --watch --preserveWatchOutput",
+    "examples:typecheck": "npm run typecheck --workspace @codeboard/examples",
+    "workspaces:check": "node scripts/check-workspaces.mjs",
+    "example:studies": "npm run studies:author --workspace @codeboard/examples",
+    "example:character": "npm run code-board-demo:author --workspace @codeboard/examples",
+    "website:dev": "npm run dev --workspace codeboard-website",
+    "website:build": "npm run build --workspace codeboard-website",
+    "test:watch": "npm test -- --watch",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "check:architecture": "node scripts/check-architecture.mjs"
   },
   "engines": {
     "node": ">=22.22"
@@ -76,14 +90,22 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.15",
     "@changesets/cli": "^3.0.3",
+    "@types/jest": "30.0.0",
     "@types/node": "^24.7.0",
+    "jest": "30.5.2",
+    "jest-light-runner": "0.8.2",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.11"
+    "typescript": "^5.9.3"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "workspaces": [
+    ".",
+    "examples",
+    "website"
+  ]
 }

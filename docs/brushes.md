@@ -4,7 +4,7 @@ A brush combines a tip, settings, and optional paper texture. A tip describes th
 
 ## Customize a preset
 
-```js
+```ts
 import { brushes, customizeBrush, renderBrushSwatch } from 'codeboard-studio';
 import { writeFile } from 'node:fs/promises';
 
@@ -46,7 +46,7 @@ Use `brushParameterSchema` to inspect the full preset structure as JSON Schema. 
 
 For preset dependencies, texture resources, and selecting among several tips, use the [resource import guide](brush-resources.md).
 
-```js
+```ts
 import { importBrushResource, brushFromResource } from 'codeboard-studio';
 
 const report = await importBrushResource('my-tip.png', {
@@ -83,7 +83,7 @@ Record the actual source and license of resources you import. Only set `redistri
 
 ## Create a custom bitmap tip
 
-```js
+```ts
 import { brushTipFromFunction } from 'codeboard-studio';
 const tip = brushTipFromFunction(96, 96, (x, y) => {
   const edge = .55 + .12 * Math.sin(y * 13) + .06 * Math.cos(y * 29);
@@ -114,7 +114,7 @@ The callback receives normalized X/Y coordinates from -1 to 1 and returns alpha 
 
 ## Save and reuse a brush
 
-```js
+```ts
 const brushId = project.production.createBrush(brush);
 const savedBrush = project.production.brush(brushId);
 panel.addRasterLayer('Paint').rasterStroke(points, savedBrush);

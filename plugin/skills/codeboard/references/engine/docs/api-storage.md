@@ -48,6 +48,44 @@ get version(): number;
 listPanels(): PanelInfo[];
 ```
 
+### boardPanels
+
+```ts
+/** Page saved board timing without decoding panel artwork; legacy catalogs read the header. */
+boardPanels(query: {
+    limit?: number;
+    offset?: number;
+} = {}, options: {
+    expectedVersion?: number;
+} = {}): {
+    version: number;
+    indexed: boolean;
+    frameRate: number;
+    durationFrames: number;
+    panelCount: number;
+    items: { id: string; shotId: string; startFrame: number; durationFrames: number; transition: { type: "cut" | "dissolve" | "wipe-left" | "wipe-right"; durationFrames: number; }; width: number; height: number; revision: number; }[];
+};
+```
+
+### editorialClips
+
+```ts
+/** Page saved editorial clips while leaving sibling shot artwork/resources encoded. */
+editorialClips(sequenceId: string, query: {
+    limit?: number;
+    offset?: number;
+} = {}, options: {
+    expectedVersion?: number;
+} = {}): {
+    version: number;
+    sequenceId: string;
+    frameRate: RationalRate;
+    durationFrames: number;
+    clipCount: number;
+    items: { id: string; animationId: string; startFrame: number; sourceInFrame: number; durationFrames: number; transition: { type: "cut" | "dissolve" | "wipe-left" | "wipe-right"; durationFrames: number; }; holdFrames?: number | undefined; }[];
+};
+```
+
 ### findObjects
 
 ```ts
@@ -58,6 +96,21 @@ findObjects(query: {
     limit?: number;
     offset?: number;
 } = {}): Record<string, SQLOutputValue>[];
+```
+
+### query
+
+```ts
+/** Saved metadata, ordered by ID. Legacy/stale catalogs fall back without modifying the file. */
+query(query: ObjectQuery = {}, options: {
+    expectedVersion?: number;
+} = {}): {
+    version: number;
+    items: ObjectSummary[];
+    nextCursor?: string;
+    summary: { studio: { animations: number; editorialSequences: number; editorialClips: number; audioTracks: number; audioClips: number; }; schemaVersion: 5; version: number; canvas: { width: number; height: number; background: string; }; frameRate: number; durationFrames: number; counts: { sequences: number; scenes: number; shots: number; panels: number; components: number; assets: number; audioTracks: number; comments: number; locks: number; }; titleTruncated?: boolean | undefined; id: string; title: string; };
+    indexed: boolean;
+};
 ```
 
 ### readPanel
@@ -83,6 +136,13 @@ panelDocument(id: string, options: {
 readDocument(): StoryboardDocument;
 ```
 
+### copyTo
+
+```ts
+/** Copy the entire current container, including checkpoints, receipts and embedded assets. Never overwrites. */
+async copyTo(path: string, options: CopyProjectOptions): Promise<{ projectId: string; version: number; documentHash: string; path: string; }>;
+```
+
 ### readAsset
 
 ```ts
@@ -92,22 +152,37 @@ readAsset(id: string, options: {
 } = {}): Buffer;
 ```
 
+### readAssetIfPresent
+
+```ts
+/** Read a saved-head asset at the expected version, optionally requiring the same source declaration. */
+readAssetIfPresent(id: string, options: {
+    expectedVersion: number;
+    asset?: Asset;
+}): Buffer | undefined;
+```
+
 ### extractAssets
 
 ```ts
-/** Explicit extraction for file-based audio encoders; never writes outside destination. */
-extractAssets(directory: string): void;
+/** Extract one saved snapshot using the asset writer's path and overwrite checks. */
+extractAssets(directory: string, options: {
+    expectedVersion?: number;
+    revision?: string;
+} = {}): void;
 ```
 
 ### save
 
 ```ts
-save(document: StoryboardDocument, options: {
-    expectedVersion?: number;
-    overwrite?: boolean;
-    assetRoot?: string;
-    readAsset?: (id: string) => Buffer | undefined;
-} = {}): number;
+save(document: StoryboardDocument, options: SaveOptions = {}): number;
+```
+
+### readReceipt
+
+```ts
+/** Receipts survive later saves, named revision restores and compaction. */
+readReceipt(requestId: string): CommitReceipt | null;
 ```
 
 ### updatePanel
@@ -126,6 +201,7 @@ updatePanel(panel: Panel, options: {
 inspect(): {
     format: string;
     formatVersion: number;
+    writable: boolean;
     version: number;
     panels: number;
     payloads: Record<string, SQLOutputValue>[];

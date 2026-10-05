@@ -1,14 +1,50 @@
 [
-  {"id":"storybook", "request":"Add React button stories to Storybook. Which Codeboard skills apply?"},
-  {"id":"drawing", "request":"Create a Codeboard illustration with an editable contour and an imported paper texture. Which skills and documentation should you use?"},
-  {"id":"brush", "request":"Import a Krita KPP into Codeboard. The tip is missing but its preview looks good. Can the preview provide the missing tip automatically?"},
-  {"id":"hold", "request":"In an existing Codeboard film, hold the current cel for frames 30 through 35 and resume existing timing at 36. Which operation and skills fit?"},
-  {"id":"retime", "request":"Lengthen a Codeboard panel with interior sound cues and crossing ambience. Does ripple keep every cue synchronized automatically?"},
-  {"id":"camera", "request":"Change only zoom on an existing Codeboard camera key which also stores pan and rotation. Which skill and public operation fit?"},
-  {"id":"review", "request":"Review a Codeboard film without editing it. You can render frames but cannot open images or play audio. Can you mark visual quality and sound sync as verified?"},
-  {"id":"debug", "request":"A Codeboard frame is blank. What should be checked before deleting and rebuilding its character layer?"},
-  {"id":"inbetweens", "request":"Use Codeboard production.generateInbetweens to generate missing hand drawings automatically. Is that a supported public capability? Give a supported alternative if not."},
-  {"id":"toonboom", "request":"Open and edit a native Toon Boom Harmony project in Codeboard, keeping its native rig. Is native import supported?"},
-  {"id":"oldpaint", "request":"I changed a library brush size with production.reviseBrush. Will old strokes in the Codeboard project update automatically?"},
-  {"id":"conflict", "request":"Another writer saved the Codeboard project after my session opened it. Can I silently force overwrite to preserve my correction without losing their edits?"}
+  {
+    "id": "storybook",
+    "request": "Add React button stories to Storybook. Which Codeboard skills apply?"
+  },
+  {
+    "id": "drawing",
+    "request": "Create a Codeboard illustration with an editable contour and an imported paper texture. Which skills and documentation should you use?"
+  },
+  {
+    "id": "brush",
+    "request": "Import a Krita KPP into Codeboard. The tip is missing but its preview looks good. Can the preview provide the missing tip automatically?"
+  },
+  {
+    "id": "hold",
+    "request": "In an existing Codeboard film, hold the current cel for frames 30 through 35 and resume existing timing at 36. Which operation and skills fit?"
+  },
+  {
+    "id": "retime",
+    "request": "Lengthen a Codeboard panel with interior sound cues and crossing ambience. Does ripple keep every cue synchronized automatically?"
+  },
+  {
+    "id": "camera",
+    "request": "Change only zoom on an existing Codeboard camera key which also stores pan and rotation. Which skill and public operation fit?"
+  },
+  {
+    "id": "review",
+    "request": "Review a Codeboard film without editing it. You can render frames but cannot open images or play audio. Can you mark visual quality and sound sync as verified?"
+  },
+  {
+    "id": "debug",
+    "request": "A Codeboard frame is blank. What should be checked before deleting and rebuilding its character layer?"
+  },
+  {
+    "id": "inbetweens",
+    "request": "Use Codeboard production.generateInbetweens to generate missing hand drawings automatically. Is that a supported public capability? Give a supported alternative if not."
+  },
+  {
+    "id": "toonboom",
+    "request": "Open and edit a native Toon Boom Harmony project in Codeboard, keeping its native rig. Is native import supported?"
+  },
+  {
+    "id": "oldpaint",
+    "request": "I changed a library brush size with production.reviseBrush. Will old strokes in the Codeboard project update automatically?"
+  },
+  {
+    "id": "conflict",
+    "request": "Another writer saved the Codeboard project after my session opened it. Can I silently force overwrite to preserve my correction without losing their edits?"
+  }
 ]

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   SearchDialog,
   SearchDialogClose,
@@ -9,11 +9,11 @@ import {
   SearchDialogList,
   SearchDialogOverlay,
   type SharedProps,
-} from 'fumadocs-ui/components/dialog/search';
-import { useDocsSearch } from 'fumadocs-core/search/client';
-import { staticClient } from 'fumadocs-core/search/client/orama-static';
-import { useI18n } from 'fumadocs-ui/contexts/i18n';
-import { basePath } from '@/lib/shared';
+} from "fumadocs-ui/components/dialog/search";
+import { useDocsSearch } from "fumadocs-core/search/client";
+import { staticClient } from "fumadocs-core/search/client/orama-static";
+import { useI18n } from "fumadocs-ui/contexts/i18n";
+import { basePath } from "@/lib/shared";
 
 export default function DefaultSearchDialog(props: SharedProps) {
   const { locale } = useI18n();
@@ -27,14 +27,19 @@ export default function DefaultSearchDialog(props: SharedProps) {
   return (
     <SearchDialog search={search} onSearchChange={setSearch} isLoading={query.isLoading} {...props}>
       <SearchDialogOverlay />
-      <SearchDialogContent>
+      <SearchDialogContent className="nonom-search-dialog">
         <SearchDialogHeader>
           <SearchDialogIcon />
           <SearchDialogInput />
           <SearchDialogClose />
         </SearchDialogHeader>
-        <SearchDialogList items={query.data !== 'empty' ? query.data : null} />
-        {query.error && <p role="alert" className="p-4 text-sm">Search could not load. Check your connection and reopen search, or browse the documentation sidebar.</p>}
+        <SearchDialogList items={query.data !== "empty" ? query.data : null} />
+        {query.error && (
+          <p role="alert" className="p-4 text-sm">
+            Search could not load. Check your connection and reopen search, or browse the
+            documentation sidebar.
+          </p>
+        )}
       </SearchDialogContent>
     </SearchDialog>
   );

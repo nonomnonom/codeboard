@@ -1,26 +1,43 @@
-# Codeboard character walkthrough
+# Codeboard character and presentation study
 
-The eight-second walk, stop, hop and landing from `code-board-demo`, extracted into a standalone public example. The pose generator and contour drawing functions come from that demo; this package omits its presentation scenes and third-party soundtrack.
+One project containing an eight-second performance and an optional scripted presentation. It is not a recording of an autonomous agent session.
 
-Install Node.js 22.22 or later and `npm install -g codeboard-studio@0.2.1`, then run from this folder:
+## Local workspace
+
+Install once at the repository root with `npm ci`, then run `npm run build`. The shared `examples` workspace uses the checkout's engine through `file:..`. Keep `npm run dev` running for engine changes and re-run after successful compilation.
 
 ```sh
-codeboard run main.mjs
-codeboard run revise.mjs
-codeboard movie clawd-output/clawd.cboard --output clawd-output/clawd.mp4
+npm run typecheck --workspace @codeboard/examples
+npm run code-board-demo:author --workspace @codeboard/examples
+npm run code-board-demo:render --workspace @codeboard/examples
 ```
 
-The first command writes an editable project and three review PNGs into `clawd-output/`. It deliberately replaces its own generated project when rerun. The revision script opens that project and extends the anticipation drawing into frames 126–129; it keeps the 192-frame duration and surrounding exposures. Before/after images both show frame 128.
+For a downloaded ZIP, run `npm install`, `npm run typecheck`, then the corresponding `npm run` command from its extracted project directory. The ZIP includes the matching local engine build under vendor/ and installs it without waiting for engine publication. Third-party dependencies still require installation. Keep the generated lockfile.
 
-`main.mjs --movie` also exports an MP4 when FFmpeg is available. Movie export is optional; authoring, saving and PNG review do not require FFmpeg.
+## Source ownership
 
-Files:
+All implementation lives in `src/`. `src/config.ts` owns fixture settings. The shared `examples/tsconfig.json` enables strict checking against the engine's public declarations. `character/` is the sole source of pose types, geometry, and drawing functions. `study/` builds the short performance. `presentation/project/`, `presentation/scenes/`, `presentation/artwork/`, and `presentation/review/` build and inspect the film. `cli/` owns commands.
 
-- `poses.mjs`: pose parameters, generated drawing geometry and exposure timing.
-- `art.mjs`: vector contours, facial features and pencil accents.
-- `main.mjs`: document, drawing track, placement keyframes, save and review.
-- `revise.mjs`: a targeted timing revision.
+The story, geometry, materials, layer names, and timing are this fixture's inputs. They are not required project defaults. Public API behavior is described by the [online reference](https://codeboard.nonom.xyz/docs/reference/).
 
-All times are global integer frames at 24 fps. Character contours remain editable vector elements; no character bitmap is used. This is a scripted animation example, not a recording of an autonomous agent session. Clawd is the character depicted in the supplied demo; no endorsement by Anthropic is claimed.
+## Output and review
 
-Source code is covered by the repository MIT license. No third-party audio or reference bitmap is included.
+Generated files live in this project's `output/`, or the directory selected by `CODEBOARD_EXAMPLE_OUTPUT`. Authoring deliberately regenerates these files. Open saved artwork for revisions; keep independently revised projects out of a generator's output. Render commands read saved state. A generated image or passing assertion still needs visual review.
+
+The short study writes `output/clawd.cboard`. The revise command changes only the drawing hold over `[126, 130)` and compares frame 128 before and after.
+
+```sh
+npm run code-board-demo:presentation:author --workspace @codeboard/examples
+npm run code-board-demo:presentation:verify --workspace @codeboard/examples
+npm run code-board-demo:presentation:render --workspace @codeboard/examples
+```
+
+Run these commands from the repository root. In a downloaded ZIP, use `npm run presentation:author`,
+`npm run presentation:verify` and `npm run presentation:render` from the extracted directory.
+The presentation writes `output/presentation/`; `CODEBOARD_DEMO_OUTPUT` may select another
+presentation directory. Rendering reads the saved film and requires FFmpeg. The authoring pipeline
+runs each stage in a separate process using the active package's declared CLI.
+
+Clawd/Claude branding belongs to its owners; no affiliation or endorsement is implied. The generated terminal presentation is an authored illustration, not proof of agent behavior.
+
+Pass `-- --movie` to the short study/story render command for MP4. FFmpeg is required. Host fonts may differ across platforms. Code is MIT; original synthesized audio is CC0-1.0.

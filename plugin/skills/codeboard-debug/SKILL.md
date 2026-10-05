@@ -15,6 +15,7 @@ Read `docs/troubleshooting.md` and the relevant subsystem guide. Record the runt
 | Blank image | Check global frame/exposure, then ancestor visibility, mask alpha, and camera-off isolated render |
 | Edit disappears | Check inspection-copy mutation, save target, reopen, and stale-version error |
 | One-frame offset | Inspect panel start, exclusive end, and actual keys before interpolation |
+| Unexpected rig pose | Compare base keys, controller stack/range and evaluated target pages; inspect skin bind and frame vertices |
 | Foreign brush mismatch | Inspect resource/dependency report and a controlled swatch |
 | MP4 failure | Separate PNG rendering from FFmpeg, file-lock, and asset-resolution failures |
 | Memory pressure | Use bounded queries, partial panel reads, selected layers, and review thumbnails |

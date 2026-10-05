@@ -1,4 +1,4 @@
-import { source } from '@/lib/source';
+import { source } from "@/lib/source";
 import {
   DocsBody,
   DocsDescription,
@@ -6,26 +6,32 @@ import {
   DocsTitle,
   MarkdownCopyButton,
   ViewOptionsPopover,
-} from 'fumadocs-ui/layouts/docs/page';
-import { notFound } from 'next/navigation';
-import { getMDXComponents } from '@/components/mdx';
-import type { Metadata } from 'next';
-import { createRelativeLink } from 'fumadocs-ui/mdx';
-import { basePath, getPageImageUrl, getPageMarkdownUrl, gitConfig } from '@/lib/shared';
+} from "fumadocs-ui/layouts/docs/page";
+import { notFound } from "next/navigation";
+import { getMDXComponents } from "@/components/mdx";
+import type { Metadata } from "next";
+import { createRelativeLink } from "fumadocs-ui/mdx";
+import { basePath, getPageImageUrl, getPageMarkdownUrl, gitConfig } from "@/lib/shared";
+import { CreatorCredit } from "@/components/creator-credit";
 
-export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
+export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
   const MDX = page.data.body;
   const markdownUrl = getPageMarkdownUrl(page).url;
+  const RelativeLink = createRelativeLink(source, page);
 
   return (
-    <DocsPage className="codeboard-doc-page" toc={page.data.toc.filter((entry) => entry.depth > 1)} full={page.data.full}>
+    <DocsPage
+      className="codeboard-doc-page"
+      toc={page.data.toc.filter((entry) => entry.depth > 1)}
+      full={page.data.full}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
-      <div className="flex flex-row gap-2 items-center border-b pb-6">
+      <div className="docs-page-actions">
         <MarkdownCopyButton markdownUrl={markdownUrl} />
         <ViewOptionsPopover
           markdownUrl={markdownUrl}
@@ -35,15 +41,26 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
       <DocsBody>
         <MDX
           components={getMDXComponents({
-            a: ({href, ...props}) => {
-              const RelativeLink = createRelativeLink(source, page);
-              if (href?.startsWith('../website/public/')) return <a href={`${basePath}/${href.slice('../website/public/'.length)}`} {...props} />;
-              if (href?.startsWith('../')) return <a href={`https://github.com/nonomnonom/codeboard/blob/main/${href.slice(3)}`} {...props} />;
-              return <RelativeLink href={href} {...props} />;
+            a: ({ href, ...props }) => {
+              if (href?.startsWith("../website/public/"))
+                return (
+                  <a href={`${basePath}/${href.slice("../website/public/".length)}`} {...props} />
+                );
+              if (href?.startsWith("../"))
+                return (
+                  <a
+                    href={`https://github.com/nonomnonom/codeboard/blob/main/${href.slice(3)}`}
+                    {...props}
+                  />
+                );
+              const relativeHref =
+                href && !/^(?:[a-z][a-z\d+.-]*:|\/|#|\?|\.)/i.test(href) ? `./${href}` : href;
+              return <RelativeLink href={relativeHref} {...props} />;
             },
           })}
         />
       </DocsBody>
+      <CreatorCredit />
     </DocsPage>
   );
 }
@@ -52,7 +69,7 @@ export async function generateStaticParams() {
   return source.generateParams();
 }
 
-export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/docs/[[...slug]]">): Promise<Metadata> {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();

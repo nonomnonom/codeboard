@@ -24,8 +24,8 @@ For a project dependency, use `npm install --save-exact codeboard-studio` and ru
 Open a new terminal in your working folder:
 
 ```sh
-codeboard init
-codeboard run scene.mjs
+codeboard init scene.ts
+codeboard run scene.ts
 ```
 
 Open `output/first.png` to see the stroke. `output/first.cboard` keeps the editable project. Change the script and run it again, or [reopen and revise the saved artwork](docs/projects.md).
@@ -41,6 +41,18 @@ Open `output/first.png` to see the stroke. `output/first.cboard` keeps the edita
 [![Pose drawings from the Codeboard demo](website/public/art/code-board-demo/key-drawings.png)](https://codeboard.nonom.xyz/docs/code-board-demo/)
 
 **The Codeboard demo** follows Clawd through a walk, pause, hop and landing. [Run the example](docs/code-board-demo.md), inspect its onion skins, and revise a drawing hold. Download either the eight-second study or the complete 48-second demo, then run it with the installed `codeboard` CLI. Both use the public API; no engine build is needed. See [all runnable examples](examples/README.md).
+
+## Develop locally
+
+This repository is an npm workspace monorepo. Examples, the presentation, and the website link to the local engine:
+
+```sh
+npm ci
+npm run build
+npm run example:quickstart
+```
+
+Keep `npm run dev` running to rebuild engine code and types as you edit. Re-run an example after compilation; no npm publish is needed. [Workspace commands and example scope](examples/README.md).
 
 ## Contribute
 

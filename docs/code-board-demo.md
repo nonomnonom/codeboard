@@ -6,51 +6,44 @@ Build the eight-second Clawd performance from the Codeboard launch demo: walk, n
 
 The [48-second walkthrough film](../website/public/art/code-board-demo/walkthrough.mp4) shows the larger workflow. Its terminal scenes are a scripted presentation, not a live agent recording. The film is rebuilt with the released CLI and original synthesized Foley. Download the complete presentation source below, or begin with the smaller eight-second performance. Neither requires external artwork or audio.
 
-## Run it locally
+These story and presentation choices belong to this example. They do not define required style, character anatomy, production stages, or agent behavior. Assertions cover named fixture properties; visual quality remains a separate review.
 
-1. [Install Codeboard](install.md).
-2. Download and extract the [example source ZIP](../website/public/art/code-board-demo/source.zip).
-3. Open a terminal inside the extracted `code-board-demo` directory.
+## Run the local workspace
 
-```sh
-codeboard run main.mjs
-```
-
-This creates `clawd-output/clawd.cboard`, `frame.png`, `poses.png`, and `onion.png`. No FFmpeg or network connection is needed for these outputs. The example has a 1920 × 1080 canvas, runs at 24 fps, and lasts 192 frames. Running `main.mjs` again deliberately replaces its generated project; make revisions with `revise.mjs` instead.
-
-You can also download the [editable project](../website/public/art/code-board-demo/clawd.cboard) directly. The source is available in the repository under [examples/code-board-demo](../examples/code-board-demo/README.md).
-
-## Build the complete 48-second film
-
-Download the [full demo source ZIP](../website/public/art/code-board-demo/launch-source.zip), extract it, and open a terminal in `code-board-demo`. This source targets **Codeboard v0.2.1**. The installed `codeboard` command must be on PATH.
+From the repository root:
 
 ```sh
-codeboard run src/run.ts author
-codeboard run src/run.ts render
+npm ci
+npm run build
+npm run example:character
+npm run code-board-demo:revise --workspace @codeboard/examples
+npm run code-board-demo:render --workspace @codeboard/examples
 ```
 
-`author` creates editable projects, original synthesized Foley, review sheets, pose crops, and verification reports. `render` repeats that work and exports the film; it requires FFmpeg on PATH or `FFMPEG_PATH` pointing to its executable. After installing Codeboard from npm, no additional project dependencies or engine build are needed.
+The single [demo project](../examples/code-board-demo/README.md) contains the character study and the presentation. Its `character/` source is shared, not copied. The short study writes `examples/code-board-demo/output/clawd.cboard` and review images. Authoring regenerates those files; revision opens saved state and rendering preserves it.
 
-Outputs go into `codeboard-demo-output/` in your working directory. `CODEBOARD_DEMO_OUTPUT` can select another output directory. Keep independent revisions elsewhere: running authoring again replaces its generated outputs.
+For a standalone project, download [the complete source ZIP](../website/public/art/examples/code-board-demo.zip). Inside the extracted `code-board-demo` directory, run `npm install`, `npm run typecheck`, and `npm run author`. Downloads use the matching release; local workspace development uses the live checkout.
+
+## Build the presentation
 
 ```sh
-codeboard run src/run.ts verify
-codeboard preview codeboard-demo-output/launch/codeboard-launch.cboard
-codeboard movie codeboard-demo-output/launch/codeboard-launch.cboard --output film.mp4
+npm run demo:author
+npm run demo:verify
+npm run demo:render
 ```
 
-The [demo README](../code-board-demo/README.md) maps source files and outputs. Verification reopens saved projects, compares all 192 performance frames, checks planted-foot drift and drawing exposures, and checks turnaround contours. Arial, Consolas and Segoe Print are host fonts; text appearance can differ between operating systems.
+These root aliases target the same workspace. `author` builds and checks the scripted presentation. `render` opens the saved film and exports an MP4; it requires FFmpeg. Presentation outputs are under `examples/code-board-demo/output/presentation/`, or `CODEBOARD_DEMO_OUTPUT`. Assertions test this fixture's timing and geometry, not general artistic quality or autonomous agent behavior.
 
 ## Separate shape from placement
 
-The source divides the work into four files:
+The source separates shared character data, authoring, commands and review:
 
 | File | Responsibility |
 | --- | --- |
-| `poses.mjs` | Body proportions, feet, eyes, and the ordered performance exposures |
-| `art.mjs` | Convert a pose into editable contours and ink accents |
-| `main.mjs` | Build the project, select drawings, key placement, save and render |
-| `revise.mjs` | Open the project and change a specific drawing hold |
+| `src/character/poses.ts` | Body proportions, feet, eyes, and the ordered performance exposures |
+| `src/character/art.ts` | Convert a pose into editable contours and ink accents |
+| `src/study/main.ts` | Build the project, select drawings, key placement, save and render |
+| `src/cli/revise.ts` | Open the project and change a specific drawing hold |
 
 `drawClawd(panel, pose, options)` is an example-specific drawing function, not an engine primitive. It creates groups and vector paths through the same public API used in your own scripts. Width, height, lean, eye opening, gaze, and four foot positions shape a drawing. A parent track controls where that drawing appears in the scene.
 
@@ -78,18 +71,20 @@ An exposure can reuse an existing drawing. The walk repeats geometry without cre
 
 The project uses stable IDs for the panel (`performance`), stage (`stage`), and drawing track (`clawd`). Individual drawing groups receive IDs when created; the example records them in a map.
 
-```js
+```ts
 const track = panel.addGroup('Clawd drawings', { id: 'clawd' }, stage.id);
-const drawings = new Map();
+const drawings = new Map<string, string>();
 for (const [name, pose] of acting.drawings) {
   drawings.set(name, drawClawd(panel, pose, {
     parent: track.id, name,
   }).id);
 }
 project.production.setDrawingSequence(track.id,
-  acting.exposures.map(({ frame, id }) => ({
-    frame, drawingId: drawings.get(id),
-  }))
+  acting.exposures.map(({ frame, id }) => {
+    const drawingId = drawings.get(id);
+    if (!drawingId) throw new Error(`Unknown drawing ${id}`);
+    return { frame, drawingId };
+  })
 );
 ```
 
@@ -97,7 +92,7 @@ Each exposure holds until the next. `drawingId: null` would create a blank expos
 
 ## Place each drawing
 
-```js
+```ts
 for (const { frame, x, y } of acting.exposures) {
   project.production.addLayerKeyframe('clawd', frame, {
     transform: { x, y }, easing: 'hold',
@@ -111,7 +106,7 @@ Hold interpolation keeps placement synchronized with the drawings on twos. Using
 
 ![Active takeoff drawing with blue previous and amber next poses, isolated to the character track](../website/public/art/code-board-demo/onion.png)
 
-```js
+```ts
 const image = await renderOnionSkin(project, [
   { panelId: 'performance', frame: 128 },
   { panelId: 'performance', frame: 124, layerIds: ['clawd'],
@@ -128,17 +123,18 @@ The first sample provides the current scene. Later samples isolate the character
 Run the included revision script after authoring:
 
 ```sh
-codeboard run revise.mjs
+npm run code-board-demo:revise --workspace @codeboard/examples
 ```
 
 It extends the anticipation drawing into frames 126–129. Frame 128 changes from a push pose to the held crouch; frame 130 resumes the existing takeoff. Total duration stays at 192 frames. Placement keys are unchanged: this is a drawing-hold revision, not a retime of the entire motion.
 
-```js
+```ts
 project.transaction('Hold the anticipation for two more frames', () => {
   const { current } = project.production.drawingNeighbors('clawd', 124);
+  if (!current?.drawingId) throw new Error('Anticipation drawing is missing');
   project.production.setDrawingRange('clawd', 126, 130, current.drawingId);
 });
-await project.save('clawd-output/clawd.cboard');
+await project.save('examples/code-board-demo/output/clawd.cboard');
 ```
 
 Before, frame 128:
@@ -156,7 +152,7 @@ For a longer shot that shifts later material, use `setPanelDuration` with ripple
 With FFmpeg available:
 
 ```sh
-codeboard movie clawd-output/clawd.cboard --output clawd-output/clawd.mp4
+codeboard movie examples/code-board-demo/output/clawd.cboard --output examples/code-board-demo/output/clawd.mp4
 ```
 
 Inspect the full eight-second playback, especially planted feet, the pause before the hop, and the landing. Keep the `.cboard` file alongside the movie; the movie does not retain editable drawings.

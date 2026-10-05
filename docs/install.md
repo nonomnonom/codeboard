@@ -20,8 +20,8 @@ Choose a working folder for your artwork:
 ```sh
 mkdir my-film
 cd my-film
-codeboard init
-codeboard run scene.mjs
+codeboard init scene.ts
+codeboard run scene.ts
 ```
 
 Continue with [the quickstart](quickstart.md). The CLI resolves the library for authored scripts, so a global installation does not require a dependency in every artwork folder.
@@ -32,15 +32,15 @@ For a library dependency or a project-specific CLI version:
 
 ```sh
 npm install --save-exact codeboard-studio
-npx codeboard init
-npx codeboard run scene.mjs
+npx codeboard init scene.ts
+npx codeboard run scene.ts
 ```
 
 Commit `package.json` and `package-lock.json`; use `npm ci` in CI or on another machine. Use `npx codeboard` in place of `codeboard` throughout these guides when using a local installation. npm scripts can call `codeboard` directly because npm adds the project's binaries to PATH.
 
 JavaScript modules can import the installed library directly:
 
-```js
+```ts
 import { StoryboardProject } from 'codeboard-studio';
 ```
 
@@ -48,7 +48,7 @@ A global installation alone does not make imports available to plain `node` scri
 
 ## Pin, update, or uninstall
 
-Select a specific version by adding it to the package name, for example `npm install -g codeboard-studio@0.2.1`.
+Select a specific version by adding it to the package name, using `npm install -g codeboard-studio@<version>` with the version required by your project.
 
 For a global CLI:
 

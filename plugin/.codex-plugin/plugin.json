@@ -1,17 +1,13 @@
 {
   "name": "codeboard",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Create, revise, inspect, and export editable drawings, storyboards, and 2D animation with Codeboard.",
   "skills": "./skills/",
   "interface": {
     "displayName": "Codeboard",
     "shortDescription": "Draw and animate through editable code and projects",
     "category": "Design",
-    "capabilities": [
-      "Read",
-      "Write",
-      "Interactive"
-    ],
+    "capabilities": ["Read", "Write", "Interactive"],
     "defaultPrompt": [
       "Use Codeboard to create an editable storyboard, inspect its renders, and keep the source and .cboard project."
     ]

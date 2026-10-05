@@ -50,6 +50,12 @@ function scale(points: Point[], scaleX: number, scaleY = scaleX, origin = { x: 0
 function withPressure(points: Point[], pressure: number | ((t: number) => number)): Point[];
 ```
 
+## mirrored
+
+```ts
+function mirrored(points: Point[], axisX: number): Point[];
+```
+
 ## hatchPolygon
 
 ```ts
@@ -61,12 +67,6 @@ function hatchPolygon(polygon: PointLike[], options: {
     seed?: number;
     maxSamples?: number;
 } = {}): Point[][];
-```
-
-## mirrored
-
-```ts
-function mirrored(points: Point[], axisX: number): Point[];
 ```
 
 ## pathCommands
@@ -87,7 +87,7 @@ export function samplePath(commands: readonly PathCommand[], options: PathSampli
 
 ```ts
 /** Insert a knot using de Casteljau subdivision; retain editable curve commands. */
-export function splitPathSegment(commands: readonly PathCommand[], index: number, t = .5): PathCommand[];
+export function splitPathSegment(commands: readonly PathCommand[], index: number, t = 0.5): PathCommand[];
 ```
 
 ## combinePaths
@@ -171,6 +171,15 @@ function readPixelRegion(image: PixelBuffer, region: PixelRegion): PixelBuffer;
 function writePixelRegion(image: PixelBuffer, x: number, y: number, patch: PixelBuffer): void;
 ```
 
+## comparePixels
+
+```ts
+/** Compare visible premultiplied RGBA, ignoring hidden RGB under zero alpha. */
+export function comparePixels(before: PixelBuffer, after: PixelBuffer, options: {
+    threshold?: number;
+} = {}): PixelComparison;
+```
+
 ## decodePixels
 
 ```ts
@@ -183,13 +192,11 @@ async function decodePixels(bytes: Uint8Array): Promise<PixelBuffer>;
 async function encodePixels(image: PixelBuffer): Promise<Buffer>;
 ```
 
-## comparePixels
+## importPSD
 
 ```ts
-/** Compare visible premultiplied RGBA, ignoring hidden RGB under zero alpha. */
-export function comparePixels(before: PixelBuffer, after: PixelBuffer, options: {
-    threshold?: number;
-} = {}): PixelComparison;
+/** Import a bounded RGB8 pixel-layer PSD without mutating a project or using its merged preview. */
+export function importPSD(input: Uint8Array, options: PSDImportOptions): PSDImportResult;
 ```
 
 ## polygonPixelSelection

@@ -11,13 +11,21 @@ npm ci
 npm run check
 ```
 
-Set `SKIA_CANVAS_THREADS=2` on machines with limited memory. Movie tests run when `FFMPEG_PATH` points to FFmpeg. For example, `FFMPEG_PATH=ffmpeg npm test` on macOS/Linux, or `$env:FFMPEG_PATH='ffmpeg'; npm test` in PowerShell. CI runs these integration tests on Linux.
+Set `SKIA_CANVAS_THREADS=2` on machines with limited memory. Movie tests run when `FFMPEG_PATH` points to FFmpeg. Set `FFPROBE_PATH` as well to run the media studies; release CI requires both. For example, `FFMPEG_PATH=ffmpeg npm test` on macOS/Linux, or `$env:FFMPEG_PATH='ffmpeg'; npm test` in PowerShell. CI runs these integration tests on Linux.
+
+## Test and code quality tools
+
+`npm test` runs Jest. Use `npm test -- test/project.test.ts` for one suite or `npm test -- -t "save"` to filter test names. Tests run through `jest-light-runner` in native Node processes, with the existing `tsx` loader for TypeScript. This keeps SQLite, native rendering, typed arrays, and `structuredClone` in the same JavaScript realm. Jest VM contexts otherwise change prototype identity and produce false storage-validation failures. Module mocking and automatic coverage instrumentation are not provided by this runner; use Jest spies and restore them in each test file's `afterEach`.
+
+`npm run lint` uses Biome's recommended lint preset; `npm run lint:fix` applies safe fixes. `npm run format:check` checks formatting and `npm run format` writes it. The root configuration covers engine, tests, scripts, examples, plugin tooling, and website source. Generated bundles, downloads, lockfiles, and ignored build outputs are excluded. Non-null assertions remain allowed for bounded geometry/index operations; TypeScript still checks indexed access. Existing lint warnings remain visible and errors fail CI.
+
+`npm run check` runs the build/typecheck, Biome lint and formatting, architecture checks, workspace checks, Jest, documentation/plugin checks, and package validation. `npm run test:install` additionally checks installation of the packed runtime.
 
 ## Make a focused change
 
 Public guides live in `docs/` and feed the Fumadocs site directly. Edit those guides once. The six `docs/api-*.md` reference pages are generated from public exports and callable members; edit their owning source declarations or generator introductions instead. After changing documentation, public signatures, bundled examples, or the engine version, run `npm run docs:generate`. It refreshes the API pages and the plugin's offline reference bundle. Never hand-edit `plugin/skills/codeboard/references/engine/`. CI and release validation reject stale API pages and stale bundled files through `npm run check`. See the [documentation ownership review](plugin/docs/design.md#documentation-distribution-review) for the complete source-to-delivery path.
 
-Install the published CLI with `npm install -g codeboard-studio` before running user examples; `npm run example:quickstart` invokes that installation. Examples must also run from a folder outside this checkout, without its dependencies. To regenerate the demo documentation images and editable example, run `codeboard run scripts/build-doc-assets.mjs`. Then run `node scripts/package-examples.mjs` to package source downloads. Run `npm run docs:assets` to regenerate the focused guide illustrations and downloadable source from `examples/documentation.mjs`, including the exact starter output. Staging projects stay in `.preview/documentation-assets`; published illustrations live in `website/public/art/guides`. Inspect fresh images after changing their source. The complete presentation is authored with `codeboard run code-board-demo/src/run.ts render`; its soundtrack is original synthesized Foley. Test the downloaded example with `npx vitest run test/documentation-example.test.ts` and build the website with `npm run build --prefix website`.
+Build this checkout before running its examples; `npm run example:quickstart` runs in the linked examples workspace, so runtime and declarations match. Type-check the presentation with `npm run demo:typecheck`. Examples must also run from a folder outside this checkout, without its dependencies. To regenerate the demo documentation images and editable example, run `codeboard run scripts/build-doc-assets.ts`. Then run `node scripts/package-examples.mjs` to package source downloads. Run `npm run docs:assets` to regenerate the focused guide illustrations and downloadable source from `examples/studies/src/cli/run.ts`, including the exact starter output. Staging projects stay in `.preview/documentation-assets`; published illustrations live in `website/public/art/guides`. Inspect fresh images after changing their source. The complete presentation is authored with `codeboard run examples/code-board-demo/src/cli/presentation.ts author`; `render` only exports saved state; its soundtrack is original synthesized Foley. Test the downloaded example with `npm test -- test/documentation-example.test.ts` and build the website with `npm run website:build`.
 
 1. For an API redesign, storage change, or substantial new feature, open an issue describing a concrete authoring task first.
 2. Implement behavior in its owning module. Keep example-specific composition in `examples/`; engine code must work for other artwork too.
@@ -38,6 +46,8 @@ Prefer small reproducible examples over large project dumps. Do not commit `dist
 
 The engine lives in `src/`: `core` owns authoring operations, `drawing` brush and geometry tools, `animation` timing, `render` images, `storage` project persistence, and `export` deliverables. `website/` builds the public site from `docs/`. Keep development notes out of the public guides. Follow surrounding code style; avoid unrelated reformatting. AI-assisted contributions receive the same review: the contributor must understand and verify the change.
 
+Production operations live in `src/core/production/`; keep `production.ts` as the explicit public facade. Project reads/configuration and edit-plan contracts/execution have separate owners. Command schemas belong to their domain under `src/core/edit-plan/schema/`; keep the parent composer responsible for plan envelopes and preserve command discovery order. See [implementation ownership](design/studio/architecture.md) for boundaries and remaining refactors. `npm run typecheck` checks TypeScript without emitting files and `npm run lint` runs Biome; neither replaces architecture or runtime/release checks.
+
 ## Releases
 
 npm is the runtime distribution channel. The root package includes both the public library and the CLI; Node.js is supplied by the user. Do not build platform archives or publish installer scripts.
@@ -51,3 +61,15 @@ Configure an [npm trusted publisher](https://docs.npmjs.com/trusted-publishers/)
 For an authenticated manual release, run `npm ci`, `npm run check`, and `npm run test:install`, then `npm pack --ignore-scripts` and `npm publish ./codeboard-studio-VERSION.tgz --access public` (add `--tag next` for a prerelease). Do not publish both manually and through a tag for the same version.
 
 There is no CLA. Contributions are accepted under the repository's MIT license; do not submit work you cannot license that way. Report security issues through [SECURITY.md](SECURITY.md), and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Local workspaces
+
+The root `codeboard-studio` engine is explicitly included as the `.` npm workspace so release tooling still discovers it. Examples share the private `examples/package.json` workspace and strict TypeScript configuration; each keeps its own `src/`. The shared workspace consumes the engine through `file:..`. The website uses `file:..`. Install from the root with `npm ci` and retain the single root lockfile.
+
+Run `npm run build`, then keep `npm run dev` in another terminal for incremental compilation. Rerun an example after a successful build; publishing or relinking is unnecessary. `npm run workspaces:check` checks consumer resolution and project structure; `npm run examples:typecheck` checks every example against public declarations. Use named workspace scripts rather than recursively invoking the root build across all workspaces.
+
+## Example scope
+
+Examples use public imports and strict TypeScript. Separate reusable drawing/timing functions from command entry points and file I/O. Render commands open saved state; verification must not modify its source project. Query targets explicitly and fail on missing or ambiguous results. Preserve the engine's conflict checks when saving revisions.
+
+A fixture's story, visual treatment, layer naming, timing, material counts, or simulated agent transcript is not an engine contract. Documentation should state the operation demonstrated, required inputs, observable results, and limits. Derive API claims from implementation and tests. Keep structural assertions, pixel comparisons, manual visual review, and user acceptance distinct. Do not report the latter two merely because a script ran.

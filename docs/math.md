@@ -8,7 +8,7 @@ Use math helpers to generate pen paths and map a review observation back into ar
 
 ## Generate a pen path
 
-```js
+```ts
 import { catmullRom, withPressure, translate } from 'codeboard-studio';
 const arc = catmullRom([
   { x: 0, y: 80 }, { x: 80, y: 0 },
@@ -23,7 +23,7 @@ The [demo](code-board-demo.md) uses explicit pose parameters and a parabolic fli
 
 ## Convert between spaces
 
-```js
+```ts
 import { transformPoint } from 'codeboard-studio';
 const space = project.production.coordinates('clawd', { frame: 128, camera: true });
 const framePoint = transformPoint(space.localToFrame, { x: 0, y: 0 });
@@ -39,7 +39,7 @@ Nested group placement, animated transforms, and camera framing can make a scree
 
 ## Solve a two-bone reach
 
-```js
+```ts
 import { solveTwoBoneIK } from 'codeboard-studio';
 const pose = solveTwoBoneIK(
   { x: 0, y: 0 }, { x: 100, y: 40 }, 80, 60, 1,
@@ -51,7 +51,7 @@ Lengths must be positive. Bend is `1` or `-1`. An unreachable target produces th
 
 To pose actual layer joints, create a root group and an immediate elbow child at `(upperLength, 0)`, then use `setTwoBoneRig` and `poseTwoBoneRig`. Joint scale must remain one and pivots must stay at the origin; scale an ancestor instead. This is a two-joint transform rig, not mesh deformation or automatic rigging of a flat image.
 
-```js
+```ts
 const shoulder = panel.addGroup('Shoulder', { transform: { x: 300, y: 300 } });
 const elbow = panel.addGroup('Elbow', { transform: { x: 80, y: 0 } }, shoulder.id);
 panel.addVectorLayer('Upper arm', {}, shoulder.id).vectorStroke(
@@ -69,3 +69,9 @@ console.log(result.reachable, project.production.twoBoneRig(shoulder.id));
 ```
 
 The target uses the root joint's parent coordinates. Here the shoulder is at `(300, 300)` and the target is 100 units right and 40 down from it. Posing writes rotation keys on the two joints. Removing the rig definition with `setTwoBoneRig(rootId, null)` removes the rig relationship; it does not automatically delete already-authored rotation keys.
+
+Scalar interpolation used by sampled curves and layer/camera channels preserves exact
+endpoints. If subtracting two finite endpoints overflows, it uses a weighted endpoint sum
+instead; ordinary finite differences retain the existing calculation. Nonfinite inputs or
+results reject. This does not relax mesh conditioning, tangent, canvas or pixel-budget limits,
+and no broader numerical range or rendered parity has been qualified by static checking.

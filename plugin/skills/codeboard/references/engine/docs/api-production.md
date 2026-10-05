@@ -20,12 +20,36 @@ captureComponent(layerId: Id, name: string, options: MutationOptions & {
 reviseComponent(id: Id, sourceLayerId: Id, options: MutationOptions = {}): void;
 ```
 
+### replaceComponentSource
+
+```ts
+replaceComponentSource(componentId: Id, layers: readonly Layer[], options: MutationOptions & {
+    expectedComponentVersion: number;
+}): void;
+```
+
+### replaceComponentElement
+
+```ts
+replaceComponentElement(componentId: Id, layerId: Id, element: DrawingElement, options: MutationOptions & {
+    expectedComponentVersion: number;
+}): void;
+```
+
 ### instantiateComponent
 
 ```ts
 instantiateComponent(componentId: Id, panelId: Id, transform: Partial<Transform> = {}, options: MutationOptions & {
     id?: Id;
 } = {}): Id;
+```
+
+### upgradeComponentInstance
+
+```ts
+upgradeComponentInstance(instanceId: Id, options: ComponentUpgradeOptions & MutationOptions & {
+    expectedInputHash: string;
+}): void;
 ```
 
 ### refreshComponentInstance
@@ -60,6 +84,29 @@ removeLayer(layerId: Id, options: MutationOptions = {}): void;
 
 ```ts
 find(query: ObjectQuery = {}): ObjectSummary[];
+```
+
+### query
+
+```ts
+query(query: ObjectPageQuery = {}): ObjectPage;
+```
+
+### summary
+
+```ts
+summary(): {
+    studio: { animations: number; editorialSequences: number; editorialClips: number; audioTracks: number; audioClips: number; };
+    schemaVersion: 5;
+    version: number;
+    canvas: { width: number; height: number; background: string; };
+    frameRate: number;
+    durationFrames: number;
+    counts: { sequences: number; scenes: number; shots: number; panels: number; components: number; assets: number; audioTracks: number; comments: number; locks: number; };
+    titleTruncated?: boolean | undefined;
+    id: string;
+    title: string;
+};
 ```
 
 ### coordinates
@@ -101,6 +148,18 @@ drawingSequence(groupId: Id): {
 };
 ```
 
+### drawingExposures
+
+```ts
+drawingExposures(groupId: Id, options: PageOptions = {}): DrawingExposure[] | null;
+```
+
+### drawingAlternatives
+
+```ts
+drawingAlternatives(groupId: Id, options: PageOptions = {}): { id: Id; name: string; kind: Layer["kind"]; }[];
+```
+
 ### setPlaneDepth
 
 ```ts
@@ -136,6 +195,7 @@ poseTwoBoneRig(rootId: Id, frame: number, target: {
 }, options: MutationOptions & {
     bend?: 1 | -1;
     easing?: Easing;
+    unreachable?: "reject" | "clamp";
 } = {}): TwoBoneSolution;
 ```
 
@@ -167,7 +227,7 @@ setExposure(layerId: Id, exposure: Layer["exposure"], options: MutationOptions =
 
 ```ts
 inspect(): {
-    readonly schemaVersion: 3;
+    readonly schemaVersion: 5;
     readonly version: number;
     readonly frameRate: number;
     readonly durationFrames: number;
@@ -278,13 +338,13 @@ setPanelNumber(panelId: Id, number: string, options: MutationOptions = {}): void
 ### addCameraKeyframe
 
 ```ts
-addCameraKeyframe(shotId: Id, frame: number, value: Partial<Pick<CameraKeyframe, CameraChannel | "easing">>, options: MutationOptions = {}): Id;
+addCameraKeyframe(shotId: Id, frame: number, value: CameraKeyframeInput, options: MutationOptions = {}): Id;
 ```
 
 ### updateCameraKeyframe
 
 ```ts
-updateCameraKeyframe(shotId: Id, keyframeId: Id, changes: Partial<Omit<CameraKeyframe, "id">>, options: MutationOptions = {}): void;
+updateCameraKeyframe(shotId: Id, keyframeId: Id, changes: CameraKeyframeChanges, options: MutationOptions = {}): void;
 ```
 
 ### removeCameraKeyframe
@@ -302,18 +362,13 @@ removeCameraKeyframeChannels(shotId: Id, keyframeId: Id, channels: readonly Came
 ### addLayerKeyframe
 
 ```ts
-addLayerKeyframe(layerId: Id, frame: number, value: {
-    transform?: Partial<Transform>;
-    opacity?: number;
-    depth?: number;
-    easing?: LayerKeyframe["easing"];
-}, options: MutationOptions = {}): Id;
+addLayerKeyframe(layerId: Id, frame: number, value: LayerKeyframeInput, options: MutationOptions = {}): Id;
 ```
 
 ### updateLayerKeyframe
 
 ```ts
-updateLayerKeyframe(layerId: Id, keyframeId: Id, changes: Partial<Omit<LayerKeyframe, "id">>, options: MutationOptions = {}): void;
+updateLayerKeyframe(layerId: Id, keyframeId: Id, changes: LayerKeyframeChanges, options: MutationOptions = {}): void;
 ```
 
 ### removeLayerKeyframe
@@ -353,11 +408,7 @@ addAudioTrack(name: string, options: MutationOptions & {
 ### updateAudioTrack
 
 ```ts
-updateAudioTrack(trackId: Id, changes: {
-    name?: string;
-    muted?: boolean;
-    locked?: boolean;
-}, options: MutationOptions = {}): void;
+updateAudioTrack(trackId: Id, changes: AudioTrackChanges, options: MutationOptions = {}): void;
 ```
 
 ### removeAudioTrack
@@ -369,15 +420,13 @@ removeAudioTrack(trackId: Id, options: MutationOptions = {}): void;
 ### addAudioClip
 
 ```ts
-addAudioClip(trackId: Id, clip: Omit<AudioClip, "id"> & {
-    id?: Id;
-}, options: MutationOptions = {}): Id;
+addAudioClip(trackId: Id, clip: AudioClipInput, options: MutationOptions = {}): Id;
 ```
 
 ### updateAudioClip
 
 ```ts
-updateAudioClip(trackId: Id, clipId: Id, changes: Partial<Pick<AudioClip, "startFrame" | "sourceInFrame" | "durationFrames" | "volume" | "fadeInFrames" | "fadeOutFrames" | "name">>, options: MutationOptions = {}): void;
+updateAudioClip(trackId: Id, clipId: Id, changes: AudioClipChanges, options: MutationOptions = {}): void;
 ```
 
 ### removeAudioClip
@@ -424,4 +473,322 @@ lock(targetType: ProjectLock["targetType"], targetId: Id, reason: string, option
 
 ```ts
 unlock(lockId: Id, options: MutationOptions = {}): void;
+```
+
+## normalizeRate
+
+```ts
+function normalizeRate(value: number | RationalRate): RationalRate;
+```
+
+## rescaleTime
+
+```ts
+/** Integer tick conversion with exact intermediate arithmetic; nearest ties round toward +infinity. */
+export function rescaleTime(value: number, sourceRate: number | RationalRate, targetRate: number | RationalRate, rounding: TimeRounding = "nearest"): TimeConversion;
+```
+
+## defineShotAnimation
+
+```ts
+function defineShotAnimation(input: unknown): ShotAnimation;
+```
+
+## defineEditorialSequence
+
+```ts
+function defineEditorialSequence(input: unknown, animations: readonly ShotAnimation[]): EditorialSequence;
+```
+
+## resolveEditorialFrame
+
+```ts
+function resolveEditorialFrame(sequence: EditorialSequence, animations: readonly ShotAnimation[], frame: number): ResolvedEditorialFrame;
+```
+
+## createEditorialResolver
+
+```ts
+/** Validate and copy inputs once; returned frame mappings never expose the snapshot. */
+export function createEditorialResolver(sequence: EditorialSequence, animations: readonly ShotAnimation[]): {
+    durationFrames: number;
+    frameRate: { numerator: number; denominator: number; };
+    resolve: (frame: number) => ResolvedEditorialFrame;
+};
+```
+
+## reviseEditorialSequence
+
+```ts
+/** Apply ordered edits to an isolated sequence, then ripple positions and validate its final state. */
+export function reviseEditorialSequence(sequence: EditorialSequence, animations: readonly ShotAnimation[], edits: readonly EditorialEdit[]): EditorialSequence;
+```
+
+## reviseShotAnimation
+
+```ts
+function reviseShotAnimation(animation: ShotAnimation, edits: readonly ShotAnimationEdit[]): ShotAnimation;
+```
+
+## shotCoordinates
+
+```ts
+function shotCoordinates(input: ShotAnimation, targetId: string, options: CoordinateOptions = {}): ShotCoordinateSpace;
+```
+
+## mergeShotAnimation
+
+```ts
+/** Merge snapshots with shared IDs; unresolved conflicts produce no animation. */
+export function mergeShotAnimation(baseInput: ShotAnimation, localInput: ShotAnimation, incomingInput: ShotAnimation, options: ShotMergeOptions = {}): ShotMergeReport & {
+    animation: ShotAnimation | null;
+};
+```
+
+## planShotMerge
+
+```ts
+/** Preview a worker revision against the current shot and prepare its native, version-bound edit plan. */
+export function planShotMerge(project: StoryboardProject, base: ShotAnimation, incoming: ShotAnimation, options: ShotMergeOptions = {}): {
+    plan: EditPlan | null;
+    conflicts: ValueMergeConflict[];
+    incomingChanges: string[];
+    retainedLocalChanges: string[];
+};
+```
+
+## planShotHandoffMerge
+
+```ts
+/** Check native handoff provenance and resource compatibility before preparing a worker merge. */
+export function planShotHandoffMerge(assembly: StoryboardProject, baseline: StoryboardProject, worker: StoryboardProject, options: ShotMergeOptions & {
+    animationId: string;
+}): {
+    plan: EditPlan | null;
+    dependencyConflicts: { kind: "component" | "origin" | "palette" | "swatch" | "asset" | "font"; id: string; baseline: ShotDependency | null; local: ShotDependency | null; incoming: ShotDependency; }[];
+    source: { projectId: string; version: number; };
+    worker: { projectId: string; version: number; };
+    conflicts: ValueMergeConflict[];
+    incomingChanges: string[];
+    retainedLocalChanges: string[];
+};
+```
+
+## planPaletteMerge
+
+```ts
+/** Resolve one palette against the current project and prepare its existing native command. */
+export function planPaletteMerge(project: StoryboardProject, base: Palette | null, incoming: Palette | null, options: PaletteMergeOptions = {}): {
+    plan: EditPlan | null;
+    conflictsResolved: boolean;
+    palette: Palette | null;
+    conflicts: ValueMergeConflict[];
+    incomingChanges: string[];
+    retainedLocalChanges: string[];
+    id: string;
+};
+```
+
+## mergePalette
+
+```ts
+/** Merge one shared palette identity; null snapshots represent absence, not inferred matches. */
+export function mergePalette(baseInput: Palette | null, localInput: Palette | null, incomingInput: Palette | null, options: PaletteMergeOptions = {}): {
+    conflictsResolved: boolean;
+    palette: Palette | null;
+    conflicts: ValueMergeConflict[];
+    incomingChanges: string[];
+    retainedLocalChanges: string[];
+    id: string;
+};
+```
+
+## shotPointCoordinates
+
+```ts
+/** Map geometry through the ordered deformation stack; preserve every face candidate. */
+export function shotPointCoordinates(input: ShotAnimation, targetId: string, point: {
+    x: number;
+    y: number;
+}, options: ShotPointOptions): {
+    animationId: string;
+    targetId: string;
+    frame: number;
+    direction: "localToFrame" | "frameToLocal";
+    candidates: ShotPointCandidate[];
+};
+```
+
+## retimeShotAnimation
+
+```ts
+/** Retime every shot-local frame collection on a detached snapshot; never stretch audio samples. */
+export function retimeShotAnimation(input: ShotAnimation, options: ShotRetimeOptions): {
+    animation: ShotAnimation;
+    report: ShotRetimeReport;
+};
+```
+
+## shotMeshData
+
+```ts
+/** Page detached mesh geometry or key metadata without returning the entire pose track. */
+export function shotMeshData(input: ShotAnimation, layerId: string, query: ShotMeshQuery = { collection: "keyframes" }): { animationId: string; layerId: string; bindingKind: "skin" | "mesh" | "curve" | "envelope"; curveRest: CurveMeshPose | null; curveSegments: number | null; envelopeRest: EnvelopeMeshPose | null; envelopeGrid: { columns: number; rows: number; } | null; collection: "joints"; offset: number; limit: number; total: number; nextOffset: number | null; counts: { joints: number; weights: number; vertices: number; triangles: number; keyframes: number; }; items: { layerId: string; id: string; bind: Readonly<AffineMatrix>; index: number; }[]; } | { animationId: string; layerId: string; bindingKind: "skin" | "mesh" | "curve" | "envelope"; curveRest: CurveMeshPose | null; curveSegments: number | null; envelopeRest: EnvelopeMeshPose | null; envelopeGrid: { columns: number; rows: number; } | null; collection: "weights"; offset: number; limit: number; total: number; nextOffset: number | null; counts: { joints: number; weights: number; vertices: number; triangles: number; keyframes: number; }; items: { index: number; influences: readonly { jointId: string; weight: number; }[]; }[]; } | { animationId: string; layerId: string; bindingKind: "skin" | "mesh" | "curve" | "envelope"; curveRest: CurveMeshPose | null; curveSegments: number | null; envelopeRest: EnvelopeMeshPose | null; envelopeGrid: { columns: number; rows: number; } | null; collection: "triangles"; offset: number; limit: number; total: number; nextOffset: number | null; counts: { joints: number; weights: number; vertices: number; triangles: number; keyframes: number; }; items: { index: number; vertices: number[]; }[]; } | { animationId: string; layerId: string; bindingKind: "skin" | "mesh" | "curve" | "envelope"; curveRest: CurveMeshPose | null; curveSegments: number | null; envelopeRest: EnvelopeMeshPose | null; envelopeGrid: { columns: number; rows: number; } | null; collection: "keyframes"; offset: number; limit: number; total: number; nextOffset: number | null; counts: { joints: number; weights: number; vertices: number; triangles: number; keyframes: number; }; items: { index: number; frame: number; easing: Easing; }[]; } | { frame: number | null; animationId: string; layerId: string; bindingKind: "skin" | "mesh" | "curve" | "envelope"; curveRest: CurveMeshPose | null; curveSegments: number | null; envelopeRest: EnvelopeMeshPose | null; envelopeGrid: { columns: number; rows: number; } | null; collection: "vertices"; offset: number; limit: number; total: number; nextOffset: number | null; counts: { joints: number; weights: number; vertices: number; triangles: number; keyframes: number; }; items: { x: number; y: number; index: number; }[]; };
+```
+
+## bakeCurveMesh
+
+```ts
+/** Bake sampled curve ribbons into editable mesh keys; interpolation remains vertex-based. */
+export function bakeCurveMesh(input: CurveMeshInput): MeshAnimation;
+```
+
+## createCurveMeshEvaluator
+
+```ts
+/** Evaluate controls first, then sample normals; no previous frame contributes to the pose. */
+export function createCurveMeshEvaluator(input: CurveMeshInput): (frame: number) => IndexedMeshWarp;
+```
+
+## bakeEnvelopeMesh
+
+```ts
+/** Tessellate a four-boundary Coons patch into an editable vertex animation. */
+export function bakeEnvelopeMesh(input: EnvelopeMeshInput): MeshAnimation;
+```
+
+## createSkinMeshEvaluator
+
+```ts
+/** Bind explicit weights once; joint poses and output are in the mesh's local coordinate space. */
+export function createSkinMeshEvaluator(input: SkinMeshInput): (poses: readonly SkinJointPose[]) => IndexedMeshWarp;
+```
+
+## shotControllerData
+
+```ts
+/** Inspect detached controller records and optional final, fully blended layer states. */
+export function shotControllerData(input: ShotAnimation, controllerId: string, query: ShotControllerQuery = { collection: "keyframes" }): { collection: "targets" | "keyframes"; total: number; nextOffset: number | null; items: { frame: number; weight: number; easing: Easing; index: number; }[]; animationId: string; controllerId: string; name: string; mode: "replace" | "additive"; stackIndex: number; staticWeight: number; activeRange: { startFrame: number; endFrame: number; } | null; frame: number | null; evaluatedWeight: number | null; counts: { targets: number; keyframes: number; }; offset: number; limit: number; } | { collection: "targets" | "keyframes"; total: number; nextOffset: number | null; items: { evaluatedState: EvaluatedLayerState | null; layerId: string; values: Partial<Record<LayerChannel, number>>; index: number; }[]; animationId: string; controllerId: string; name: string; mode: "replace" | "additive"; stackIndex: number; staticWeight: number; activeRange: { startFrame: number; endFrame: number; } | null; frame: number | null; evaluatedWeight: number | null; counts: { targets: number; keyframes: number; }; offset: number; limit: number; };
+```
+
+## compileControllerTransfer
+
+```ts
+/** Prepare new controller definitions; preserve destination base animation and existing controllers. */
+export function compileControllerTransfer(sourceInput: ShotAnimation, targetInput: ShotAnimation, input: ControllerTransferOptions): ShotAnimationEdit[];
+```
+
+## captureShotController
+
+```ts
+/** Capture explicit local channels into an inactive controller without changing the source. */
+export function captureShotController(input: ShotAnimation, options: ControllerCaptureOptions): ShotController;
+```
+
+## readControllerPerformance
+
+```ts
+/** Validate the versioned JSON envelope, logical payload checksum and controller invariants. */
+export function readControllerPerformance(input: unknown): ControllerPerformance;
+```
+
+## createControllerPerformance
+
+```ts
+/** Capture selected controllers in their source stack order; no artwork or base keys are included. */
+export function createControllerPerformance(input: ShotAnimation, options: {
+    id: string;
+    name: string;
+    controllerIds: readonly string[];
+}): ControllerPerformance;
+```
+
+## compileControllerPerformance
+
+```ts
+function compileControllerPerformance(input: unknown, target: ShotAnimation, options: ControllerTransferOptions): ShotAnimationEdit[];
+```
+
+## importOTIO
+
+```ts
+/** Conform one cut-only video track to existing animations without reading external media. */
+export function importOTIO(json: string, animations: readonly ShotAnimation[], options: OTIOImportOptions): {
+    sequence: EditorialSequence;
+    losses: OTIOLoss[];
+};
+```
+
+## exportOTIO
+
+```ts
+/** Export a single video cut list. Media bindings describe already-rendered media, not artwork. */
+export function exportOTIO(input: EditorialSequence, animations: readonly ShotAnimation[], options: OTIOOptions): {
+    json: string;
+    losses: OTIOLoss[];
+};
+```
+
+## defineStudioAudio
+
+```ts
+function defineStudioAudio(input: unknown): StudioAudioTrack[];
+```
+
+## compileStudioAudio
+
+```ts
+/** Resolve audible placements to a chosen sample clock without resampling or reading media. */
+export function compileStudioAudio(tracks: readonly StudioAudioTrack[], sampleRate: number, options: {
+    rounding?: AudioSampleRounding;
+} = {}): CompiledAudioClip[];
+```
+
+## reviseStudioAudio
+
+```ts
+/** Ordered metadata edits; sample fades/ranges are validated on the complete final state. */
+export function reviseStudioAudio(tracks: readonly StudioAudioTrack[], edits: readonly StudioAudioEdit[]): StudioAudioTrack[];
+```
+
+## conformShotAudio
+
+```ts
+function conformShotAudio(animation: ShotAnimation, sampleRate = 48000, options: {
+    tracks?: readonly AudioTrackRef[];
+    rounding?: AudioSampleRounding;
+} = {}): AudioConform;
+```
+
+## conformEditorialAudio
+
+```ts
+/** Conform at normal playback speed; source audio is cropped, never frame-duplicated or time-stretched. */
+export function conformEditorialAudio(sequence: EditorialSequence, animations: readonly ShotAnimation[], options: {
+    sampleRate: number;
+    transitions: "sum" | "linear";
+    tracks?: readonly AudioTrackRef[];
+    rounding?: AudioSampleRounding;
+}): AudioConform;
+```
+
+## mixShotAudio
+
+```ts
+async function mixShotAudio(animation: ShotAnimation, decode: StudioAudioDecoder, input: AudioMixOptions = {}): Promise<AudioMixResult>;
+```
+
+## mixEditorialAudio
+
+```ts
+async function mixEditorialAudio(sequence: EditorialSequence, animations: readonly ShotAnimation[], decode: StudioAudioDecoder, input: AudioMixOptions & {
+    transitions: "sum" | "linear";
+}): Promise<AudioMixResult>;
+```
+
+## createFFmpegAudioDecoder
+
+```ts
+/** Asset byte identity is pinned on first use for the lifetime of the returned decoder. */
+export function createFFmpegAudioDecoder(readAsset: (id: string) => Promise<Uint8Array> | Uint8Array, options: FFmpegAudioDecoderOptions = {}): StudioAudioDecoder;
 ```

@@ -40,6 +40,7 @@ jobs:
     timeout-minutes: 15
     env:
       FFMPEG_PATH: ffmpeg
+      FFPROBE_PATH: ffprobe
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -51,7 +52,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: npm ci
       - run: npm test -- test/movie.test.ts
-  released-examples:
+  source-examples:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 25
     strategy:
@@ -68,7 +69,16 @@ jobs:
         with:
           node-version: '22.22.0'
           package-manager-cache: false
-      - run: npm install -g codeboard-studio@0.2.1
+      - run: npm ci
+      - run: npm run build
+      - run: npm run demo:typecheck
+      - name: Install the package built from this source
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $packed = npm pack --ignore-scripts --json | ConvertFrom-Json
+          npm install -g (Join-Path (Get-Location) $packed[0].filename)
       - name: Run public sources outside the checkout
         shell: pwsh
         run: |
@@ -77,25 +87,25 @@ jobs:
           $work = Join-Path $env:RUNNER_TEMP 'example-work'
           New-Item -ItemType Directory -Force $work | Out-Null
           Copy-Item -Recurse examples $work
-          Expand-Archive -LiteralPath website/public/art/code-board-demo/launch-source.zip -DestinationPath $work
           Set-Location $work
           codeboard --version
-          codeboard run examples/quickstart.mjs
-          codeboard run examples/code-board-demo/main.mjs
-          codeboard run examples/code-board-demo/revise.mjs
-          codeboard run code-board-demo/src/run.ts author
-          codeboard run examples/lengkap.ts
-          codeboard run examples/lengkap/verify.ts
-          codeboard run examples/last-light.ts
-          codeboard run examples/revise-last-light.ts
+          codeboard run examples/studies/src/cli/run.ts
+          codeboard run examples/quickstart/src/cli/run.ts
+          codeboard run examples/code-board-demo/src/study/main.ts
+          codeboard run examples/code-board-demo/src/cli/revise.ts
+          codeboard run examples/code-board-demo/src/cli/presentation.ts author
+          codeboard run examples/lengkap/src/cli/run.ts
+          codeboard run examples/lengkap/src/review/verify.ts
+          codeboard run examples/last-light/src/cli/run.ts
+          codeboard run examples/last-light/src/cli/revise.ts
   gate:
     if: always()
-    needs: [test, movie, released-examples]
+    needs: [test, movie, source-examples]
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
       - env:
           TEST_RESULT: ${{ needs.test.result }}
           MOVIE_RESULT: ${{ needs.movie.result }}
-          EXAMPLES_RESULT: ${{ needs.released-examples.result }}
+          EXAMPLES_RESULT: ${{ needs.source-examples.result }}
         run: test "$TEST_RESULT" = success && test "$MOVIE_RESULT" = success && test "$EXAMPLES_RESULT" = success

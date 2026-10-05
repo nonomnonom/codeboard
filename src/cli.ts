@@ -1,44 +1,55 @@
 #!/usr/bin/env node
-import { Command } from "commander";
+import { Command, CommanderError } from "commander";
+import { registerAuthoringCommands } from "./cli/authoring.js";
+import { registerInspectionCommands } from "./cli/inspection.js";
+import { registerDeliveryCommands } from "./cli/delivery.js";
+import { registerAudioCommands } from "./cli/audio.js";
+import { registerFrameJobCommands } from "./cli/frame-jobs.js";
 import { readFileSync } from "node:fs";
 import { findPackageJSON } from "node:module";
 import { resolve } from "node:path";
-import { writeFile } from "node:fs/promises";
+
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { starter } from "./starter.js";
-import { exportMovie } from "./export/movie-export.js";
-import { StoryboardProject } from "./core/project.js";
-import { exportStoryboard } from "./export/storyboard-export.js";
-import { exportAnimaticPackage } from "./export/animatic-export.js";
-import { startPreview } from "./preview/server.js";
-import { ProjectStore } from "./storage/store.js";
+
+import { commandErrorReport } from "./cli/error-report.js";
 
 const packagePath = findPackageJSON(import.meta.url);
 if (!packagePath) throw new Error("Codeboard package metadata is missing");
 const { version } = JSON.parse(readFileSync(packagePath, "utf8")) as { version: string };
 
 const program = new Command()
+  .exitOverride()
+  .configureOutput({
+    outputError: () => {
+      // The parse rejection handler emits the error once as JSON.
+    },
+  })
   .name("codeboard")
   .enablePositionalOptions()
   .description("Draw, animate, and render through JavaScript or TypeScript")
   .version(version);
 
-program.command("init")
-  .argument("[file]", "New JavaScript authoring file", "scene.mjs")
-  .action(async (file: string) => {
-    await writeFile(resolve(file), starter, { flag: "wx" });
-    console.log(`Created ${file}. Run: codeboard run ${JSON.stringify(file)}`);
-  });
+registerDeliveryCommands(program);
+registerAuthoringCommands(program);
+registerInspectionCommands(program);
+registerAudioCommands(program);
+registerFrameJobCommands(program);
 
-program.command("run")
+program
+  .command("run")
   .argument("<script>", "JavaScript or TypeScript authoring file")
   .argument("[arguments...]", "Arguments passed to your script")
   .passThroughOptions()
   .action(async (script: string, args: string[]) => {
-    const child = spawn(process.execPath, [fileURLToPath(new URL("./authoring-runner.js", import.meta.url)), resolve(script), ...args], {
-      stdio: "inherit", windowsHide: true,
-    });
+    const child = spawn(
+      process.execPath,
+      [fileURLToPath(new URL("./authoring-runner.js", import.meta.url)), resolve(script), ...args],
+      {
+        stdio: "inherit",
+        windowsHide: true,
+      },
+    );
     const forward = () => child.kill("SIGINT");
     process.on("SIGINT", forward);
     try {
@@ -46,52 +57,28 @@ program.command("run")
         child.once("error", reject);
         child.once("exit", (code) => accept(code ?? 1));
       });
-    } finally { process.off("SIGINT", forward); }
+    } finally {
+      process.off("SIGINT", forward);
+    }
   });
 
-program.command("render")
-  .argument("<project>", "Path to a .cboard file")
-  .option("-o, --output <directory>", "Export directory", "storyboard-export")
-  .option("--columns <number>", "Panels per sheet row", "2")
-  .option("--rows <number>", "Panel rows per sheet page", "2")
-  .action(async (projectPath: string, options: { output: string; columns: string; rows: string }) => {
-    const project = await StoryboardProject.open(resolve(projectPath));
-    const result = await exportStoryboard(project, resolve(options.output), { columns: Number(options.columns), rows: Number(options.rows) });
-    console.log(`Rendered ${result.panelFiles.length} panels and ${result.pdfFile}`);
-  });
-
-program.command("validate")
-  .argument("<project>", "Path to a .cboard file")
-  .action(async (projectPath: string) => {
-    const store=ProjectStore.open(resolve(projectPath));
-    try { store.verify(); console.log(JSON.stringify(store.inspect(),null,2)); } finally { store.close(); }
-  });
-
-program.command("animatic")
-  .argument("<project>", "Path to a .cboard file")
-  .option("-o, --output <directory>", "Animatic package directory", "animatic-export")
-  .action(async (projectPath: string, options: { output: string }) => {
-    const project = await StoryboardProject.open(resolve(projectPath));
-    const result = await exportAnimaticPackage(project, resolve(options.output));
-    console.log(`Rendered ${result.frameFiles.length} frames and ${result.manifestFile}`);
-  });
-
-program.command("preview")
+program
+  .command("preview")
   .argument("<project>", "Path to a .cboard file")
   .option("-p, --port <number>", "Preview port", "4173")
   .action(async (projectPath: string, options: { port: string }) => {
+    const { startPreview } = await import("./preview/server.js");
     await startPreview(resolve(projectPath), { port: Number(options.port) });
   });
 
-program.command("movie").argument("<project>").requiredOption("-o, --output <file>").option("--ffmpeg <path>")
-  .action(async (path: string, options: {output: string; ffmpeg?: string}) => {
-    const project = await StoryboardProject.open(resolve(path));
-    console.log(await exportMovie(project, options.output, { onProgress:(n,total)=>{if(n%24===0)console.log(`${n}/${total} frames`);}, ...(options.ffmpeg ? {ffmpegPath: options.ffmpeg} : {}) }));
-  });
-
-program.command("inspect").argument("<project>").option("--panel <id>").option("--name <text>").option("--limit <number>","Result count (maximum 200)","50").option("--offset <number>","Skip matching objects","0").action((path:string,options:{panel?:string;name?:string;limit:string;offset:string})=>{
-  const store=ProjectStore.open(resolve(path));
-  try{console.log(JSON.stringify({storage:store.inspect(),objects:store.findObjects({limit:Number(options.limit),offset:Number(options.offset),...options.panel?{panelId:options.panel}:{},...options.name?{name:options.name}:{}})},null,2));}finally{store.close();}
+await program.parseAsync().catch((error: unknown) => {
+  if (
+    error instanceof CommanderError &&
+    ["commander.help", "commander.helpDisplayed", "commander.version"].includes(error.code)
+  ) {
+    process.exitCode = error.exitCode;
+    return;
+  }
+  console.error(JSON.stringify({ error: commandErrorReport(error) }));
+  process.exitCode = 1;
 });
-
-await program.parseAsync();

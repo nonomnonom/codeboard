@@ -15,14 +15,8 @@
     "exactOptionalPropertyTypes": true,
     "rewriteRelativeImportExtensions": true,
     "paths": {
-      "codeboard-studio": [
-        "./src/index.ts"
-      ]
+      "codeboard-studio": ["./src/index.ts"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "examples/**/*.ts",
-    "test/**/*.ts"
-  ]
+  "include": ["src/**/*.ts", "examples/**/*.ts", "test/**/*.ts", "scripts/**/*.ts"]
 }

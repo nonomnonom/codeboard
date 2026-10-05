@@ -28,3 +28,7 @@ Thumbs.db
 /code-board-demo/docs/
 /code-board-demo/src/audio/
 .preview/
+
+/examples/clawd-output/
+
+/examples/*/output/

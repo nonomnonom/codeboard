@@ -8,14 +8,14 @@ This image comes from the [downloadable demo](code-board-demo.md). The current s
 
 ## Render a current frame and two neighbors
 
-Save this as `onion.mjs` beside the extracted demo source, after running `main.mjs`:
+Save this as `onion.ts` beside the extracted demo source, after `npm run author`:
 
-```js
+```ts
 import { writeFile } from 'node:fs/promises';
 import { StoryboardProject, renderOnionSkin } from 'codeboard-studio';
 
-const project = await StoryboardProject.open('clawd-output/clawd.cboard');
-await writeFile('clawd-output/onion-detail.png', await renderOnionSkin(project, [
+const project = await StoryboardProject.open('output/clawd.cboard');
+await writeFile('output/onion-detail.png', await renderOnionSkin(project, [
   { panelId: 'performance', frame: 128 },
   { panelId: 'performance', frame: 124, layerIds: ['clawd'],
     tint: '#69aeba', opacity: .28 },
@@ -24,11 +24,11 @@ await writeFile('clawd-output/onion-detail.png', await renderOnionSkin(project, 
 ], { camera: false }));
 ```
 
-Run `codeboard run onion.mjs`. A group ID includes its selected descendant artwork and parent transforms. Here `clawd` isolates the performance, leaving the ground present only in the first sample. You can select several layer IDs in one sample, or use separate samples to give different parts distinct opacity or tint.
+Run `codeboard run onion.ts`. A group ID includes its selected descendant artwork and parent transforms. Here `clawd` isolates the performance, leaving the ground present only in the first sample. You can select several layer IDs in one sample, or use separate samples to give different parts distinct opacity or tint.
 
 ## Choose neighboring drawings rather than arbitrary frames
 
-```js
+```ts
 const neighbors = project.production.drawingNeighbors('clawd', 128);
 console.log(neighbors.previous, neighbors.current, neighbors.next);
 ```

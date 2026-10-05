@@ -1,0 +1,34 @@
+{
+  "name": "@codeboard/examples",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "codeboard-studio": "file:.."
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "run": "node --import tsx src/cli/run.ts",
+    "quickstart:author": "node --import tsx src/cli/run.ts quickstart src/cli/run.ts",
+    "studies:author": "node --import tsx src/cli/run.ts studies src/cli/run.ts",
+    "studies:workload": "node --import tsx src/cli/run.ts studies src/workloads/run.ts",
+    "agent-revision:revise": "node --import tsx src/cli/run.ts agent-revision src/cli/run.ts",
+    "last-light:author": "node --import tsx src/cli/run.ts last-light src/cli/run.ts",
+    "last-light:render": "node --import tsx src/cli/run.ts last-light src/review/render.ts",
+    "last-light:revise": "node --import tsx src/cli/run.ts last-light src/cli/revise.ts",
+    "lengkap:author": "node --import tsx src/cli/run.ts lengkap src/cli/run.ts",
+    "lengkap:render": "node --import tsx src/cli/run.ts lengkap src/cli/render.ts",
+    "lengkap:verify": "node --import tsx src/cli/run.ts lengkap src/review/verify.ts",
+    "code-board-demo:author": "node --import tsx src/cli/run.ts code-board-demo src/study/main.ts",
+    "code-board-demo:render": "node --import tsx src/cli/run.ts code-board-demo src/cli/render.ts",
+    "code-board-demo:revise": "node --import tsx src/cli/run.ts code-board-demo src/cli/revise.ts",
+    "code-board-demo:presentation:author": "node --import tsx src/cli/run.ts code-board-demo src/cli/presentation.ts author",
+    "code-board-demo:presentation:render": "node --import tsx src/cli/run.ts code-board-demo src/cli/presentation.ts render",
+    "code-board-demo:presentation:verify": "node --import tsx src/cli/run.ts code-board-demo src/cli/presentation.ts verify",
+    "code-board-demo:presentation:review-script": "node --import tsx src/cli/run.ts code-board-demo src/cli/presentation.ts review-script",
+    "studio-timing:author": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- author",
+    "studio-timing:revise": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- revise",
+    "studio-timing:review": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- review",
+    "studio-timing:export": "node --import tsx src/cli/run.ts studio-timing src/cli/run.ts -- export"
+  }
+}

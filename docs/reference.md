@@ -2,7 +2,7 @@
 
 Import the public API in an authoring script, then execute it with `codeboard run`:
 
-```js
+```ts
 import { StoryboardProject, brushes, renderFramePNG } from 'codeboard-studio';
 ```
 
@@ -26,11 +26,20 @@ Use stable IDs where later scripts need to find an object. A panel's duration is
 
 The [project and artwork API](api-project.md), [production API](api-production.md), [drawing and math API](api-drawing.md), [rendering API](api-render.md), and [storage API](api-storage.md) list callable signatures. [API types](api-types.md) gives the data shapes. These references accompany the task guides below; they do not replace a runnable example.
 
+Generation checks named package exports against documented callable declarations, and resolves
+exported interfaces/type aliases to their source owners. Adding a public callable without a
+reference-page source group fails the docs check. This checks API coverage and synchronization;
+it does not execute the operations or qualify their production behavior. Inspect `capabilities()`
+in the installed runtime for its implementation scope and constraints.
+
 | Task | API and guide |
 | --- | --- |
 | Generate pen movement | `catmullRom`, `cubic`, `line`, `ellipse`, `samplePath`: [drawing](drawing.md) |
 | Work in local or frame coordinates | Matrix helpers, coordinate queries, two-bone IK: [math](math.md) |
-| Reuse a prop or character drawing | Component capture, instances, explicit refresh: [components](components.md) |
+| Reuse or upgrade a prop | Component capture, source-tree revision, origin inspection and conflict-aware upgrade: [components](components.md) |
+| Reuse a rig or controller performance | Shot duplication, controller packages and dependency inspection: [rig workflow](rig-workflow.md) |
+| Hand off and merge a shot | Native shot export, baseline/resource checks and saved merge plans: [rig workflow](rig-workflow.md) |
+| Reconcile shared paint | Palette binding discovery and three-way palette plans: [drawing](drawing.md) |
 | Paint or edit contours | `rasterStroke`, `erase`, `vectorStroke`, `path`, `edit`: [drawing](drawing.md) |
 | Edit pixels | `rasterSurface`, `readPixels`, `editPixels`, pixel selection helpers: [drawing](drawing.md#work-with-pixels) |
 | Author a brush | `customizeBrush`, `brushTipFromFunction`, `renderBrushSwatch`: [brushes](brushes.md) |

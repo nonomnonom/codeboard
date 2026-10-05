@@ -1,8 +1,62 @@
 # Changelog
 
-Changes are grouped by release. Unreleased work is not a claim of registry publication.
+## 1.0.0
 
-## Unreleased
+Code-first editable 2D production: storyboard and shot animation, saved-state revision,
+editorial assembly, audio, review and delivery through the JavaScript/TypeScript API and CLI.
+
+### Migration and changed contracts
+
+- New projects use document schema 5 and SQLite container format 3. Schema-3/format-1
+  and schema-4/format-2 projects remain readable but cannot be edited in place.
+  Use `codeboard migrate old.cboard new.cboard`; retain the original for its history
+  and request receipts. Migration copies the current document and embedded assets.
+- Review manifests use `codeboard-review/2`, with explicit board, shot or editorial
+  targets and per-frame source mappings. Consumers of version 1 must update parsing.
+- Animatic packages require a new output directory and publish their manifest last.
+  Existing directories are rejected; returned output paths are absolute.
+- Object discovery includes hierarchy, keys and review records. Use kind filters
+  when consuming results and restart bounded queries after edits or reopening.
+- Studio movie exports require an explicit audio mix or omission policy when audio
+  is authored. Board-global frames, shot-local frames and audio samples are distinct.
+
+### Production workflows
+
+- Persist independent shot animation and editorial clips, drawing holds, capture
+  handles, explicit board-to-shot plans and audio conversion. Retiming reports
+  quantization and rejects destructive collisions.
+- Author IK/rest poses, mesh/curve/envelope/skin bindings and ordered controllers;
+  transfer numeric performances using explicit identities. Lip sync consumes supplied
+  mouth cues and preserves editable exposure corrections.
+- Use palette bindings, component baselines and conflict-aware upgrades. Native shot
+  handoff and three-way merge preserve independently edited fields within their
+  documented resource-compatibility limits.
+- Composite masks, blend modes, ordered layer effects and shot graphs on RGBA8 surfaces.
+  Import supported PSD pixel layers, script CSV/FDX subsets and OTIO cut sequences
+  with explicit loss or rejection policies.
+- Mix rationally placed studio audio, export aligned WAV stems and H.264/AAC movies,
+  or render version-pinned PNG frame jobs with resume and sequence verification.
+- Save checkpoints, retry version/hash-bound agent plans through durable receipts,
+  inspect bounded metadata, publish native projects and pin font files for handoff.
+- Export saved-snapshot reviews; verify hashes, decoded images, unsigned decisions
+  and their optional saved-source/revision binding through the API or CLI.
+
+### Reliability and distribution
+
+- Preserve atomic document/receipt commits, stale-writer rejection, legacy-file
+  protection, cancellation and owned-output cleanup. Add process recovery and
+  migration regression fixtures plus package/install checks.
+- Organize implementation by domain, consolidate example workspace configuration,
+  and ship generated API documentation and matching offline plugin references.
+- Require media studies in release validation, synchronize version metadata and
+  deploy website documentation after a successful published engine release.
+
+### Supported limits
+
+The renderer uses 8-bit surfaces. Interchange formats are documented subsets;
+there is no native Harmony interchange, speech recognition, automatic rigging,
+HDR/OCIO compositor or built-in scheduler. See the guides for operation budgets,
+font/runtime reproducibility limits and explicit audio policies.
 
 ## [0.3.0] - 2026-10-05
 

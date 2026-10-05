@@ -1,0 +1,868 @@
+{
+  "writerArchiveSha256": "42df13e06288998b577b2b7a8ba5055bce3efc298a3e07531db2e3826eca04f8",
+  "fileSha256": "969146e3c946fe5667fd51d3b96ae6f133edb0f753c5e03c8f6f2eb5a2bdc3f2",
+  "audioSha256": "a9ac2f0ff6ba49051a5345f54daec498329d30097fcb3fb89e8aee165f408bb4",
+  "document": {
+    "studio": {
+      "animations": [
+        {
+          "boardPanelIds": ["panel:5"],
+          "audio": [
+            {
+              "id": "sound",
+              "name": "Trimmed samples",
+              "muted": false,
+              "clips": [
+                {
+                  "id": "sample-cue",
+                  "assetId": "cue",
+                  "name": "Cue",
+                  "start": {
+                    "ticks": 2,
+                    "rate": {
+                      "numerator": 24,
+                      "denominator": 1
+                    }
+                  },
+                  "source": {
+                    "sampleRate": 48000,
+                    "startSample": 1001,
+                    "sampleCount": 24000
+                  },
+                  "volume": 0.5,
+                  "fadeInSamples": 800,
+                  "fadeOutSamples": 1200
+                }
+              ]
+            }
+          ],
+          "id": "animation:0",
+          "shotId": "shot:3",
+          "name": "Untitled panel",
+          "frameRate": {
+            "numerator": 24,
+            "denominator": 1
+          },
+          "durationFrames": 24,
+          "canvas": {
+            "width": 48,
+            "height": 48,
+            "background": "#ffffff"
+          },
+          "layers": [
+            {
+              "depth": 1,
+              "exposure": null,
+              "id": "layer:15",
+              "name": "Moving mark",
+              "visible": true,
+              "opacity": 1,
+              "blendMode": "source-over",
+              "transform": {
+                "x": 0,
+                "y": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "rotation": 0
+              },
+              "clipToBelow": false,
+              "keyframes": [
+                {
+                  "id": "layer-key:16",
+                  "frame": 0,
+                  "easing": "linear",
+                  "transform": {
+                    "x": 0
+                  }
+                },
+                {
+                  "id": "layer-key:17",
+                  "frame": 23,
+                  "easing": "linear",
+                  "transform": {
+                    "x": 20
+                  }
+                }
+              ],
+              "kind": "vector",
+              "elements": [
+                {
+                  "kind": "vector-path",
+                  "id": "element:18",
+                  "commands": [
+                    {
+                      "op": "M",
+                      "x": 3,
+                      "y": 3
+                    },
+                    {
+                      "op": "L",
+                      "x": 13,
+                      "y": 3
+                    },
+                    {
+                      "op": "L",
+                      "x": 13,
+                      "y": 13
+                    },
+                    {
+                      "op": "Z"
+                    }
+                  ],
+                  "fill": "#cc2244",
+                  "strokeWidth": 0,
+                  "opacity": 1,
+                  "visible": true
+                }
+              ]
+            }
+          ],
+          "cameraKeyframes": []
+        },
+        {
+          "boardPanelIds": ["panel:22"],
+          "id": "animation:1",
+          "shotId": "shot:20",
+          "name": "Untitled panel",
+          "frameRate": {
+            "numerator": 24,
+            "denominator": 1
+          },
+          "durationFrames": 24,
+          "canvas": {
+            "width": 48,
+            "height": 48,
+            "background": "#ffffff"
+          },
+          "layers": [
+            {
+              "depth": 1,
+              "exposure": null,
+              "id": "layer:32",
+              "name": "Moving mark",
+              "visible": true,
+              "opacity": 1,
+              "blendMode": "source-over",
+              "transform": {
+                "x": 0,
+                "y": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "rotation": 0
+              },
+              "clipToBelow": false,
+              "keyframes": [
+                {
+                  "id": "layer-key:33",
+                  "frame": 0,
+                  "easing": "linear",
+                  "transform": {
+                    "x": 0
+                  }
+                },
+                {
+                  "id": "layer-key:34",
+                  "frame": 23,
+                  "easing": "linear",
+                  "transform": {
+                    "x": 20
+                  }
+                }
+              ],
+              "kind": "vector",
+              "elements": [
+                {
+                  "kind": "vector-path",
+                  "id": "element:35",
+                  "commands": [
+                    {
+                      "op": "M",
+                      "x": 3,
+                      "y": 3
+                    },
+                    {
+                      "op": "L",
+                      "x": 13,
+                      "y": 3
+                    },
+                    {
+                      "op": "L",
+                      "x": 13,
+                      "y": 13
+                    },
+                    {
+                      "op": "Z"
+                    }
+                  ],
+                  "fill": "#2255cc",
+                  "strokeWidth": 0,
+                  "opacity": 1,
+                  "visible": true
+                }
+              ]
+            }
+          ],
+          "cameraKeyframes": []
+        }
+      ],
+      "editorial": [
+        {
+          "id": "edit",
+          "frameRate": {
+            "numerator": 24,
+            "denominator": 1
+          },
+          "clips": [
+            {
+              "id": "clip:0",
+              "animationId": "animation:0",
+              "startFrame": 0,
+              "sourceInFrame": 3,
+              "durationFrames": 18,
+              "transition": {
+                "type": "cut",
+                "durationFrames": 0
+              }
+            },
+            {
+              "id": "clip:1",
+              "animationId": "animation:1",
+              "startFrame": 18,
+              "sourceInFrame": 3,
+              "durationFrames": 18,
+              "transition": {
+                "type": "cut",
+                "durationFrames": 0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "components": [],
+    "schemaVersion": 4,
+    "version": 19,
+    "id": "project:1",
+    "title": "Schema 4 studio migration",
+    "createdAt": "2026-10-05T16:40:50.398Z",
+    "updatedAt": "2026-10-05T16:40:50.513Z",
+    "canvas": {
+      "width": 48,
+      "height": 48,
+      "background": "#ffffff"
+    },
+    "seed": 1,
+    "frameRate": 24,
+    "idCounter": 41,
+    "sequences": [
+      {
+        "id": "sequence:main",
+        "name": "Main sequence",
+        "sceneIds": ["scene:1"]
+      }
+    ],
+    "scenes": [
+      {
+        "id": "scene:1",
+        "sequenceId": "sequence:main",
+        "name": "Migration scene",
+        "shotIds": ["shot:3", "shot:20"]
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot:3",
+        "sceneId": "scene:1",
+        "name": "Shot 0",
+        "panelIds": ["panel:5"],
+        "cameraKeyframes": []
+      },
+      {
+        "id": "shot:20",
+        "sceneId": "scene:1",
+        "name": "Shot 1",
+        "panelIds": ["panel:22"],
+        "cameraKeyframes": []
+      }
+    ],
+    "panels": [
+      {
+        "id": "panel:5",
+        "shotId": "shot:3",
+        "number": "1",
+        "title": "Untitled panel",
+        "width": 48,
+        "height": 48,
+        "durationFrames": 24,
+        "startFrame": 0,
+        "transition": {
+          "type": "cut",
+          "durationFrames": 0
+        },
+        "status": "working",
+        "action": "",
+        "dialogue": "",
+        "camera": "",
+        "notes": "",
+        "layers": [
+          {
+            "depth": 1,
+            "exposure": null,
+            "id": "layer:7",
+            "name": "Moving mark",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "source-over",
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "scaleX": 1,
+              "scaleY": 1,
+              "rotation": 0
+            },
+            "clipToBelow": false,
+            "keyframes": [
+              {
+                "id": "layer-key:11",
+                "frame": 0,
+                "easing": "linear",
+                "transform": {
+                  "x": 0
+                }
+              },
+              {
+                "id": "layer-key:13",
+                "frame": 23,
+                "easing": "linear",
+                "transform": {
+                  "x": 20
+                }
+              }
+            ],
+            "kind": "vector",
+            "elements": [
+              {
+                "kind": "vector-path",
+                "id": "element:9",
+                "commands": [
+                  {
+                    "op": "M",
+                    "x": 3,
+                    "y": 3
+                  },
+                  {
+                    "op": "L",
+                    "x": 13,
+                    "y": 3
+                  },
+                  {
+                    "op": "L",
+                    "x": 13,
+                    "y": 13
+                  },
+                  {
+                    "op": "Z"
+                  }
+                ],
+                "fill": "#cc2244",
+                "strokeWidth": 0,
+                "opacity": 1,
+                "visible": true
+              }
+            ]
+          }
+        ],
+        "motion": [],
+        "revision": 5
+      },
+      {
+        "id": "panel:22",
+        "shotId": "shot:20",
+        "number": "2",
+        "title": "Untitled panel",
+        "width": 48,
+        "height": 48,
+        "durationFrames": 24,
+        "startFrame": 24,
+        "transition": {
+          "type": "cut",
+          "durationFrames": 0
+        },
+        "status": "working",
+        "action": "",
+        "dialogue": "",
+        "camera": "",
+        "notes": "",
+        "layers": [
+          {
+            "depth": 1,
+            "exposure": null,
+            "id": "layer:24",
+            "name": "Moving mark",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "source-over",
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "scaleX": 1,
+              "scaleY": 1,
+              "rotation": 0
+            },
+            "clipToBelow": false,
+            "keyframes": [
+              {
+                "id": "layer-key:28",
+                "frame": 24,
+                "easing": "linear",
+                "transform": {
+                  "x": 0
+                }
+              },
+              {
+                "id": "layer-key:30",
+                "frame": 47,
+                "easing": "linear",
+                "transform": {
+                  "x": 20
+                }
+              }
+            ],
+            "kind": "vector",
+            "elements": [
+              {
+                "kind": "vector-path",
+                "id": "element:26",
+                "commands": [
+                  {
+                    "op": "M",
+                    "x": 3,
+                    "y": 3
+                  },
+                  {
+                    "op": "L",
+                    "x": 13,
+                    "y": 3
+                  },
+                  {
+                    "op": "L",
+                    "x": 13,
+                    "y": 13
+                  },
+                  {
+                    "op": "Z"
+                  }
+                ],
+                "fill": "#2255cc",
+                "strokeWidth": 0,
+                "opacity": 1,
+                "visible": true
+              }
+            ]
+          }
+        ],
+        "motion": [],
+        "revision": 5
+      }
+    ],
+    "brushes": [
+      {
+        "id": "brush:rough-pencil",
+        "name": "Rough pencil",
+        "version": 1,
+        "tip": {
+          "kind": "ellipse",
+          "aspect": 0.72,
+          "angle": -0.3,
+          "rotationMode": "stylus"
+        },
+        "size": 8,
+        "opacity": 0.62,
+        "flow": 0.24,
+        "hardness": 0.58,
+        "spacing": 0.12,
+        "taperStart": 0.08,
+        "taperEnd": 0.16,
+        "texture": "graphite",
+        "textureStrength": 0.58,
+        "dynamics": {
+          "pressureSize": 0.72,
+          "pressureOpacity": 0.78,
+          "speedSize": 0,
+          "speedOpacity": -0.18,
+          "tiltShape": 0.22,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:clean-ink",
+        "name": "Clean ink",
+        "version": 1,
+        "tip": {
+          "kind": "round",
+          "aspect": 1,
+          "angle": 0,
+          "rotationMode": "stroke"
+        },
+        "size": 7,
+        "opacity": 1,
+        "flow": 0.92,
+        "hardness": 0.96,
+        "spacing": 0.08,
+        "taperStart": 0.12,
+        "taperEnd": 0.3,
+        "texture": "none",
+        "textureStrength": 0,
+        "dynamics": {
+          "pressureSize": 0.88,
+          "pressureOpacity": 0.08,
+          "speedSize": -0.12,
+          "speedOpacity": 0,
+          "tiltShape": 0,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:shade",
+        "name": "Dry shading",
+        "version": 1,
+        "tip": {
+          "kind": "rake",
+          "aspect": 0.62,
+          "angle": -0.5,
+          "rotationMode": "stylus"
+        },
+        "size": 24,
+        "opacity": 0.42,
+        "flow": 0.12,
+        "hardness": 0.35,
+        "spacing": 0.16,
+        "taperStart": 0.04,
+        "taperEnd": 0.08,
+        "texture": "dry-brush",
+        "textureStrength": 0.68,
+        "dynamics": {
+          "pressureSize": 0.55,
+          "pressureOpacity": 0.72,
+          "speedSize": 0,
+          "speedOpacity": 0,
+          "tiltShape": 0.7,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:charcoal",
+        "name": "Charcoal",
+        "version": 1,
+        "tip": {
+          "kind": "chisel",
+          "aspect": 0.42,
+          "angle": -0.55,
+          "rotationMode": "stylus"
+        },
+        "size": 18,
+        "opacity": 0.66,
+        "flow": 0.18,
+        "hardness": 0.48,
+        "spacing": 0.2,
+        "taperStart": 0.05,
+        "taperEnd": 0.08,
+        "texture": "charcoal",
+        "textureStrength": 0.8,
+        "dynamics": {
+          "pressureSize": 0.65,
+          "pressureOpacity": 0.68,
+          "speedSize": 0,
+          "speedOpacity": 0,
+          "tiltShape": 0.45,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      },
+      {
+        "id": "brush:soft-eraser",
+        "name": "Soft eraser",
+        "version": 1,
+        "tip": {
+          "kind": "round",
+          "aspect": 1,
+          "angle": 0,
+          "rotationMode": "fixed"
+        },
+        "size": 32,
+        "opacity": 0.7,
+        "flow": 0.22,
+        "hardness": 0.28,
+        "spacing": 0.1,
+        "taperStart": 0,
+        "taperEnd": 0,
+        "texture": "none",
+        "textureStrength": 0,
+        "dynamics": {
+          "pressureSize": 0.45,
+          "pressureOpacity": 0.5,
+          "speedSize": 0,
+          "speedOpacity": 0,
+          "tiltShape": 0,
+          "pressureSpacing": 0,
+          "pressureHardness": 0,
+          "rotationJitter": 0
+        }
+      }
+    ],
+    "assets": [
+      {
+        "id": "cue",
+        "kind": "audio",
+        "name": "Cue",
+        "path": "cue.wav",
+        "mimeType": "audio/wav",
+        "source": "linked"
+      }
+    ],
+    "audioTracks": [],
+    "comments": [],
+    "locks": [],
+    "changes": [
+      {
+        "id": "change:2",
+        "version": 1,
+        "actor": "agent:local",
+        "operation": "add scene",
+        "targetIds": ["project:1"],
+        "timestamp": "2026-10-05T16:40:50.410Z"
+      },
+      {
+        "id": "change:4",
+        "version": 2,
+        "actor": "agent:local",
+        "operation": "add shot",
+        "targetIds": ["scene:1"],
+        "timestamp": "2026-10-05T16:40:50.412Z"
+      },
+      {
+        "id": "change:6",
+        "version": 3,
+        "actor": "agent:local",
+        "operation": "add panel",
+        "targetIds": ["shot:3", "panel:5"],
+        "timestamp": "2026-10-05T16:40:50.415Z"
+      },
+      {
+        "id": "change:8",
+        "version": 4,
+        "actor": "agent:local",
+        "operation": "add layer",
+        "targetIds": ["panel:5", "panel:5"],
+        "timestamp": "2026-10-05T16:40:50.418Z"
+      },
+      {
+        "id": "change:10",
+        "version": 5,
+        "actor": "agent:local",
+        "operation": "add drawing element",
+        "targetIds": ["panel:5", "layer:7", "panel:5"],
+        "timestamp": "2026-10-05T16:40:50.421Z"
+      },
+      {
+        "id": "change:12",
+        "version": 6,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:7", "panel:5"],
+        "timestamp": "2026-10-05T16:40:50.423Z"
+      },
+      {
+        "id": "change:14",
+        "version": 7,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:7", "panel:5"],
+        "timestamp": "2026-10-05T16:40:50.424Z"
+      },
+      {
+        "id": "change:19",
+        "version": 8,
+        "actor": "agent:local",
+        "operation": "capture panel animation",
+        "targetIds": ["panel:5", "animation:0"],
+        "timestamp": "2026-10-05T16:40:50.431Z"
+      },
+      {
+        "id": "change:21",
+        "version": 9,
+        "actor": "agent:local",
+        "operation": "add shot",
+        "targetIds": ["scene:1"],
+        "timestamp": "2026-10-05T16:40:50.433Z"
+      },
+      {
+        "id": "change:23",
+        "version": 10,
+        "actor": "agent:local",
+        "operation": "add panel",
+        "targetIds": ["shot:20", "panel:22"],
+        "timestamp": "2026-10-05T16:40:50.434Z"
+      },
+      {
+        "id": "change:25",
+        "version": 11,
+        "actor": "agent:local",
+        "operation": "add layer",
+        "targetIds": ["panel:22", "panel:22"],
+        "timestamp": "2026-10-05T16:40:50.436Z"
+      },
+      {
+        "id": "change:27",
+        "version": 12,
+        "actor": "agent:local",
+        "operation": "add drawing element",
+        "targetIds": ["panel:22", "layer:24", "panel:22"],
+        "timestamp": "2026-10-05T16:40:50.437Z"
+      },
+      {
+        "id": "change:29",
+        "version": 13,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:24", "panel:22"],
+        "timestamp": "2026-10-05T16:40:50.438Z"
+      },
+      {
+        "id": "change:31",
+        "version": 14,
+        "actor": "agent:local",
+        "operation": "add layer keyframe",
+        "targetIds": ["layer:24", "panel:22"],
+        "timestamp": "2026-10-05T16:40:50.438Z"
+      },
+      {
+        "id": "change:36",
+        "version": 15,
+        "actor": "agent:local",
+        "operation": "capture panel animation",
+        "targetIds": ["panel:22", "animation:1"],
+        "timestamp": "2026-10-05T16:40:50.439Z"
+      },
+      {
+        "id": "change:37",
+        "version": 16,
+        "actor": "agent:local",
+        "operation": "add asset",
+        "targetIds": [],
+        "timestamp": "2026-10-05T16:40:50.453Z"
+      },
+      {
+        "id": "change:38",
+        "version": 17,
+        "actor": "agent:local",
+        "operation": "set studio audio",
+        "targetIds": ["animation:0"],
+        "timestamp": "2026-10-05T16:40:50.458Z"
+      },
+      {
+        "id": "change:39",
+        "version": 18,
+        "actor": "agent:local",
+        "operation": "put editorial sequence",
+        "targetIds": ["edit"],
+        "timestamp": "2026-10-05T16:40:50.464Z"
+      },
+      {
+        "id": "change:40",
+        "version": 19,
+        "actor": "agent:local",
+        "operation": "Saved legacy title",
+        "targetIds": ["project:1"],
+        "timestamp": "2026-10-05T16:40:50.513Z"
+      }
+    ],
+    "metadata": {
+      "fixture": "schema-4"
+    }
+  },
+  "receipt": {
+    "requestId": "legacy-request",
+    "digest": "a2aece262fd8de628db8ea4b871fac9cbfb187d5534a0d53c4df7e1a153d5fee",
+    "projectId": "project:1",
+    "actor": "agent:local",
+    "baseVersion": 18,
+    "committedVersion": 19,
+    "committedAt": "2026-10-05T16:40:50.528Z"
+  },
+  "samples": [
+    {
+      "kind": "board",
+      "frame": 0,
+      "filename": "board-0.png",
+      "sha256": "5344d294c7b22697338baa0c1e1cbf2d5061b56b9fa05e64f6a376363fe33a2e"
+    },
+    {
+      "kind": "board",
+      "frame": 12,
+      "filename": "board-12.png",
+      "sha256": "6bb02f51e3e5e6f623a45e2955b6b142ac2b5b29c4f2e32a1ad38717ccdb819a"
+    },
+    {
+      "kind": "board",
+      "frame": 24,
+      "filename": "board-24.png",
+      "sha256": "d724048602aeb315d37d903ee22a918ff7353917a7b3da05c55966cb9d3937a9"
+    },
+    {
+      "kind": "board",
+      "frame": 47,
+      "filename": "board-47.png",
+      "sha256": "c089c0b99eb539846bba5cc542a9c8facc5523f0aade5f64b987bc6128bde97d"
+    },
+    {
+      "kind": "shot",
+      "frame": 0,
+      "filename": "shot-0.png",
+      "sha256": "5344d294c7b22697338baa0c1e1cbf2d5061b56b9fa05e64f6a376363fe33a2e"
+    },
+    {
+      "kind": "shot",
+      "frame": 11,
+      "filename": "shot-11.png",
+      "sha256": "c16c867b0fc44fee20eb6a3800b3cd1a2a8cb30618c34e5d71b011b3f8bc98c3"
+    },
+    {
+      "kind": "shot",
+      "frame": 23,
+      "filename": "shot-23.png",
+      "sha256": "10121e0bbe538cd371cb5d955d0341e896ca46327973eace2faf30d9a68f74f2"
+    },
+    {
+      "kind": "editorial",
+      "frame": 0,
+      "filename": "editorial-0.png",
+      "sha256": "c4200ec7f4676feeb8b1c8102b1207ccacbbfef0fc94662151244d1003f68e4d"
+    },
+    {
+      "kind": "editorial",
+      "frame": 17,
+      "filename": "editorial-17.png",
+      "sha256": "06b174fb8f94decffa9f19867757ef00685206bc688c7cac2aae5b7885f193b1"
+    },
+    {
+      "kind": "editorial",
+      "frame": 18,
+      "filename": "editorial-18.png",
+      "sha256": "7c3434ba41b647972b933ca2fbf05b7447eed5464f2c5a6a2b96966e1b970c29"
+    },
+    {
+      "kind": "editorial",
+      "frame": 35,
+      "filename": "editorial-35.png",
+      "sha256": "f2282def048e42176333b205393813797a1be674a1d13c7a9446e5c79d9b7d05"
+    }
+  ]
+}
