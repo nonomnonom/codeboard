@@ -22,7 +22,7 @@ Install the published CLI with `npm install -g codeboard-studio` before running 
 1. For an API redesign, storage change, or substantial new feature, open an issue describing a concrete authoring task first.
 2. Implement behavior in its owning module. Keep example-specific composition in `examples/`; engine code must work for other artwork too.
 3. Add a regression test for a bug or invariant. For rendering changes, also inspect actual images or playback. Compilation alone cannot establish visual quality.
-4. Update the relevant documentation and add a concise entry under Unreleased in `CHANGELOG.md`.
+4. Update the relevant documentation. For a change that needs a package release, run `npm run changeset` and commit its release type and summary; Changesets generates `CHANGELOG.md` during release preparation.
 5. Run `npm run check`. Run `npm run test:install` when changing packaging or dependencies; this downloads dependencies into a disposable directory.
 6. Open a pull request describing the trigger, resulting behavior, and checks performed. Attach a small rendered sample for visual changes.
 
@@ -42,7 +42,9 @@ The engine lives in `src/`: `core` owns authoring operations, `drawing` brush an
 
 npm is the runtime distribution channel. The root package includes both the public library and the CLI; Node.js is supplied by the user. Do not build platform archives or publish installer scripts.
 
-Use semantic versioning. Update the root package and lockfile versions, refresh generated references with `npm run docs:generate`, add a dated changelog entry, and merge through a passing pull request. Never reuse a published version. Tag the merged commit as `vVERSION`; `.github/workflows/release.yml` validates the version, runs the full checks, and tests fresh npm installations on Windows, Linux, and macOS before publishing the validated tarball. Stable versions use the `latest` dist-tag; prereleases use `next`. Manual workflow runs validate without publishing.
+Use [Changesets](https://changesets.dev/guide/getting-started) to manage versions and changelog entries for the single `codeboard-studio` package. Contributors run `npm run changeset` and commit the generated `.changeset/*.md` file with their change. Select patch for compatible fixes, minor for features, and the appropriate breaking release for API or CLI incompatibilities. Tooling-only changes do not need to trigger an npm release.
+
+When ready to release, run `npm run version-packages`. This consumes pending changesets, generates the changelog, refreshes the npm lockfile, synchronizes all plugin manifests and website version metadata, and rebuilds the offline reference bundle. Review the generated diff, run `npm run check` and `npm run test:install`, and merge through a passing pull request. Do not bump package versions manually or run `changeset publish`; publication belongs to the validated tarball workflow. Never reuse a published version. Tag the merged commit as `vVERSION`; `.github/workflows/release.yml` validates the version, runs the full checks, and tests fresh npm installations on Windows, Linux, and macOS before publishing the validated tarball. Stable versions use the `latest` dist-tag; prereleases use `next`. Manual workflow runs validate without publishing.
 
 Configure an [npm trusted publisher](https://docs.npmjs.com/trusted-publishers/) for `codeboard-studio`: GitHub owner `nonomnonom`, repository `codeboard`, workflow `release.yml`, with publishing allowed. The publish job uses OIDC (`id-token: write`) and npm 11; no long-lived npm token is needed. This npm account setting must be configured before tagging a release. The workflow does not upload runtime assets to GitHub Releases.
 

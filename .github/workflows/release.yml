@@ -34,7 +34,8 @@ jobs:
           assert.equal(process.env.GITHUB_REF_NAME, `v${pkg.version}`);
           assert.equal(lock.version, pkg.version);
           assert.equal(lock.packages[''].version, pkg.version);
-          assert(readFileSync('CHANGELOG.md', 'utf8').includes(`## [${pkg.version}] - `), 'Missing changelog entry');
+          const headings = readFileSync('CHANGELOG.md', 'utf8').split(/\r?\n/);
+          assert(headings.some(line => line === `## ${pkg.version}` || line.startsWith(`## [${pkg.version}] - `)), 'Missing changelog entry');
           NODE
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: npm ci

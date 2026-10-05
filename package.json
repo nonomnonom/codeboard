@@ -59,7 +59,9 @@
     "demo:author": "codeboard run code-board-demo/src/run.ts author",
     "demo:verify": "codeboard run code-board-demo/src/run.ts verify",
     "demo:render": "codeboard run code-board-demo/src/run.ts render",
-    "demo:review-script": "codeboard run code-board-demo/src/run.ts review-script"
+    "demo:review-script": "codeboard run code-board-demo/src/run.ts review-script",
+    "changeset": "changeset",
+    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts --no-audit --no-fund && node scripts/sync-release-version.mjs && npm run docs:generate"
   },
   "engines": {
     "node": ">=22.22"
@@ -73,6 +75,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@changesets/cli": "^3.0.3",
     "@types/node": "^24.7.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
