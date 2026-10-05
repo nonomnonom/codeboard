@@ -1,5 +1,9 @@
 # Drawing and painting
 
+![Textured raster stroke, vector stroke and enlarged pixel surface](../website/public/art/guides/representations.png)
+
+The first two examples share a pen path; the third is a low-resolution pixel image. Each retains a different kind of editable data. [Run the visual studies](visual-examples.md).
+
 Draw inside a panel using raster or vector layers. You can combine both in the same panel, for example a painted rough, vector clean-up, and raster shading.
 
 The examples below assume a `project` and `panel` created as follows:

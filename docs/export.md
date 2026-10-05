@@ -1,5 +1,17 @@
 # Export
 
+## Choose the output
+
+| Need | Output | Command or API | Requirement |
+| --- | --- | --- | --- |
+| Continue editing | `.cboard` | `project.save(...)` | Preserve source and fonts separately |
+| Review an exact moment | PNG | `renderFramePNG(project, frame)` | A frame inside the timeline |
+| Share panels and captions | PDF and images | `codeboard render` | Panel captions |
+| Send frames to another workflow | Images and manifest | `codeboard animatic` | Disk space for the sequence |
+| Review motion and mixed audio | MP4 | `codeboard movie` | FFmpeg |
+
+For project-local installations, prefix CLI commands with `npx`. API snippets assume an in-memory project; reopen one with `StoryboardProject.open('film.cboard')` when exporting saved artwork. Create destination directories before using `writeFile` directly.
+
 Export images for review, paginated storyboard sheets for sharing, or a movie for timing and sound review.
 
 ## PNG frames

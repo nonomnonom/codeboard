@@ -14,7 +14,13 @@ Follow [the Codeboard demo](code-board-demo.md) from pose construction to exposu
 2. [Create your first drawing](quickstart.md) and render a PNG.
 3. [Review and revise](review.md) the saved artwork.
 
+New to the object model? Read [how a project works](concepts.md). For typed source, use the complete [TypeScript setup](typescript.md), including dependency installation, compiler configuration, execution and validation.
+
 Using a coding agent? [Install the Codeboard skills](agent-plugin.md) for operation guidance and an offline API reference, with plugin and portable-folder setup for compatible hosts.
+
+## Learn by comparing results
+
+[Run the visual studies](visual-examples.md) to compare clipping, feathering, drawing changes, component reuse and IK. Each figure has reproducible source and an editable project output.
 
 ## Create artwork
 

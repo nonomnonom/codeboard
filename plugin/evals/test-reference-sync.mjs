@@ -17,6 +17,7 @@ for (const [path, text] of Object.entries({
   'docs/index.md': '# Manual\n\n[Guide](guide.md)\n[Source](../examples/quickstart.mjs)\n![Media](../website/public/art/demo.png)\n',
   'docs/guide.md': '# Guide\n',
   'examples/quickstart.mjs': '// quickstart\n',
+  'examples/documentation.mjs': '// documentation studies\n',
   'examples/code-board-demo/main.mjs': '// demo\n',
   'LICENSE': 'License\n', 'NOTICE': 'Notice\n',
 })) await writeFile(join(fixture, path), text);

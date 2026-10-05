@@ -61,7 +61,8 @@
     "demo:render": "codeboard run code-board-demo/src/run.ts render",
     "demo:review-script": "codeboard run code-board-demo/src/run.ts review-script",
     "changeset": "changeset",
-    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts --no-audit --no-fund && node scripts/sync-release-version.mjs && npm run docs:generate"
+    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts --no-audit --no-fund && node scripts/sync-release-version.mjs && npm run docs:generate",
+    "docs:assets": "npm run build && node scripts/build-guide-assets.mjs"
   },
   "engines": {
     "node": ">=22.22"

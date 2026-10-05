@@ -41,3 +41,7 @@ The [48-second demo](../code-board-demo/README.md) includes its drawing source, 
 codeboard run code-board-demo/src/run.ts author
 codeboard run code-board-demo/src/run.ts render
 ```
+
+## Documentation studies
+
+Run `codeboard run examples/documentation.mjs` for eight focused studies of drawing representations, clipping, pixels, components, animation, IK, audio placement and project ownership. The script owns its eight `.cboard`/PNG pairs in `output/documentation`; pass another output directory as its first argument. See [visual examples](../docs/visual-examples.md).

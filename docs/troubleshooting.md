@@ -1,5 +1,17 @@
 # Troubleshooting
 
+## npm installation fails in a native dependency
+
+Check the first error mentioning `skia-canvas` or `sharp`, along with Node version, OS and architecture. These renderers need native binaries. Allow required dependency install scripts and check whether a proxy or firewall blocked a download. Do not use `--ignore-scripts` and assume rendering will work. Reinstall in the intended environment rather than copying `node_modules` from another operating system.
+
+## TypeScript runs but does not type-check
+
+The CLI strips supported type syntax. Run `npx tsc --noEmit` separately with the [complete TypeScript configuration](typescript.md). Install the engine locally so compiler and CLI resolve the same version. Unsupported syntax or aliases need a source change or your project's compilation toolchain.
+
+## A requested frame is outside the project
+
+A 48-frame project ends at frame 47. Keys and audio use global frames, not a frame count starting again at each panel. Inspect the timeline and exclusive range ends. See [frames and units](concepts.md#frames-are-positions-durations-are-counts).
+
 ## The command is not found
 
 Check `node --version` and `npm --version`, then install with `npm install -g codeboard-studio`. On macOS/Linux, npm's global commands are in the `bin` directory under `npm prefix -g`; on Windows they are directly in the global prefix. Ensure that directory is on PATH and open a new terminal. For a project-local installation, use `npx codeboard` from that project. If PowerShell blocks the npm script shim, use `npm.cmd` and `codeboard.cmd`. See [installation](install.md) for migration from the old installer.

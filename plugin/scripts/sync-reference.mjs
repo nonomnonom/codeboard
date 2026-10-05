@@ -23,7 +23,7 @@ async function collect(folder, predicate) {
 }
 await collect('docs', path => path.endsWith('.md') || path === 'docs/meta.json');
 await collect('examples/code-board-demo', path => /\.(mjs|md)$/.test(path));
-files.push('examples/quickstart.mjs', 'LICENSE', 'NOTICE');
+files.push('examples/quickstart.mjs', 'examples/documentation.mjs', 'LICENSE', 'NOTICE');
 files.sort();
 const included = new Set(files);
 const sha256 = data => createHash('sha256').update(data).digest('hex');

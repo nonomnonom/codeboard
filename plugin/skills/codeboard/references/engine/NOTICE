@@ -21,3 +21,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 No Toon Boom assets, Photoshop brushes, GIMP brushes, or Krita resources are
 included in the npm distribution. Third-party files under ignored tmp/ were
 used only for import evaluation; their redistribution rights are not assumed.
+
+The documentation website bundles DM Sans and Cormorant Garamond under the
+SIL Open Font License. Their license files are in website/public/fonts/.
+These website fonts are not included in the npm runtime package.

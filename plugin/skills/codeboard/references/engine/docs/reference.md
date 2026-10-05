@@ -8,6 +8,8 @@ import { StoryboardProject, brushes, renderFramePNG } from 'codeboard-studio';
 
 ## Document structure
 
+Read [project concepts](concepts.md) for hierarchy and units, or [TypeScript authoring](typescript.md) for a complete typed setup. Task-guide snippets reuse existing handles; generated API signatures are references, not runnable programs.
+
 | Object | Create or access it |
 | --- | --- |
 | Project | `StoryboardProject.create(options)`, `StoryboardProject.open(path)` |

@@ -1,5 +1,9 @@
 # Animation
 
+![Frames 0 through 23: a triangle moves right and switches to a diamond at frame 12](../website/public/art/guides/drawing-timing.png)
+
+Placement interpolates continuously while drawing substitution changes the silhouette at frame 12. There is no generated in-between drawing. [Run the visual studies](visual-examples.md).
+
 Codeboard supports drawing substitutions, layer keyframes, and timed panel sequences. Timeline positions are global, zero-based integer frames. At 24 fps, 48 frames last two seconds.
 
 ![Walk, anticipation, takeoff and landing drawings from the runnable character example](../website/public/art/code-board-demo/key-drawings.png)

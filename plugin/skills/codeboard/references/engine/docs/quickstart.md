@@ -1,5 +1,9 @@
 # Your first drawing
 
+![Expected first drawing: a dark pressure-varying curved stroke on a light background](https://codeboard.nonom.xyz/art/guides/quickstart.png)
+
+This is the unmodified starter output. After changing brush size or color, compare your PNG with this baseline.
+
 [Install Codeboard from npm](install.md) with `npm install -g codeboard-studio`, then open a terminal in an empty working folder. Node.js 22.22 or later is required. If you installed Codeboard as a project dependency, use `npx codeboard` for the commands below.
 
 ```sh
@@ -45,6 +49,8 @@ codeboard render output/first.cboard --output sheets
 The output directory contains panel images and a storyboard PDF. Add more panels to the script to develop a sequence.
 
 ## Use TypeScript
+
+For a complete local npm project with a strict configuration and a runnable `.mts` example, follow [TypeScript authoring](typescript.md). Read [project concepts](concepts.md) for the document hierarchy, editing representations and frame units.
 
 `codeboard run` also accepts `.ts` and `.mts` scripts. Type annotations and `import type` are supported. `.mts` always uses ES modules. The runner does not type-check, apply `tsconfig` path aliases, or compile JSX, enums, or parameter properties; use ordinary JavaScript or erasable TypeScript syntax.
 

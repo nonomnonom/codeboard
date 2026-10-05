@@ -1,5 +1,11 @@
 # Audio
 
+![Audio source seconds 1 through 4 placed at project seconds 2 through 5](../website/public/art/guides/audio-placement.png)
+
+Explanatory diagram at 24 fps, not a waveform: source trim and timeline position are separate fields. [Run the visual studies](visual-examples.md).
+
+Start with a project containing enough frames for the clip. The first example needs `audio/rain.wav` relative to the supplied asset root; npm does not include it. For a self-contained test, create `scratch.wav` with [the tone helper](#create-an-original-scratch-cue), register that path, and keep the clip duration within the generated sound.
+
 Place dialogue, music, or effects on audio tracks. Each clip references a source asset and uses frame-based placement, trim, volume, and fades.
 
 ```js
@@ -21,6 +27,8 @@ await project.save('film.cboard', { assetRoot: process.cwd() });
 Keep clip durations within the scene you want to hear and make sure the source file contains enough audio. Saving embeds the referenced asset so a saved project can travel with its sound.
 
 ## Adjust synchronization
+
+At 24 fps, `startFrame: 48`, `sourceInFrame: 24`, and `durationFrames: 72` place three seconds of sound at project time 2–5 seconds, reading source time 1–4 seconds. Moving the timeline start does not change the source trim. The source must contain that entire interval.
 
 ```js
 project.production.updateAudioClip(trackId, clipId, {

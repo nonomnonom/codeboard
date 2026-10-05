@@ -1,5 +1,11 @@
 # Pixel surfaces and selections
 
+![Hard triangle selection compared with eight-pixel feathering](https://codeboard.nonom.xyz/art/guides/selections.png)
+
+The shape and fill color are unchanged. The right sample feathers selection coverage before filling. [Run the visual studies](visual-examples.md).
+
+Start with a project and panel from [project concepts](concepts.md). These are separate recipes: the import and polygon examples both declare `image` and `surfaceId`, so choose one rather than pasting both declarations into the same scope. For the polygon recipe, first create `const paint = panel.addRasterLayer('Pixels')`.
+
 A raster surface stores editable RGBA pixels. It differs from a replayable brush stroke: changing a surface edits pixel values, while changing a stroke changes pen samples and brush settings that are painted again.
 
 ## Import an image as editable pixels

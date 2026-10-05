@@ -1,13 +1,11 @@
 # Codeboard website direction
 
-Approved direction: warm paper, black ink and an amber accent from the Codeboard brief. Original artwork is the focus. Navigation: Docs, Download, Examples and GitHub. Domain: codeboard.nonom.xyz.
+The user requested alignment with the Nonom portfolio in `web/`. Reference: its `docs/DESIGN.md`, `src/app/globals.css`, local font configuration and button/card primitives. The portfolio is a reference only; Codeboard has no build dependency on that sibling project.
 
-Design read: a creative developer-tool website and working reference manual, with editorial typography and real drawn scenes. ENERGY 2 / RHYTHM 2 / MOTION 1.
+Use the portfolio's monochrome editorial identity: light #f5f5f5, ink #242424, cards #fafafa, muted text #616161, borders #d5d5d5; dark surfaces #242424/#303030, text #f5f5f5, muted text #bbbbbb and borders #555555. DM Sans serves body/navigation; Cormorant Garamond supplies editorial headings. Fonts are bundled locally with their OFL licenses.
 
-- Paper and charcoal connect the website to the actual artwork; amber identifies primary actions and active documentation links.
-- Georgia headlines give the home page an editorial voice; system sans-serif keeps long technical documentation readable without remote font loading.
-- A wide original scene is the main visual evidence. No generated promotional artwork, fake testimonials or usage statistics.
-- The home page moves from a clear purpose to real artwork, authoring code and documentation entry points. Download choices use a comparison table.
-- Fumadocs owns documentation navigation, search, table of contents, keyboard controls and code blocks. Its functional icons retain their standard meaning.
-- Small corners and flat surfaces keep the artwork prominent. Theme and hover transitions are the only interface motion; videos play only on user request.
-- Light and dark modes share the same content and layout. Mobile stacks the authoring section and keeps artwork at its natural aspect ratio.
+ENERGY 2 / RHYTHM 2 / MOTION 1. Use clear reading hierarchy, generous section spacing, 8px component corners, restrained borders and visible keyboard focus. The key visual motif is the portfolio's serif heading against direct sans-serif technical content. Black/white identifies interface actions; diagram colors distinguish data or artwork and are not UI accents.
+
+Fumadocs continues to own navigation, search, TOC, theme controls and code-copy behavior. Adapt its theme tokens and typography rather than copying unrelated application logic. Code and tables may scroll horizontally inside the reading column. Images retain aspect ratio and meaningful alt text; their behavior is explained in adjacent prose. Illustrations show actual Codeboard output; schematic diagrams are labeled explicitly.
+
+No autonomous decorative animation. Retain light/dark parity and reduced-motion support. Keep source examples, fonts, documentation and generated assets inside the Codeboard repository.

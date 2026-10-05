@@ -2,7 +2,7 @@
 
 Kumpulan Agent Skills untuk mengoperasikan Codeboard, dengan paket plugin Codex/Claude Code dan pemasangan folder skill untuk host lain yang kompatibel. Setiap skill membantu agent memilih operasi, menjalankan pekerjaan, dan memeriksa hasil berdasarkan kemampuan engine. Paket membawa manual dan referensi API Codeboard 0.3.0, quickstart, serta source demo karakter. Agent tidak perlu mengakses repo atau internet untuk membacanya.
 
-Versi plugin: **0.3.0**. Dasar desain, kepemilikan instruksi, serta audit seluruh 29 panduan ada di [catatan desain](docs/design.md).
+Versi plugin: **0.3.0**. Dasar desain, kepemilikan instruksi, serta audit panduan ada di [catatan desain](docs/design.md).
 
 Engine dan CLI dipasang lewat npm: `npm install -g codeboard-studio`, dengan Node.js 22.22 atau lebih baru. Untuk dependency project, gunakan `npm install --save-exact codeboard-studio` dan jalankan `npx codeboard`. Pemasangan plugin mengikuti mekanisme host agent.
 

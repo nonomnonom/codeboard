@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Provider } from '@/components/provider';
 import { siteUrl } from '@/lib/shared';
+import { bodyFont, displayFont } from './fonts';
 import './global.css';
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen">
+      <body className={`${bodyFont.variable} ${displayFont.variable} flex flex-col min-h-screen`}>
         <Provider>{children}</Provider>
       </body>
     </html>

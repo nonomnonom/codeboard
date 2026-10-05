@@ -1,5 +1,11 @@
 # Layers and composition
 
+![Silhouette, unclipped highlights and highlights clipped to the preceding silhouette](../website/public/art/guides/clipping.png)
+
+Compare the middle and right panels: only `clipToBelow` changes. Both layers belong to the same sibling stack. [Run the visual studies](visual-examples.md).
+
+The snippets use a `project` and `panel` created in [project concepts](concepts.md#from-a-project-to-a-mark). Create artwork before applying operations to its IDs; a new group is empty until you add child layers and elements.
+
 Use layers to separate roughs, clean-up, paint, and reusable parts of a character. A group can contain raster layers, vector layers, or other groups.
 
 ```js
@@ -68,9 +74,11 @@ When feedback refers to a visible screen location, use [coordinate conversion](m
 ## Find a layer in a later session
 
 ```js
-const matches = project.production.find({ panelId: panel.id, name: 'Ink', limit: 10 });
+const matches = project.production.find({ panelId: panel.id, name: 'Ink', kind: 'vector', limit: 10 });
 console.log(matches);
-const layer = project.production.layer(matches[0].id);
+const match = matches[0];
+if (!match) throw new Error('No matching Ink vector layer found');
+const layer = project.production.layer(match.id);
 ```
 
 Read the returned IDs and kinds before editing. Names can change; retain stable IDs for repeatable revisions. See [review and revision](review.md) for a complete loop.

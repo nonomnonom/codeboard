@@ -1,5 +1,9 @@
 # Curves, coordinates, and IK
 
+![Two reachable arm targets and one target beyond the two-bone reach](../website/public/art/guides/ik-reach.png)
+
+The target cross in the final panel is beyond the combined 180-unit reach. Check `reachable` rather than assuming the solver reaches every target. [Run the visual studies](visual-examples.md).
+
 Use math helpers to generate pen paths and map a review observation back into artwork coordinates. They produce geometry or transforms; they do not evaluate whether a drawing is anatomically correct.
 
 ## Generate a pen path

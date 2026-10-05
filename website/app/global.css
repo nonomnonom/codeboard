@@ -2,64 +2,75 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+@theme inline {
+  --font-sans: var(--font-body), Arial, sans-serif;
+}
+
 :root {
-  --color-fd-background: #f7f3ea;
-  --color-fd-foreground: #23251f;
-  --color-fd-muted: #ece7dc;
-  --color-fd-muted-foreground: #66645c;
-  --color-fd-popover: #fbf8f1;
-  --color-fd-popover-foreground: #23251f;
-  --color-fd-card: #f1ece1;
-  --color-fd-card-foreground: #23251f;
-  --color-fd-border: #dcd6c9;
-  --color-fd-primary: #8a4a13;
-  --color-fd-primary-foreground: #fffaf1;
-  --color-fd-secondary: #ede7db;
-  --color-fd-secondary-foreground: #23251f;
-  --color-fd-accent: #eae2d3;
-  --color-fd-accent-foreground: #23251f;
-  --ink-soft: #66645c;
+  --color-fd-background: #f5f5f5;
+  --color-fd-foreground: #242424;
+  --color-fd-muted: #e8e8e8;
+  --color-fd-muted-foreground: #616161;
+  --color-fd-popover: #fafafa;
+  --color-fd-popover-foreground: #242424;
+  --color-fd-card: #fafafa;
+  --color-fd-card-foreground: #242424;
+  --color-fd-border: #d5d5d5;
+  --color-fd-primary: #242424;
+  --color-fd-ring: #242424;
+  --color-fd-primary-foreground: #ffffff;
+  --color-fd-secondary: #e8e8e8;
+  --color-fd-secondary-foreground: #242424;
+  --color-fd-accent: #e8e8e8;
+  --color-fd-accent-foreground: #242424;
+  --ink-soft: #616161;
 }
 .dark {
-  --color-fd-background: #1c211f;
-  --color-fd-foreground: #f1ebde;
-  --color-fd-muted: #272e2a;
-  --color-fd-muted-foreground: #b7bbaf;
-  --color-fd-popover: #222925;
-  --color-fd-popover-foreground: #f1ebde;
-  --color-fd-card: #242c27;
-  --color-fd-card-foreground: #f1ebde;
-  --color-fd-border: #414941;
-  --color-fd-primary: #efbd73;
-  --color-fd-primary-foreground: #201c15;
-  --color-fd-secondary: #2c342e;
-  --color-fd-secondary-foreground: #f1ebde;
-  --color-fd-accent: #354035;
-  --color-fd-accent-foreground: #f1ebde;
-  --ink-soft: #b7bbaf;
+  --color-fd-background: #242424;
+  --color-fd-foreground: #f5f5f5;
+  --color-fd-muted: #454545;
+  --color-fd-muted-foreground: #bbbbbb;
+  --color-fd-popover: #303030;
+  --color-fd-popover-foreground: #f5f5f5;
+  --color-fd-card: #303030;
+  --color-fd-card-foreground: #f5f5f5;
+  --color-fd-border: #555555;
+  --color-fd-primary: #f5f5f5;
+  --color-fd-ring: #f5f5f5;
+  --color-fd-primary-foreground: #242424;
+  --color-fd-secondary: #454545;
+  --color-fd-secondary-foreground: #f5f5f5;
+  --color-fd-accent: #454545;
+  --color-fd-accent-foreground: #f5f5f5;
+  --ink-soft: #bbbbbb;
 }
-body { font-family: Arial, Helvetica, sans-serif; }
+body { font-family: var(--font-body), Arial, sans-serif; }
+.dark #nd-sidebar {
+  --color-fd-muted: #454545;
+  --color-fd-secondary: #454545;
+  --color-fd-muted-foreground: #bbbbbb;
+}
 a, button { -webkit-tap-highlight-color: transparent; }
 a:focus-visible, button:focus-visible, input:focus-visible, video:focus-visible {
   outline: 2px solid var(--color-fd-primary);
   outline-offset: 4px;
 }
-.wordmark { font-family: Georgia, serif; font-weight: 700; font-size: 25px; letter-spacing: -1px; }
+.wordmark { font-family: var(--font-display), Georgia, serif; font-weight: 700; font-size: 30px; letter-spacing: -1px; }
 .wordmark-period { color: var(--color-fd-primary); }
 .site-main { width: min(1200px, calc(100% - 64px)); margin-inline: auto; }
 .intro { padding: 62px 0 40px; }
 .intro-meta { display: flex; justify-content: space-between; gap: 20px; font-size: 13px; color: var(--ink-soft); margin-bottom: 32px; }
 .intro-meta a { color: var(--color-fd-foreground); text-decoration: underline; text-underline-offset: 4px; }
 .intro-columns { display: grid; grid-template-columns: 1.12fr 1fr; gap: 64px; align-items: end; }
-.site-main h1, .site-main h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -.045em; }
+.site-main h1, .site-main h2 { font-family: var(--font-display), Georgia, serif; font-weight: 500; letter-spacing: -.045em; }
 .site-main h1 { font-size: clamp(46px, 5.6vw, 76px); line-height: 1.04; }
 .site-main h2 { font-size: clamp(32px, 3.2vw, 44px); line-height: 1.15; }
 .site-main em { font-weight: 400; }
 .intro-copy > p:first-child { font-size: 17px; line-height: 1.75; max-width: 470px; }
 .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 24px; }
-.button { display: inline-flex; justify-content: center; align-items: center; min-height: 44px; padding: 12px 18px; border: 1px solid transparent; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background-color .15s; }
-.primary { background: #e9b265; color: #211d15; }
-.primary:hover { background: #f3c27d; }
+.button { display: inline-flex; justify-content: center; align-items: center; min-height: 44px; padding: 12px 18px; border: 1px solid transparent; border-radius: .5rem; font-size: 14px; font-weight: 600; text-decoration: none; transition: background-color .15s; }
+.primary { background: var(--color-fd-primary); color: var(--color-fd-primary-foreground); }
+.primary:hover { opacity: .85; }
 .secondary { border-color: var(--color-fd-border); background: transparent; }
 .secondary:hover { background: var(--color-fd-accent); }
 .fine-print { font-size: 12px; line-height: 1.7; color: var(--ink-soft); margin-top: 14px; }
@@ -143,6 +154,24 @@ a:focus-visible, button:focus-visible, input:focus-visible, video:focus-visible 
 html {
   scrollbar-gutter: stable;
 }
+
+.codeboard-doc-page { min-width: 0; }
+.codeboard-doc-page h1, .codeboard-doc-page h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -.035em;
+}
+.codeboard-doc-page h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.08; }
+.codeboard-doc-page h2 { font-size: 2rem; line-height: 1.2; }
+.codeboard-doc-page .prose { font-size: 1rem; line-height: 1.8; }
+.codeboard-doc-page .prose img { width: 100%; height: auto; border: 1px solid var(--color-fd-border); border-radius: .5rem; }
+.codeboard-doc-page .prose pre { font-size: .875rem; line-height: 1.7; }
+.codeboard-doc-page figure.shiki { border-radius: .5rem; box-shadow: none; }
+.codeboard-doc-page .prose table { font-size: .875rem; }
+.codeboard-doc-page .prose th { color: var(--color-fd-foreground); background: var(--color-fd-muted); }
+.codeboard-doc-page .prose a:not([data-card]):not(.not-prose) { text-underline-offset: 4px; }
+.codeboard-doc-page button { border-radius: .5rem; }
+::selection { background: var(--color-fd-primary); color: var(--color-fd-primary-foreground); }
 
 html > body[data-scroll-locked] {
   margin-right: 0px !important;
