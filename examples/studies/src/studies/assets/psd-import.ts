@@ -3,9 +3,9 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { importPSD, StoryboardProject, renderFramePNG } from "codeboard-studio";
 import { make, save } from "../../shared.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const options = { namespace: "psd", sourceColorSpace: "srgb", lossPolicy: "report" } as const;
   const input = await readFile(new URL("../../fixtures/psd/layered-rle.psd", import.meta.url));
   const imported = importPSD(input, options);
@@ -65,7 +65,8 @@ export async function render(output: string): Promise<void> {
     output,
     "psd-import",
     edited,
-    await sheet(
+    await comparison(
+      output,
       "PSD pixel import",
       [
         { label: "Imported layers + group opacity", png: before },

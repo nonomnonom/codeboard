@@ -9,7 +9,7 @@ import {
   planComponentSource,
 } from "codeboard-studio";
 import { amber, ink, make, rect, save, text } from "../../shared.ts";
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Static components", 900, 360);
   const panel = project.addScene("Study").addShot("Repeated prop").addPanel({ durationFrames: 1 });
   const source = panel.addGroup("Lamp source");

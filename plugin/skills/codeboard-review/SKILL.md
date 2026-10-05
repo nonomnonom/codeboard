@@ -7,9 +7,7 @@ description: Use when Codeboard work needs critique, exact-frame inspection, oni
 
 Prerequisite: codeboard session context.
 
-Use `verifyReviewExport` to check delivered evidence. Record actual reviewer, criteria and inspected frames with `createReviewDecision`; technical checks alone remain `not-reviewed`. Retain the JSON and exact package, then use `verifyReviewDecision` on handoff. Supply `source: { projectPath }` to reject stale decisions against the saved head; a named revision must be explicit. Read `docs/review.md` for scope and unsigned-record limits.
-
-Read `docs/review.md` and `docs/export.md`; for ghosts read `docs/onion-skin.md`. Resolve render options in `docs/api-render.md`.
+Read `docs/workflow/review.md` for inspection and `docs/delivery/export.md` when exporting. For board ghosts use `docs/animation/onion-skins.md`; independent shots use local-frame shot renders. Load `docs/delivery/frame-jobs.md` only for stored/resumable frames. Resolve render options in `docs/reference/api/render.md`.
 
 Choose the smallest view that answers the review question:
 
@@ -23,7 +21,7 @@ Choose the smallest view that answers the review question:
 
 Write returned PNG bytes and open the images. A contact sheet compares panels; it is not a substitute for exact frames. Camera-off onion skins still include layer animation. Recreate a render session after edits because its snapshot stays frozen. Pixel differences locate changes but do not score artistic improvement.
 
-For traceable saved-source evidence, use `exportReview` with an expected version, explicit frames and the board/shot/editorial target. Manifest version 2 identifies each source frame. Follow `docs/review.md`; only a package with its completed manifest is delivered. Inspect its PNGs separately from checking its hashes.
+When a traceable review package is needed, read `docs/workflow/review-packages.md` and use `exportReview` with an expected version, explicit frames and a board/shot/editorial target. Require its completed manifest and verify it with `verifyReviewExport`; inspect PNGs separately from checking hashes. For a recorded approval or rejection, read `docs/workflow/review-decisions.md`, use `createReviewDecision` and verify it against the intended saved source. Technical checks alone remain `not-reviewed`. Ordinary image critique does not require a decision package.
 
 Tie findings to a panel/frame/interval and an observable consequence. Prioritize the request's problem before optional polish. For critique-only work, leave the project unchanged. Route authorized fixes through codeboard-revise and the responsible operation skill, then inspect fresh evidence.
 

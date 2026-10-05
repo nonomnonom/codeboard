@@ -3,6 +3,7 @@ import {
   exportMovie,
   exportStoryboard,
   renderContactSheet,
+  renderDetail,
   renderPanelPNG,
 } from "codeboard-studio";
 import { writeFile } from "node:fs/promises";
@@ -15,6 +16,10 @@ export async function render(
   movie = false,
 ): Promise<void> {
   console.log("Rendering storyboard");
+  await writeFile(
+    join(output, "hand-detail.png"),
+    await renderDetail(board, "panel:06", { x: 280, y: 190, width: 570, height: 340 }),
+  );
   const exported = await exportStoryboard(board, output, { columns: 2, rows: 2 });
   const closingPanel = board.toJSON().panels.find((p) => p.id === "panel:14")!;
   await writeFile(
@@ -52,6 +57,8 @@ export async function render(
   }
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  if (process.argv.slice(2).some((arg) => arg !== "--movie"))
+    throw new Error("Usage: render.ts [--movie]");
   await render(
     await StoryboardProject.open(join(output, "last-light.cboard")),
     output,

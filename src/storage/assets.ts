@@ -1,6 +1,6 @@
 import type { DatabaseSync } from "node:sqlite";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve, relative, isAbsolute } from "node:path";
+import { existsSync, lstatSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve, relative, isAbsolute, join, sep } from "node:path";
 import type { Asset } from "../model/types.js";
 import { CodeboardError } from "../model/errors.js";
 import { digest, type PayloadCodec } from "./codec.js";
@@ -84,8 +84,19 @@ export function extractEmbeddedAssets(
   for (const asset of assets) {
     const target = resolve(root, asset.path),
       rel = relative(root, target);
-    if (!rel || rel.startsWith("..") || isAbsolute(rel))
+    if (!rel || rel === ".." || rel.startsWith(`..${sep}`) || isAbsolute(rel))
       throw new Error(`Unsafe asset path: ${asset.path}`);
+    let entry = root;
+    const parts = rel.split(sep);
+    for (const [index, part] of parts.entries()) {
+      entry = join(entry, part);
+      const stat = lstatSync(entry, { throwIfNoEntry: false });
+      if (
+        stat &&
+        (stat.isSymbolicLink() || (index < parts.length - 1 ? !stat.isDirectory() : !stat.isFile()))
+      )
+        throw new Error(`Unsafe asset path: ${asset.path}`);
+    }
     const bytes = readAsset(asset.id);
     mkdirSync(dirname(target), { recursive: true });
     if (existsSync(target)) {

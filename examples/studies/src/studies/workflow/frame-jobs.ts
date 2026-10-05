@@ -13,10 +13,10 @@ import {
   StoryboardProject,
 } from "codeboard-studio";
 import { motion } from "../../shared/motion.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { sheet, comparison, report } from "../../shared/artifacts.ts";
 import { retimeGraphShot } from "./shot-retime.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project } = motion("Resume a frame job", 12);
   const moving = project
     .shotAnimation("animation:study")
@@ -192,15 +192,20 @@ export async function render(output: string): Promise<void> {
       readFrameJobFrame(editorialJob, frame),
       readFrameJobFrame(compositeJob, frame),
     );
-  const png = await sheet("Resumed frame job", [
-    { label: "Frame 0 · reused", png: readFrameJobFrame(job, 0) },
-    { label: "Frame 3 · reused", png: readFrameJobFrame(job, 3) },
-    { label: "Frame 11 · rendered after resume", png: readFrameJobFrame(job, 11) },
-    { label: "Frame 11 · 320 × 180 review", png: readFrameJobFrame(reviewJob, 11) },
-    { label: "Frame 11 · composite graph", png: readFrameJobFrame(compositeJob, 11) },
-    { label: "Frame 0 · animated graph", png: readFrameJobFrame(compositeJob, 0) },
-    { label: "Frame 5 · animated graph", png: readFrameJobFrame(compositeJob, 5) },
+  const png = await comparison(output, "Continue an interrupted render", [
+    { label: "Frame 0: kept from the first run", png: readFrameJobFrame(job, 0) },
+    { label: "Frame 3: kept from the first run", png: readFrameJobFrame(job, 3) },
+    { label: "Frame 11: finished after resuming", png: readFrameJobFrame(job, 11) },
   ]);
+  await writeFile(
+    join(output, "render-options.png"),
+    await sheet("Other rendering options", [
+      { label: "Frame 11 · 320 × 180 review", png: readFrameJobFrame(reviewJob, 11) },
+      { label: "Frame 11 · composite graph", png: readFrameJobFrame(compositeJob, 11) },
+      { label: "Frame 0 · animated graph", png: readFrameJobFrame(compositeJob, 0) },
+      { label: "Frame 5 · animated graph", png: readFrameJobFrame(compositeJob, 5) },
+    ]),
+  );
   // Keep the job's pinned source version unchanged after completion.
   await writeFile(join(output, "frame-jobs.png"), png);
   const retime = await retimeGraphShot(output, attachedPath);

@@ -2,7 +2,8 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "paths": {}
+    "paths": {},
+    "verbatimModuleSyntax": true
   },
   "include": ["src/**/*.ts", "*/src/**/*.ts"]
 }

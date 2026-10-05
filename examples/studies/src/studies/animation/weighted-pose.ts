@@ -1,9 +1,9 @@
 import { join } from "node:path";
 import { StoryboardProject, renderShotFramePNG } from "codeboard-studio";
 import { amber, ink, make, rect, save } from "../../shared.ts";
-import { report, sheet } from "../../shared/artifacts.ts";
+import { report, comparison } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Weighted replacement and additive poses");
   const panel = project.addScene("Study").addShot("Pose baking").addPanel({ durationFrames: 24 });
   const ground = panel.addVectorLayer("Ground");
@@ -59,7 +59,12 @@ export async function render(output: string): Promise<void> {
     [23, "Add 90: x = 270"],
   ] as const)
     samples.push({ label, png: await renderShotFramePNG(animation, frame) });
-  await save(output, "weighted-pose", reopened, await sheet("Weighted poses", samples));
+  await save(
+    output,
+    "weighted-pose",
+    reopened,
+    await comparison(output, "Move partway toward a pose", samples),
+  );
   await report(output, "pose-bake", {
     plan,
     committed,

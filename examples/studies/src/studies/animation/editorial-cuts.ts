@@ -6,10 +6,10 @@ import {
   rescaleTime,
 } from "codeboard-studio";
 import { amber, blue, make, rect, save, text } from "../../shared.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 import { compareBoardTransition } from "./board-transition.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Editorial reorder preserves shot animation");
   const scene = project.addScene("Study");
   const captures = [];
@@ -50,7 +50,7 @@ export async function render(output: string): Promise<void> {
   const samples = [];
   for (const frame of [0, 24])
     samples.push({
-      label: `Before · edit frame ${frame}`,
+      label: `Original order: ${frame === 0 ? "first" : "second"} shot`,
       png: await renderEditorialFramePNG(
         project.editorialSequence("edit:study"),
         project.studio.animations,
@@ -73,7 +73,7 @@ export async function render(output: string): Promise<void> {
   );
   for (const frame of [0, 24])
     samples.push({
-      label: `After · edit frame ${frame}`,
+      label: `Reordered: ${frame === 0 ? "first" : "second"} shot`,
       png: await renderEditorialFramePNG(
         project.editorialSequence("edit:study"),
         project.studio.animations,
@@ -81,12 +81,11 @@ export async function render(output: string): Promise<void> {
       ),
     });
   const transition = await compareBoardTransition(project, captures[0]!.source.panelId, output);
-  samples.push(...transition.frames);
   await save(
     output,
     "editorial-cuts",
     project,
-    await sheet("Editorial reorder and board transition", samples, 2),
+    await comparison(output, "Change the order of two shots", samples, 2),
   );
   await report(output, "edit", {
     captures,

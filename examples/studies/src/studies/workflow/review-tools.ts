@@ -15,10 +15,10 @@ import {
   decodePixels,
 } from "codeboard-studio";
 import { motion } from "../../shared/motion.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison as visualComparison, report } from "../../shared/artifacts.ts";
 import { blue, amber, save } from "../../shared.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project, panel, moving } = motion("Review actual frames");
   const file = join(output, "review-tools.cboard");
   await project.save(file);
@@ -88,7 +88,7 @@ export async function render(output: string): Promise<void> {
     output,
     "review-tools",
     project,
-    await sheet("Review tools", [
+    await visualComparison(output, "See motion without changing the drawing", [
       { label: "Clean frame 12", png: clean },
       { label: "Composition guides", png: guides },
       { label: "Onion skin: 0 / 12 / 23", png: onion },

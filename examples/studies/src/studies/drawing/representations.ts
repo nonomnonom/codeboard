@@ -4,10 +4,11 @@ import {
   createPixels,
   fillPixels,
   polygonPixelSelection,
-  renderContactSheet,
+  renderFramePNG,
 } from "codeboard-studio";
 import { ink, make, save } from "../../shared.ts";
-export async function render(output: string): Promise<void> {
+import { comparison } from "../../shared/artifacts.ts";
+export async function generate(output: string): Promise<void> {
   const project = make("Editable representations");
   const shot = project.addScene("Study").addShot("Three representations");
   const path = catmullRom(
@@ -40,6 +41,10 @@ export async function render(output: string): Promise<void> {
     output,
     "representations",
     project,
-    await renderContactSheet(project, { columns: 3, thumbnailWidth: 360 }),
+    await comparison(output, "One gesture, different materials", [
+      { label: "Brush: notice the grain", png: await renderFramePNG(project, 0) },
+      { label: "Vector: follow the smooth edge", png: await renderFramePNG(project, 1) },
+      { label: "Pixel image: enlarged eight times", png: await renderFramePNG(project, 2) },
+    ]),
   );
 }

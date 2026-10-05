@@ -3,38 +3,46 @@ import { createHash } from "node:crypto";
 import { readFile, readdir, mkdir, writeFile, unlink } from "node:fs/promises";
 import { dirname, join, relative, resolve, posix, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { documentationFiles } from "../../scripts/docs-source.mjs";
 
 const plugin = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const repo = resolve(plugin, "..");
-const output = join(plugin, "skills/codeboard/references/engine");
+const distribution = join(repo, "release/codeboard-plugin");
+const output = join(distribution, "skills/codeboard/references/engine");
 const check = process.argv.includes("--check");
 assert.ok(
   process.argv.slice(2).every((arg) => arg === "--check"),
   "Usage: node plugin/scripts/sync-reference.mjs [--check]",
 );
 let previousFiles = {};
+let previousPluginFiles = {};
 try {
-  previousFiles =
-    JSON.parse(await readFile(join(output, "bundle.json"), "utf8")).bundledHashes ?? {};
+  const previous = JSON.parse(await readFile(join(output, "bundle.json"), "utf8"));
+  previousFiles = previous.bundledHashes ?? {};
+  previousPluginFiles = previous.pluginHashes ?? {};
 } catch (error) {
   if (error.code !== "ENOENT") throw error;
 }
 const pkg = JSON.parse(await readFile(join(repo, "package.json"), "utf8"));
-const files = [];
-async function collect(folder, predicate) {
-  for (const entry of await readdir(join(repo, folder), { withFileTypes: true })) {
-    const path = `${folder}/${entry.name}`;
-    if (entry.isDirectory() && !["output", "node_modules", "clawd-output"].includes(entry.name))
-      await collect(path, predicate);
-    else if (predicate(path)) files.push(path);
-  }
-}
-await collect("docs", (path) => path.endsWith(".md") || path === "docs/meta.json");
-await collect("examples", (path) => /\.(ts|json|md)$/.test(path));
+const files = await documentationFiles(repo);
 files.push("LICENSE", "NOTICE");
 files.sort();
 const included = new Set(files);
 const sha256 = (data) => createHash("sha256").update(data).digest("hex");
+const pluginFiles = new Map();
+async function collectPlugin(folder) {
+  for (const entry of await readdir(join(plugin, folder), { withFileTypes: true })) {
+    const path = posix.join(folder, entry.name);
+    if (entry.isDirectory()) await collectPlugin(path);
+    else pluginFiles.set(path, await readFile(join(plugin, path)));
+  }
+}
+for (const folder of ["skills", ".agents", ".codex-plugin", ".claude-plugin"])
+  await collectPlugin(folder);
+pluginFiles.set("plugin.json", await readFile(join(plugin, "plugin.json")));
+const pluginHashes = Object.fromEntries(
+  [...pluginFiles].map(([path, bytes]) => [path, sha256(bytes)]),
+);
 const sourceHashes = {},
   bundledHashes = {},
   expected = new Map();
@@ -69,9 +77,10 @@ expected.set(
         source: "https://github.com/nonomnonom/codeboard",
         hashEncoding: "UTF-8 with LF line endings",
         contents:
-          "Canonical text documentation, quickstart, and standalone character example. Showcase images/videos and the npm package are online links, not runtime dependencies.",
+          "Generated distribution: canonical framework guides and API reference. Media assets remain online links. Edit docs/ in the source repository.",
         sourceHashes,
         bundledHashes,
+        pluginHashes,
       },
       null,
       2,
@@ -84,7 +93,7 @@ for (const path of Object.keys(previousFiles)) {
   if (expected.has(path)) continue;
   const destination = resolve(output, path);
   assert.ok(destination.startsWith(output + sep), "Previous reference target escapes bundle");
-  if (check) throw new Error(`Obsolete bundled reference: ${path}; run npm run docs:generate`);
+  if (check) throw new Error(`Obsolete bundled reference: ${path}; run npm run plugin:build`);
   try {
     await unlink(destination);
   } catch (error) {
@@ -98,7 +107,7 @@ for (const [path, bytes] of expected) {
     assert.deepEqual(
       await readFile(destination),
       bytes,
-      `Stale bundled reference: ${path}; run npm run docs:generate`,
+      `Stale bundled reference: ${path}; run npm run plugin:build`,
     );
   } else {
     await mkdir(dirname(destination), { recursive: true });
@@ -117,6 +126,28 @@ async function checkUnexpected(folder) {
   }
 }
 await checkUnexpected(output);
+for (const path of Object.keys(previousPluginFiles)) {
+  if (pluginFiles.has(path)) continue;
+  const destination = resolve(distribution, path);
+  assert.ok(
+    destination.startsWith(distribution + sep),
+    "Previous plugin target escapes distribution",
+  );
+  if (check) throw new Error(`Obsolete plugin file: ${path}; run npm run plugin:build`);
+  try {
+    await unlink(destination);
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+}
+for (const [path, source] of pluginFiles) {
+  const destination = join(distribution, path);
+  if (check) assert.deepEqual(await readFile(destination), source, `Stale plugin file: ${path}`);
+  else {
+    await mkdir(dirname(destination), { recursive: true });
+    await writeFile(destination, source);
+  }
+}
 console.log(
   `${check ? "PASS" : "Synced"}: ${files.length} bundled source files for Codeboard ${pkg.version}`,
 );

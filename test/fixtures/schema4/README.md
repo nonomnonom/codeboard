@@ -13,3 +13,10 @@ node --import tsx test/fixtures/schema4/generate.ts .preview/schema4-writer/pack
 ```
 
 The generator requires schema 4 and checks container format 2. The historical writer archive is retained locally with the workload, not downloaded by the test or committed with this fixture. Run the generator only with that verified writer; generation changes IDs/timestamps and file hashes. Do not regenerate expected images merely to accept a rendering regression. Exact PNG comparisons are qualified for the renderer environment used by these fixtures; dependency changes require a separate parity review.
+
+The committed render baselines were captured on Windows. Tests verify their
+hashes on every platform and compare decoded historical pixels exactly on Windows.
+Every platform additionally requires exact rendering equality between the opened
+legacy source and migrated output using that platform's current backend. Native
+rasterization and PNG compression are not assumed identical across operating systems;
+this does not relax document, media, source-file or migration equality checks.

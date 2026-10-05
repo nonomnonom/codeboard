@@ -14,9 +14,9 @@ npm run start --workspace codeboard-website
 
 The website is an npm workspace. Its `file:..` dependency resolves the engine from this checkout, using the root lockfile. Run `npm run dev` in another terminal when changing engine source.
 
-The build produces `website/out`. Documentation comes directly from [the canonical docs](../docs/index.md), with navigation in [docs/meta.json](../docs/meta.json). Edit those files instead of maintaining a second documentation copy. Release links use `releaseVersion` in `lib/shared.ts`.
+The build produces `website/out`. Documentation comes directly from [the canonical docs](../docs/index.md), with navigation in [docs/meta.json](../docs/meta.json) and each task folder's `meta.json`. Edit those files instead of maintaining a second documentation copy. Release links use `releaseVersion` in `lib/shared.ts`.
 
-The website build checks internal links and anchors in the exported HTML. Bare Markdown links such as `install.md` are normalized for Fumadocs in the docs renderer; their source stays usable on GitHub. Links to public assets and repository source retain their existing destinations.
+The website build checks internal links and anchors in the exported HTML. Relative Markdown links such as `../start/installation.md` are resolved from each page's source location by `lib/doc-links.ts`; their source stays usable on GitHub. Links to public assets and repository source retain their existing destinations.
 
 Creator attribution and Nonom Library links come from `creator` in `lib/shared.ts`. The Fumadocs shadcn preset maps the local Nonom design tokens onto navigation, search, page actions, tables, and code blocks. There is no runtime or build dependency on the portfolio repository.
 

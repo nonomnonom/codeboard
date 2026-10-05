@@ -1,27 +1,26 @@
 # Last Light
 
-A fictional fourteen-panel storyboard with generated audio and a targeted multi-part revision.
+Run a fictional fourteen-panel storyboard with generated audio, then revise its saved artwork. Use it to explore a larger project with separate scene, drawing and sound modules.
 
-## Local workspace
-
-Install once at the repository root with `npm ci`, then run `npm run build`. The shared `examples` workspace uses the checkout's engine through `file:..`. Keep `npm run dev` running for engine changes and re-run after successful compilation.
+## Run the downloaded story
 
 ```sh
-npm run typecheck --workspace @codeboard/examples
-npm run last-light:author --workspace @codeboard/examples
-npm run last-light:render --workspace @codeboard/examples
+npm install
+npm run typecheck
+npm run author
+npm run render
 ```
 
-For a downloaded ZIP, run `npm install`, `npm run typecheck`, then the corresponding `npm run` command from its extracted project directory. The ZIP includes the matching local engine build under vendor/ and installs it without waiting for engine publication. Third-party dependencies still require installation. Keep the generated lockfile.
+Run these commands from the extracted `last-light` folder. Inspect the images and editable project in `output/`. With FFmpeg installed, use `npm run render -- --movie` for an MP4.
 
-## Source ownership
+## Revise the saved story
 
-All implementation lives in `src/`. `src/config.ts` owns fixture settings. The shared `examples/tsconfig.json` enables strict checking against the engine's public declarations. `project/` assembles the storyboard, `scenes/` owns each shot, `artwork/` draws reusable shapes, `audio/` generates and places sound, `review/` renders saved state, and `cli/` exposes commands.
+Run `npm run revise`, then `npm run render` again to inspect the changed result. Authoring reserves a new output directory before producing assets and refuses existing destinations. Use render or revise for existing work. `CODEBOARD_EXAMPLE_OUTPUT` selects another output root.
 
-The story, geometry, materials, layer names, and timing are this fixture's inputs. They are not required project defaults. Public API behavior is described by the [online reference](https://codeboard.nonom.xyz/docs/reference/).
+Look in `src/scenes/` for individual shots, `src/artwork/` for reusable drawing functions and `src/audio/` for sound. `src/project/` assembles the story; `src/review/` renders saved state.
 
-## Output and review
+## Use the local engine
 
-Generated files live in this project's `output/`, or the directory selected by `CODEBOARD_EXAMPLE_OUTPUT`. Authoring deliberately regenerates these files. Open saved artwork for revisions; keep independently revised projects out of a generator's output. Render commands read saved state. A generated image or passing assertion still needs visual review.
+From the built Codeboard checkout, run `npm run last-light:author --workspace @codeboard/examples`. The other actions use the same prefix, such as `last-light:render` and `last-light:revise`.
 
-Pass `-- --movie` to the short study/story render command for MP4. FFmpeg is required. Host fonts may differ across platforms. Code is MIT; original synthesized audio is CC0-1.0.
+Code is MIT. Original artwork and synthesized audio are CC0-1.0. Fonts depend on the rendering computer.

@@ -6,6 +6,8 @@ import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { paths } from "../config.ts";
 const command = process.argv[2] ?? "author";
+if (process.argv.length > 3)
+  throw new Error("Choose one presentation action without extra arguments");
 process.env.SKIA_CANVAS_THREADS ??= "1";
 const packagePath = findPackageJSON(import.meta.resolve("codeboard-studio"));
 if (!packagePath) throw new Error("Cannot locate the active Codeboard package");
@@ -31,10 +33,8 @@ function run(script: string, args: string[] = []) {
 switch (command) {
   case "author":
     run("src/presentation/project/performance.ts");
-    run("src/presentation/review/verify-performance.ts");
     run("src/presentation/project/film.ts");
     run("src/presentation/review/turnaround.ts");
-    run("src/presentation/review/verify-film.ts");
     break;
   case "render":
     run("src/presentation/review/render.ts");

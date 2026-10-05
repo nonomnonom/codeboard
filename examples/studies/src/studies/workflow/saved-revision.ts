@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { join } from "node:path";
 import { StoryboardProject, ProjectStore, renderFramePNG } from "codeboard-studio";
 import { motion } from "../../shared/motion.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 import { save } from "../../shared.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project, moving, panel } = motion("Saved revision and restore");
   project.configure({ frameRate: { value: 48, timing: "preserve-seconds" } });
   assert.equal(project.toJSON().panels[0]!.durationFrames, 48);
@@ -54,10 +54,10 @@ export async function render(output: string): Promise<void> {
     output,
     "saved-revision",
     restored,
-    await sheet("Revision workflow", [
-      { label: "1. Saved base", png: initial },
-      { label: "2. Committed opacity change", png: revised },
-      { label: "3. Restored checkpoint", png: restoredPNG },
+    await comparison(output, "Try a change and return to the original", [
+      { label: "Original opaque prop", png: initial },
+      { label: "Reduce opacity to 25%", png: revised },
+      { label: "Restore the original", png: restoredPNG },
     ]),
   );
   await report(output, "workflow", {

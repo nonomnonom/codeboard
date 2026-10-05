@@ -1,43 +1,38 @@
-# Codeboard character and presentation study
+# Animate the Codeboard character
 
-One project containing an eight-second performance and an optional scripted presentation. It is not a recording of an autonomous agent session.
+Make an eight-second walk, anticipation, hop and landing. The same character source also appears in an optional 48-second scripted presentation.
 
-## Local workspace
+## Run the downloaded performance
 
-Install once at the repository root with `npm ci`, then run `npm run build`. The shared `examples` workspace uses the checkout's engine through `file:..`. Keep `npm run dev` running for engine changes and re-run after successful compilation.
-
-```sh
-npm run typecheck --workspace @codeboard/examples
-npm run code-board-demo:author --workspace @codeboard/examples
-npm run code-board-demo:render --workspace @codeboard/examples
-```
-
-For a downloaded ZIP, run `npm install`, `npm run typecheck`, then the corresponding `npm run` command from its extracted project directory. The ZIP includes the matching local engine build under vendor/ and installs it without waiting for engine publication. Third-party dependencies still require installation. Keep the generated lockfile.
-
-## Source ownership
-
-All implementation lives in `src/`. `src/config.ts` owns fixture settings. The shared `examples/tsconfig.json` enables strict checking against the engine's public declarations. `character/` is the sole source of pose types, geometry, and drawing functions. `study/` builds the short performance. `presentation/project/`, `presentation/scenes/`, `presentation/artwork/`, and `presentation/review/` build and inspect the film. `cli/` owns commands.
-
-The story, geometry, materials, layer names, and timing are this fixture's inputs. They are not required project defaults. Public API behavior is described by the [online reference](https://codeboard.nonom.xyz/docs/reference/).
-
-## Output and review
-
-Generated files live in this project's `output/`, or the directory selected by `CODEBOARD_EXAMPLE_OUTPUT`. Authoring deliberately regenerates these files. Open saved artwork for revisions; keep independently revised projects out of a generator's output. Render commands read saved state. A generated image or passing assertion still needs visual review.
-
-The short study writes `output/clawd.cboard`. The revise command changes only the drawing hold over `[126, 130)` and compares frame 128 before and after.
+In the extracted `code-board-demo` folder:
 
 ```sh
-npm run code-board-demo:presentation:author --workspace @codeboard/examples
-npm run code-board-demo:presentation:verify --workspace @codeboard/examples
-npm run code-board-demo:presentation:render --workspace @codeboard/examples
+npm install
+npm run typecheck
+npm run author
+npm run render
+npm run revise
+npm run render
 ```
 
-Run these commands from the repository root. In a downloaded ZIP, use `npm run presentation:author`,
-`npm run presentation:verify` and `npm run presentation:render` from the extracted directory.
-The presentation writes `output/presentation/`; `CODEBOARD_DEMO_OUTPUT` may select another
-presentation directory. Rendering reads the saved film and requires FFmpeg. The authoring pipeline
-runs each stage in a separate process using the active package's declared CLI.
+The editable project is `output/clawd.cboard`. Revision changes the drawing hold over frames 126–129 and compares frame 128 before and after. Total timing remains unchanged. With FFmpeg installed, `npm run render -- --movie` exports the short performance.
 
-Clawd/Claude branding belongs to its owners; no affiliation or endorsement is implied. The generated terminal presentation is an authored illustration, not proof of agent behavior.
+Follow the [character tutorial](https://github.com/nonomnonom/codeboard/blob/main/examples/code-board-demo/TUTORIAL.md) to understand poses, placement and onion skins. `src/character/` is the shared drawing source; `src/study/` builds the short animation and `src/cli/revise.ts` edits its saved hold.
 
-Pass `-- --movie` to the short study/story render command for MP4. FFmpeg is required. Host fonts may differ across platforms. Code is MIT; original synthesized audio is CC0-1.0.
+## Build the presentation
+
+```sh
+npm run presentation:author
+npm run presentation:verify
+npm run presentation:render
+```
+
+These commands write `output/presentation/`, or the path selected by `CODEBOARD_DEMO_OUTPUT`. Rendering opens the saved film and requires FFmpeg. The terminal scenes are an authored presentation, not a live agent recording.
+
+Authoring refuses to replace saved projects. Select a new output location for another generation. Presentation verification is a separate command and reports checks against the saved film; authoring does not require a previous verification report. The short study's output root can be selected with `CODEBOARD_EXAMPLE_OUTPUT`.
+
+## Run in the Codeboard checkout
+
+Build the engine, then use `npm run code-board-demo:author --workspace @codeboard/examples`. Apply the same `code-board-demo:` prefix to `render`, `revise` and the `presentation:*` actions.
+
+Code is MIT; original synthesized audio is CC0-1.0. Clawd/Claude branding belongs to its owners; no affiliation or endorsement is implied.

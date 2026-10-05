@@ -7,9 +7,9 @@ description: Use when a Codeboard shot needs reframing, pan or zoom keys, a came
 
 Prerequisite: codeboard session context.
 
-Read `docs/camera.md`. Use `docs/math.md` for coordinate mapping and `docs/api-production.md` for channel operations.
+Read `docs/animation/camera.md`. Use `docs/drawing/geometry.md` for coordinate mapping and `docs/reference/api/production.md` for channel operations.
 
-Inspect the shot's existing keys and the intended global frame. Compare the same artwork with camera on and off before deciding whether a placement problem belongs to camera or drawing geometry.
+Identify the timeline first: board camera keys use global frames; independent shot-animation camera keys use signed local frames. For the latter, read `docs/animation/shot-layers.md`: `camera.key.put` replaces the complete key by ID, whereas board key updates merge supplied channels. Inspect existing keys before editing. Compare the artwork with camera on and off to distinguish framing from geometry.
 
 Compose the endpoints around what the viewer must see. Key only the required channels. Camera pan is a viewing offset, not the subject's position; confirm direction in a rendered frame. When adjusting a mixed key, retain its identity and unrelated channels. When evaluating manually, include bracketing keys, not merely the first query page.
 

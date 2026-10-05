@@ -1,6 +1,7 @@
-import { pathCommands, renderFrameSheet } from "codeboard-studio";
+import { pathCommands, renderFramePNG } from "codeboard-studio";
 import { amber, blue, make, save } from "../../shared.ts";
-export async function render(output: string): Promise<void> {
+import { comparison } from "../../shared/artifacts.ts";
+export async function generate(output: string): Promise<void> {
   const project = make("Drawing changes and placement");
   const panel = project.addScene("Study").addShot("Two poses").addPanel({ durationFrames: 24 });
   const track = panel.addGroup("Drawing track");
@@ -21,6 +22,15 @@ export async function render(output: string): Promise<void> {
     output,
     "drawing-timing",
     project,
-    await renderFrameSheet(project, [0, 5, 11, 12, 18, 23], { columns: 3, thumbnailWidth: 360 }),
+    await comparison(
+      output,
+      "Swap the drawing while it moves",
+      await Promise.all(
+        [0, 5, 11, 12, 18, 23].map(async (frame) => ({
+          label: `Frame ${frame}: ${frame < 12 ? "triangle" : "diamond"}${frame === 11 ? ", just before the switch" : frame === 12 ? ", the switch" : ""}`,
+          png: await renderFramePNG(project, frame),
+        })),
+      ),
+    ),
   );
 }

@@ -3,9 +3,9 @@ import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { writeFile } from "node:fs/promises";
 import { StoryboardProject, migrateProject, renderFramePNG } from "codeboard-studio";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const source = fileURLToPath(new URL("../../fixtures/schema3.cboard", import.meta.url));
   const legacy = await StoryboardProject.open(source);
   const result = await migrateProject(source, join(output, "migration.cboard"), {
@@ -22,6 +22,9 @@ export async function render(output: string): Promise<void> {
       { label: `Migrated · frame ${frame}`, png: after },
     );
   }
-  await writeFile(join(output, "migration.png"), await sheet("Migration pixel parity", samples, 2));
+  await writeFile(
+    join(output, "migration.png"),
+    await comparison(output, "An older project, the same picture", samples, 2),
+  );
   await report(output, "migration", result);
 }

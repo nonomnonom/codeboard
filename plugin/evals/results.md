@@ -22,7 +22,7 @@ All three baseline artifacts already passed. No artifact success-rate improvemen
 
 ## Defect found through execution
 
-The first candidate brush trial followed `docs/brushes.md` and called `brushParameterSchema.parse()`. Runtime inspection showed the export is JSON Schema data, not a parser. The agent recovered, but this was a real documentation-induced failure.
+The first candidate brush trial followed `docs/drawing/brushes.md` and called `brushParameterSchema.parse()`. Runtime inspection showed the export is JSON Schema data, not a parser. The agent recovered, but this was a real documentation-induced failure.
 
 The brush guide, generated drawing-reference introduction, and its generator now describe the actual export and project-level validation through `production.createBrush`. The brush skill uses that public operation. Direct runtime checks confirmed schema shape, rejection of incomplete dynamics, and successful validation after `customizeBrush`. A fresh brush trial then completed without the failed parse call. This is a docs-plus-skill correction, not isolated evidence of better prompt wording.
 
@@ -48,7 +48,7 @@ Evidence is in the workspace's ignored `.preview/codeboard-portable-eval/install
 
 ## Existing end-to-end demo evidence
 
-The project owner identifies `code-board-demo/` as an existing result of testing the plugin. Its tracked README and source describe the editable projects, authoring/rendering commands, and verification. The public [demo walkthrough](https://codeboard.nonom.xyz/docs/code-board-demo/) provides the film and reproducible source. This complements the controlled task trials above; it is not another baseline/candidate sample.
+The project owner identifies `code-board-demo/` as an existing result of testing the plugin. Its tracked README and source describe the editable projects, authoring/rendering commands, and verification. The public [demo walkthrough](https://github.com/nonomnonom/codeboard/blob/main/examples/code-board-demo/TUTORIAL.md) provides the film and reproducible source. This complements the controlled task trials above; it is not another baseline/candidate sample.
 
 Reviewed existing local reports, without regenerating or overwriting the artwork:
 

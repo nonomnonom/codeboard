@@ -7,12 +7,12 @@ description: Use when Codeboard commands fail, renders are blank or wrong, edits
 
 Prerequisite: codeboard session context.
 
-Read `docs/troubleshooting.md` and the relevant subsystem guide. Record the runtime version, failing command, error, project/frame, and expected result. Reproduce before changing state.
+Read `docs/reference/troubleshooting.md` and the relevant subsystem guide. Record the runtime version, failing command, error, project/frame, and expected result. Reproduce before changing state.
 
 | Symptom | First discriminating check |
 | --- | --- |
 | Import or TypeScript error | Execute through the CLI runner; check supported syntax and public exports |
-| Blank image | Check global frame/exposure, then ancestor visibility, mask alpha, and camera-off isolated render |
+| Blank image | Check target timeline/frame/exposure, then ancestor visibility, mask alpha, and camera-off isolated render |
 | Edit disappears | Check inspection-copy mutation, save target, reopen, and stale-version error |
 | One-frame offset | Inspect panel start, exclusive end, and actual keys before interpolation |
 | Unexpected rig pose | Compare base keys, controller stack/range and evaluated target pages; inspect skin bind and frame vertices |

@@ -26,6 +26,7 @@ jobs:
           package-manager-cache: false
       - name: Verify release version
         if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
         run: |
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
@@ -41,8 +42,11 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: npm ci
       - run: npm run check
+      - run: npm run test:media
       - run: npm run test:install
       - run: npm run test:studies:install
+      - run: npm run website:build
+      - run: npm run docs:bundle
       - run: npm pack --ignore-scripts
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
@@ -52,12 +56,12 @@ jobs:
           retention-days: 3
   install:
     needs: validate
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-15, macos-15-intel]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     env:
       SKIA_CANVAS_THREADS: '2'
     steps:
@@ -86,6 +90,10 @@ jobs:
           npm install --no-audit --no-fund $archive
           node package-smoke.mjs
           npx --no-install codeboard --version
+          $search = codeboard docs search ProductionTools.drawingNeighbors | ConvertFrom-Json
+          if ($search.mode -ne 'symbol' -or $search.results[0].symbol -ne 'ProductionTools.drawingNeighbors') { throw 'Docs symbol lookup failed' }
+          $page = codeboard docs read $search.results[0].id | ConvertFrom-Json
+          if ($page.docsHash -ne $search.docsHash -or $page.content -notmatch 'skipBlank') { throw 'Docs read failed' }
           codeboard init
           codeboard run scene.mjs
           if (!(Test-Path output/first.png) -or !(Test-Path output/first.cboard)) { throw 'CLI did not produce artwork' }

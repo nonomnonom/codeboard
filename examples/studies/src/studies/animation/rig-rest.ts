@@ -1,9 +1,9 @@
 import { join } from "node:path";
 import { StoryboardProject, evaluateLayer, renderShotFramePNG } from "codeboard-studio";
 import { amber, ink, make, save } from "../../shared.ts";
-import { report, sheet } from "../../shared/artifacts.ts";
+import { report, comparison } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Persisted two-bone rest pose");
   const panel = project
     .addScene("Study")
@@ -91,12 +91,17 @@ export async function render(output: string): Promise<void> {
   if (!savedElbow) throw new Error("Rest study is missing its elbow");
   const samples = [];
   for (const [frame, label] of [
-    [0, "Captured rest"],
-    [12, "IK reach"],
-    [23, "Restored after reopen"],
+    [0, "Arm at rest"],
+    [12, "Reach toward the target"],
+    [23, "Return to the saved pose"],
   ] as const)
     samples.push({ label, png: await renderShotFramePNG(animation, frame) });
-  await save(output, "rig-rest", final, await sheet("Saved rest pose", samples));
+  await save(
+    output,
+    "rig-rest",
+    final,
+    await comparison(output, "Reach, then return to rest", samples),
+  );
   await report(output, "rest-pose", {
     capturePlan,
     captureReceipt,

@@ -1,5 +1,5 @@
 import { colors, inkLine, text } from "../../character/art.ts";
-import { sequence } from "../project/performance.ts";
+import { sequence } from "../artwork/performance.ts";
 import { group } from "../artwork/layout.ts";
 import type { SceneContext } from "./types.ts";
 export function draw({ project: b, panel: p, start }: SceneContext): void {

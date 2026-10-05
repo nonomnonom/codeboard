@@ -1,4 +1,5 @@
 import { join } from "node:path";
+import { writeFile } from "node:fs/promises";
 import {
   StoryboardProject,
   createShotRenderSession,
@@ -21,9 +22,9 @@ import {
   type LayerSkinInput,
 } from "codeboard-studio";
 import { amber, blue, ink, make, rect, save } from "../../shared.ts";
-import { report, sheet } from "../../shared/artifacts.ts";
+import { report, sheet, comparison } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Nested mesh coordinates", 480, 320);
   const panel = project.addScene("Study").addShot("Mesh warp").addPanel({ durationFrames: 24 });
   const outer = panel.addGroup("Outer mesh", { transform: { x: 70, y: 35 } });
@@ -414,7 +415,25 @@ export async function render(output: string): Promise<void> {
     output,
     "mesh-warp",
     assembled,
-    await sheet("Persisted nested mesh and rig copy", samples),
+    await comparison(
+      output,
+      "Bend the artwork",
+      await Promise.all(
+        [0, 12, 23].map(async (frame) => ({
+          label:
+            frame === 0
+              ? "Starting shape"
+              : frame === 12
+                ? "Bend the surface"
+                : "Return to the starting shape",
+          png: await assembledSession.png(frame),
+        })),
+      ),
+    ),
+  );
+  await writeFile(
+    join(output, "mesh-workflow.png"),
+    await sheet("Copies and merged edits", samples, 4),
   );
   await report(output, "mesh-coordinates", {
     duplicatePlan,

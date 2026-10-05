@@ -1,6 +1,7 @@
-import { renderContactSheet } from "codeboard-studio";
+import { renderFramePNG } from "codeboard-studio";
 import { amber, blue, ink, make, save } from "../../shared.ts";
-export async function render(output: string): Promise<void> {
+import { comparison } from "../../shared/artifacts.ts";
+export async function generate(output: string): Promise<void> {
   const project = make("Two-bone reach");
   const shot = project.addScene("Study").addShot("Reach limits");
   for (const [index, target] of [
@@ -58,6 +59,10 @@ export async function render(output: string): Promise<void> {
     output,
     "ik-reach",
     project,
-    await renderContactSheet(project, { columns: 3, thumbnailWidth: 360 }),
+    await comparison(output, "Can the hand reach the target?", [
+      { label: "Reach the first cross", png: await renderFramePNG(project, 0) },
+      { label: "Bend to reach a nearer cross", png: await renderFramePNG(project, 1) },
+      { label: "Too far: the hand stops short", png: await renderFramePNG(project, 2) },
+    ]),
   );
 }

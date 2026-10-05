@@ -1,0 +1,16 @@
+{
+  "title": "Draw and paint",
+  "pages": [
+    "marks",
+    "brushes",
+    "import-brushes",
+    "pixels",
+    "layers",
+    "palettes",
+    "components",
+    "component-upgrades",
+    "effects",
+    "geometry",
+    "organizing-layers"
+  ]
+}

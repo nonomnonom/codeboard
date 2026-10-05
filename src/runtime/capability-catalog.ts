@@ -71,7 +71,7 @@ export function capabilityCatalog(): CapabilityEntry[] {
         "shotCoordinates",
         "shotPointCoordinates",
       ],
-      "Affine local/parent transforms reject mesh ancestry; unstable affine inverse is null. Shot point queries traverse meshes and return all bounded face candidates; unsafe inverses reject. Signed local frames; geometry only, no visibility filtering; mesh/render parity awaits runtime qualification",
+      "Affine local/parent transforms reject mesh ancestry; unstable affine inverse is null. Shot point queries traverse meshes and return all bounded face candidates; unsafe inverses reject. Signed local frames; geometry only, no visibility filtering",
     ),
     feature(
       "timing.rational",
@@ -85,7 +85,7 @@ export function capabilityCatalog(): CapabilityEntry[] {
       "partial",
       ["retimeShotAnimation", "StoryboardProject.editShotAnimation"],
       "Detached duration-ratio preview and timing.retime edit cover camera, layers, drawings, reveal, controllers, deformers and compositing; explicit rounding rejects collisions; audio cue starts preserve seconds or scale by physical duration",
-      "No audio sample stretching or automatic editorial cut conform; runtime timing, persistence and playback qualification pending",
+      "No audio sample stretching or automatic editorial cut conform",
     ),
     feature(
       "animation.rigging",
@@ -100,7 +100,7 @@ export function capabilityCatalog(): CapabilityEntry[] {
         "compileControllerPerformance",
         "StoryboardProject.editShotAnimation",
       ],
-      "Two-bone IK and persisted rest-pose capture/apply; explicit reject/clamp reach policy. layer.mesh authors vertex deformation; layer.curve stores a cubic ribbon; layer.envelope stores a four-boundary Coons patch. layer.skin binds explicit weights to animated joint layers; named controllers blend numeric layer poses over base keys. Runtime qualification pending; no automatic weights, arbitrary envelope cages, curve chains or full rig/artwork performance packages; numeric controller packages support checksum validation and explicit target mapping",
+      "Two-bone IK and persisted rest-pose capture/apply; explicit reject/clamp reach policy. layer.mesh authors vertex deformation; layer.curve stores a cubic ribbon; layer.envelope stores a four-boundary Coons patch. layer.skin binds explicit weights to animated joint layers; named controllers blend numeric layer poses over base keys. No automatic weights, arbitrary envelope cages, curve chains or full rig/artwork performance packages; numeric controller packages support checksum validation and explicit target mapping",
     ),
     feature(
       "camera",
@@ -206,7 +206,7 @@ export function capabilityCatalog(): CapabilityEntry[] {
         "StoryboardProject.shotDependencyData",
       ],
       "SQLite atomic writes and optimistic versions; actor locks coordinate edits and are not authentication",
-      "Full-container publish retains history/media; single-shot native export selects component/origin/palette/media dependencies and starts independent history. Pinned source, new project ID, 1 GiB maximum and no overwrite; external fonts remain declarations; cross-project resource/ID import and handoff runtime qualification remain incomplete",
+      "Full-container publish retains history/media; single-shot native export selects component/origin/palette/media dependencies and starts independent history. Pinned source, new project ID, 1 GiB maximum and no overwrite; external fonts remain declarations; cross-project resource/ID import requires caller reconciliation",
     ),
     feature(
       "delivery.movie",
@@ -250,7 +250,7 @@ export function capabilityCatalog(): CapabilityEntry[] {
       ],
       "Persisted studio payloads/checkpoints with shot-local artwork, rational-rate editorial clips and explicit initial picture holds; shot audio starts after the hold while sequence audio remains independent",
       "Three-way shot merge preserves independent local fields; native handoff adapter checks baseline provenance and resource compatibility. Whole-shot duplication remaps owned rig/controller/audio identities. Structure/retiming conflicts require explicit choices; no automatic dependency import or full production qualification",
-      "Per-animation/sequence plans and bounded element/pixel edits; panel capture preserves local curves with remapped identities and explicit pre/post-roll handles; full-board plans use incoming holds and explicit audio conversion/omission; picture/audio/persistence qualification pending",
+      "Per-animation/sequence plans and bounded element/pixel edits; panel capture preserves local curves with remapped identities and explicit pre/post-roll handles; full-board plans use incoming holds and explicit audio conversion/omission",
     ),
     feature(
       "project.migration",
@@ -302,14 +302,14 @@ export function capabilityCatalog(): CapabilityEntry[] {
       "partial",
       ["LayerHandle.set", "production.reparentLayer", "renderShotFramePNG"],
       "Blend modes, clipping, masks, mesh surfaces and persisted ordered layer/group effects: brightness, contrast, saturation, hue rotation, Gaussian blur and colored drop shadows with keyed blur/offset/opacity",
-      "Effects use separate ordered passes on the 8-bit Canvas backend after layer mask and before sibling clipping/opacity/blend; at most 16 effects per layer and 64 indexed channel values per key; blur/shadow margins crop back and reject effective blur above 512 pixels, shadow offsets above 4096 pixels and expanded surfaces above 32 megapixels; shadow RGB is static; mesh triangle coverage is unchanged; no OCIO pipeline; CPU mesh coverage is capped at 268435456 sample tests per warp; effect pixel qualification pending",
+      "Effects use separate ordered passes on the 8-bit Canvas backend after layer mask and before sibling clipping/opacity/blend; at most 16 effects per layer and 64 indexed channel values per key; blur/shadow margins crop back and reject effective blur above 512 pixels, shadow offsets above 4096 pixels and expanded surfaces above 32 megapixels; shadow RGB is static; mesh triangle coverage is unchanged; no OCIO pipeline; CPU mesh coverage is capped at 268435456 sample tests per warp",
     ),
     feature(
       "compositing.graph",
       "partial",
       ["createShotRenderSession", "renderShotFramePNG", "createFrameJob"],
       "Typed source/effects/blend/alpha-mask DAG stored on shots through compositing.set, inherited by editorial rendering, or overridden in shot render options; source/job identity pins effective configuration; duplication remaps source layers",
-      "32 nodes, 32 KiB graph including curves and 256 megapixel-passes per frame; effect values and blend opacity have shot-local eased keys; explicit layer sources and one reachable output; ports are cropped post-camera RGBA frames; topology/modes/RGB static; no separate editorial-level graph; runtime pixel/seek/job/duplication qualification pending",
+      "32 nodes, 32 KiB graph including curves and 256 megapixel-passes per frame; effect values and blend opacity have shot-local eased keys; explicit layer sources and one reachable output; ports are cropped post-camera RGBA frames; topology/modes/RGB static; no separate editorial-level graph",
     ),
     feature(
       "interchange.otio",

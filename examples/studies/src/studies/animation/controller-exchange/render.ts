@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import { join } from "node:path";
 import { StoryboardProject, createShotRenderSession, renderShotFramePNG } from "codeboard-studio";
-import { sheet, report } from "../../../shared/artifacts.ts";
+import { comparison, report } from "../../../shared/artifacts.ts";
 import { save } from "../../../shared.ts";
 import { author } from "./author.ts";
 import { addDialogue, verifyPerformance } from "./performance.ts";
 import { bindArms } from "./deformation.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project, shots } = author();
   const file = join(output, "controller-exchange.cboard");
   await project.save(file);
@@ -73,7 +73,7 @@ export async function render(output: string): Promise<void> {
     output,
     "controller-exchange",
     reopened,
-    await sheet("Controller performance across four shots", samples, 2),
+    await comparison(output, "Offer and receive the card", samples, 2),
   );
   await report(output, "controllers", {
     committed,

@@ -1,7 +1,7 @@
 import ts from "typescript";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
 import assert from "node:assert/strict";
-import { relative, resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 
 const check = process.argv.includes("--check");
 assert.ok(
@@ -9,6 +9,7 @@ assert.ok(
   "Usage: node scripts/build-api-docs.mjs [--check]",
 );
 async function page(path, text) {
+  await mkdir(dirname(path), { recursive: true });
   if (check)
     assert.equal(
       (await readFile(path, "utf8")).replace(/\r\n/g, "\n"),
@@ -47,7 +48,7 @@ const groups = [
   [
     "api-project",
     "Project and artwork API",
-    "Create documents, address stable IDs, and edit individual layers or elements. Read [project concepts](concepts.md) for ownership and [the quickstart](quickstart.md) for a minimal executable operation.",
+    "Create documents, address stable IDs, and edit individual layers or elements. Read [project concepts](../../start/project-model.md) for ownership and [the quickstart](../../start/first-drawing.md) for a minimal executable operation.",
     [
       "core/project",
       "core/migrate",
@@ -71,7 +72,7 @@ const groups = [
   [
     "api-production",
     "Timeline and production API",
-    "Access these methods through `project.production`. Timeline positions use global integer frames. Read values are inspection copies; use the mutation methods to apply changes. See [animation](animation.md), [camera](camera.md), [audio](audio.md), and [components](components.md).",
+    "Access these methods through `project.production`. Board mutations use global integer frames. Some inspection methods also accept shot-animation IDs and return local-frame data; see [timeline queries](../timeline-queries.md) and [drawing queries](../drawing-queries.md). Read values are inspection copies. For mutations use [board animation](../../animation/timing.md), [shot-local edits](../../animation/shot-layers.md), [camera](../../animation/camera.md), [board audio](../../audio/board-audio.md), and [components](../../drawing/components.md).",
     [
       "core/production",
       "animation/rational-time",
@@ -107,7 +108,7 @@ const groups = [
   [
     "api-drawing",
     "Drawing and math API",
-    "Named functions are imported from `codeboard-studio`. See [drawing](drawing.md), [brushes](brushes.md), and [math](math.md) for use and constraints. Built-in brushes are `brushes.roughPencil`, `cleanInk`, `shadeBrush`, `charcoal`, and `softEraser`. `brushParameterSchema` is JSON Schema data; `production.createBrush` validates a preset when adding it to a project.",
+    "Named functions are imported from `codeboard-studio`. See [drawing](../../drawing/marks.md), [brushes](../../drawing/brushes.md), and [math](../../drawing/geometry.md) for use and constraints. Built-in brushes are `brushes.roughPencil`, `cleanInk`, `shadeBrush`, `charcoal`, and `softEraser`. `brushParameterSchema` is JSON Schema data; `production.createBrush` validates a preset when adding it to a project.",
     [
       "drawing/curve-sampling",
       "drawing/point-transforms",
@@ -131,7 +132,7 @@ const groups = [
   [
     "api-render",
     "Rendering and export API",
-    "Render functions return image bytes or canvases; write returned PNG bytes with `writeFile`. Movie export requires FFmpeg. See [review](review.md) and [export](export.md).",
+    "Render functions return image bytes or canvases; write returned PNG bytes with `writeFile`. Movie export requires FFmpeg. See [review](../../workflow/review.md) and [export](../../delivery/export.md).",
     [
       "render/panel",
       "render/panel-renderer",
@@ -171,7 +172,7 @@ const groups = [
   [
     "api-storage",
     "Project storage API",
-    "Open a store with `ProjectStore.open(path)` and always call `close()` in `finally`. For ordinary editing, prefer `StoryboardProject.open` and `save`. See [projects and revisions](projects.md) for partial reads, conflict handling, and named checkpoints.",
+    "Open a store with `ProjectStore.open(path)` and always call `close()` in `finally`. For ordinary editing, prefer `StoryboardProject.open` and `save`. See [projects and revisions](../../workflow/projects.md) for partial reads, conflict handling, and named checkpoints.",
     ["storage/store"],
   ],
 ];
@@ -230,7 +231,7 @@ function signature(node, source) {
     .trim();
 }
 for (const [slug, title, intro, files] of groups) {
-  let output = `# ${title}\n\n${intro}\n\nParameter declarations below are extracted from the current source. A value after \`=\` is the default; \`?\` marks an optional input. Named data shapes are listed in [API types](api-types.md).\n`;
+  let output = `# ${title}\n\n${intro}\n\nUse the signatures below to check arguments and return types. A value after \`=\` is the default; \`?\` marks an optional input. Named data shapes are listed in [API types](types.md).\n`;
   for (const file of files) {
     const source = program.getSourceFile(`src/${file}.ts`);
     if (!source) throw new Error(`Public reference source missing: ${file}`);
@@ -255,7 +256,7 @@ for (const [slug, title, intro, files] of groups) {
       }
     }
   }
-  await page(`docs/${slug}.md`, output);
+  await page(`docs/reference/api/${slug.replace("api-", "")}.md`, output);
 }
 const publicModule = checker.getSymbolAtLocation(program.getSourceFile("src/index.ts"));
 assert.ok(publicModule, "Public module symbol is missing");
@@ -286,6 +287,14 @@ assert.equal(
 );
 let types =
   "# API types\n\nImport exported types from `codeboard-studio` in TypeScript. JavaScript callers use the same object shapes. These declarations describe inputs and returned artwork; they are not instructions to hand-write a project container. Use handles and production methods to edit stored values.\n\nPositions are canvas units; rotation is radians; pressure and opacity use 0–1; pen timestamps use milliseconds; timeline positions use integer frames. Inherited and helper structural types are included for reference; not every helper type is a named package export.\n";
+const typeSections = new Map();
+function typeDomain(file) {
+  if (file.startsWith("model/types/")) return file.slice("model/types/".length);
+  if (file.startsWith("core/edit-plan/") || file === "model/value-merge") return "edit-plans";
+  if (file.startsWith("core/story/") || file.startsWith("story/")) return "script";
+  if (file.startsWith("core/")) return "project";
+  return file.split("/")[0];
+}
 const helperTypes = new Set([
   "ValueMergeOptions",
   "ValueMergeConflict",
@@ -412,7 +421,12 @@ for (const file of typeFiles) {
         exports.has(node.name.text) ||
         helperTypes.has(node.name.text))
     ) {
-      types += `\n## ${node.name.text}\n\n\`\`\`ts\n${printer.printNode(ts.EmitHint.Unspecified, node, source)}\n\`\`\`\n`;
+      const domain = typeDomain(file);
+      const entries = typeSections.get(domain) ?? [];
+      entries.push(
+        `\n## ${node.name.text}\n\n\`\`\`ts\n${printer.printNode(ts.EmitHint.Unspecified, node, source)}\n\`\`\`\n`,
+      );
+      typeSections.set(domain, entries);
       documentedTypes.add(node.name.text);
     }
 }
@@ -427,5 +441,20 @@ assert.equal(
   0,
   `Public types missing from API reference: ${missingTypes.map((entry) => entry.name).join(", ")}`,
 );
-await page("docs/api-types.md", types);
-console.log(`${check ? "Verified" : "Generated"} six public API reference pages.`);
+types += "\n| Data | Declarations |\n| --- | ---: |\n";
+for (const [domain, entries] of typeSections) {
+  const title = domain.replaceAll("-", " ");
+  types += `| [${title}](shapes/${domain}.md) | ${entries.length} |\n`;
+  await page(
+    `docs/reference/api/shapes/${domain}.md`,
+    `# ${title[0].toUpperCase()}${title.slice(1)} types\n\nData shapes for ${title}. See [all type groups](../types.md) for other domains and shared units. Import public types from \`codeboard-studio\`; helper shapes are included to explain nested values.\n${entries.join("")}`,
+  );
+}
+await page(
+  "docs/reference/api/shapes/meta.json",
+  `${JSON.stringify({ title: "Data shapes", pages: [...typeSections.keys()] }, null, 2)}\n`,
+);
+await page("docs/reference/api/types.md", types);
+console.log(
+  `${check ? "Verified" : "Generated"} API signatures and ${typeSections.size} type groups.`,
+);

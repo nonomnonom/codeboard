@@ -9,7 +9,7 @@ import {
 } from "codeboard-studio";
 import { amber, ink, save } from "../../shared.ts";
 import { motion } from "../../shared/motion.ts";
-import { sheet, report } from "../../shared/artifacts.ts";
+import { comparison, report } from "../../shared/artifacts.ts";
 
 function prop(animation: ShotAnimation) {
   const group = animation.layers.find((layer) => layer.name === "Moving prop");
@@ -21,7 +21,7 @@ function prop(animation: ShotAnimation) {
   return { group, body };
 }
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project } = motion("Independent workers and explicit upgrade conflicts");
   const basePath = join(output, "base.cboard");
   await project.save(basePath);
@@ -99,7 +99,12 @@ export async function render(output: string): Promise<void> {
     ["Upgrade · keep local color", final],
   ] as const)
     samples.push({ label, png: await renderShotFramePNG(animation, 0) });
-  await save(output, "shot-merge", reopened, await sheet("Shot worker merge", samples, 2));
+  await save(
+    output,
+    "shot-merge",
+    reopened,
+    await comparison(output, "Bring two edits back together", samples, 2),
+  );
   await report(output, "assembly", {
     receipts,
     conflicts: blocked.conflicts,

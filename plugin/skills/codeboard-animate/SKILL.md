@@ -7,7 +7,7 @@ description: Use when Codeboard artwork needs drawing holds, poses, skin or curv
 
 Prerequisite: codeboard session context.
 
-Read `docs/animation.md` for contracts, `docs/math.md` for joints and `docs/api-production.md` for mutations. For skin/controller authoring or performance handoff, follow `docs/rig-workflow.md` and consult the installed public declarations before using recent APIs.
+Read `docs/animation/timing.md` for board timing, `docs/animation/shot-layers.md` for local keys, `docs/drawing/geometry.md` for joints and `docs/reference/api/production.md` for mutations. For skin/controller authoring or performance handoff, follow `docs/animation/rigging.md` and consult the installed public declarations before using recent APIs.
 
 | Change | Mechanism |
 | --- | --- |
@@ -18,10 +18,11 @@ Read `docs/animation.md` for contracts, `docs/math.md` for joints and `docs/api-
 | Geometric deformation | Shot mesh, curve, envelope or skin binding |
 | Live multi-layer pose blend | Named shot controller |
 | Reuse numeric controller motion | Controller performance package and explicit mappings |
-| Reuse a complete same-project rig | `animation.duplicate`; read `docs/rig-workflow.md` for copied ownership and shared dependencies |
+| Reuse a complete same-project rig | `animation.duplicate`; read `docs/animation/rigging.md` for copied ownership and shared dependencies |
 | Isolate a shot for handoff | `exportShotProject`; inspect dependencies and external fonts before destination review |
 | Painted line appearing over time | Raster-stroke reveal |
-| Shot length and subsequent timing | Panel retime |
+| Board panel length and subsequent timing | Panel retime |
+| Independent shot length and its local curves | Shot retime with explicit audio policy |
 
 Author contacts and key poses before intermediate drawings. Reuse a drawing ID for a repeated cel; duplicate it for an independent variation. Substitution selects drawings, not shape morphs. Keep independently timed parts on separate tracks.
 
@@ -31,7 +32,7 @@ Read duration and relevant keys. Page exposures with `drawingExposures` and choi
 
 Use `production.setDrawingRange` for board holds or shot `layer.drawing.range`; both preserve surrounding exposures. Panel ripple moves downstream timing: inspect collisions and hand crossing sound cues to codeboard-audio. Preserve placement keys for drawing-only revisions.
 
-For whole-shot timing, preview `retimeShotAnimation`, then plan `timing.retime`. Choose audio policy explicitly; check editorial source ranges before shortening. Read the animation reference for rounding and duration semantics.
+For whole-shot timing, preview `retimeShotAnimation`, then plan `timing.retime`. Choose audio policy explicitly; check editorial source ranges before shortening. Read `docs/animation/retiming.md` for rounding and duration semantics.
 
 For IK, inspect hierarchy, lengths, scales, pivots and parent-space target. Removing a rig does not remove keys. `layer.rig.rest.capture/apply` restores cutout joints; skin bind capture instead changes deformation interpretation. Do not interchange them.
 

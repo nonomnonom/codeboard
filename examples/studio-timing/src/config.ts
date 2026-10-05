@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 export const config = {
   title: "Studio timing study",
@@ -9,7 +9,9 @@ export const config = {
   sourceFrames: 132,
   cutFrames: 120,
   sequenceId: "timing-edit",
-  output: fileURLToPath(new URL("../output/", import.meta.url)),
+  output: resolve(
+    process.env.CODEBOARD_EXAMPLE_OUTPUT ?? fileURLToPath(new URL("../output/", import.meta.url)),
+  ),
 } as const;
 
 export function paths(directory = config.output) {

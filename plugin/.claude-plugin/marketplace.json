@@ -1,5 +1,8 @@
 {
   "name": "codeboard-local",
+  "metadata": {
+    "description": "Codeboard framework skills for editable drawing, animation and review."
+  },
   "owner": { "name": "Nonom" },
   "plugins": [
     {

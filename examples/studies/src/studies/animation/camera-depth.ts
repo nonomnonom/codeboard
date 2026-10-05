@@ -1,8 +1,8 @@
-import { renderFrameSheet } from "codeboard-studio";
+import { renderFramePNG } from "codeboard-studio";
 import { amber, blue, ink, make, rect, save } from "../../shared.ts";
-import { report } from "../../shared/artifacts.ts";
+import { report, comparison } from "../../shared/artifacts.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const project = make("Camera and depth planes");
   const shot = project.addScene("Study").addShot("Pan");
   const panel = shot.addPanel({ durationFrames: 24 });
@@ -28,6 +28,20 @@ export async function render(output: string): Promise<void> {
     output,
     "camera-depth",
     project,
-    await renderFrameSheet(project, [0, 12, 23], { columns: 3, thumbnailWidth: 360 }),
+    await comparison(
+      output,
+      "Near objects slide faster",
+      await Promise.all(
+        [0, 12, 23].map(async (frame) => ({
+          label:
+            frame === 0
+              ? "Before the camera moves"
+              : frame === 12
+                ? "Halfway through the pan"
+                : "End: compare near and far shapes",
+          png: await renderFramePNG(project, frame),
+        })),
+      ),
+    ),
   );
 }

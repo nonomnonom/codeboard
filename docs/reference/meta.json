@@ -1,0 +1,20 @@
+{
+  "title": "Technical reference",
+  "pages": [
+    "index",
+    "cli",
+    "docs-query",
+    "api",
+    "troubleshooting",
+    "audio-timing",
+    "drawing-queries",
+    "edit-plans",
+    "errors",
+    "object-queries",
+    "shot-plans",
+    "storage-integrity",
+    "storage-queries",
+    "time",
+    "timeline-queries"
+  ]
+}

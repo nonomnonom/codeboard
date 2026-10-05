@@ -17,7 +17,7 @@ import { blue, ink, make, rect, save, text } from "../../shared.ts";
 import { report } from "../../shared/artifacts.ts";
 import { captureAudioBoard } from "./board-capture.ts";
 
-export async function render(output: string): Promise<void> {
+export async function generate(output: string): Promise<void> {
   const { project } = motion("Audio trim, placement and delivery", 48);
   const file = join(output, "cue.wav");
   await writeFile(file, createToneWav({ frequency: 440, durationSeconds: 1, volume: 0.4 }));
@@ -82,8 +82,8 @@ export async function render(output: string): Promise<void> {
     .addShot("PCM waveform")
     .addPanel()
     .addVectorLayer("Waveform");
-  text(layer, "Decoded shot mix · 48 kHz stereo", 35, 42, 25);
-  text(layer, "Trim source 0.25–0.75s; play at 0.5–1.0s", 35, 82, 20);
+  text(layer, "Hear the cue inside the silence", 35, 42, 25);
+  text(layer, "The flat line is silence. The raised shape shows the sound.", 35, 82, 20);
   rect(layer, 60, 245, 840, 1, ink);
   for (let x = 0; x < 840; x++) {
     const start = Math.floor((x * mix.channels[0].length) / 840),
@@ -101,13 +101,7 @@ export async function render(output: string): Promise<void> {
     [2, 900],
   ])
     text(layer, `${seconds}s`, x! - 10, 355, 18);
-  text(
-    layer,
-    `Peak ${mix.peak.toFixed(3)} · ${verified.manifest.stems[0]!.samples} samples per stem`,
-    35,
-    390,
-    18,
-  );
+  text(layer, "Play the clip: the tone begins at 0.5 seconds and ends at 1 second.", 35, 390, 18);
   await save(output, "audio-delivery", project, await renderFramePNG(diagram, 0));
   await exportShotMovie(
     project.shotAnimation("animation:study"),

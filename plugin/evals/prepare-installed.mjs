@@ -26,7 +26,10 @@ for (const path of ["package.json", "dist/src", "node_modules", "LICENSE", "NOTI
   await cp(join(repo, path), join(runtime, path), { recursive: true, dereference: true });
 }
 for (const path of [".agents", ".codex-plugin", ".claude-plugin", "plugin.json", "skills"]) {
-  await cp(join(plugin, path), join(distribution, path), { recursive: true, dereference: true });
+  await cp(join(repo, "release/codeboard-plugin", path), join(distribution, path), {
+    recursive: true,
+    dereference: true,
+  });
 }
 function run(args, options = {}) {
   const result = spawnSync(process.execPath, args, { cwd: stage, encoding: "utf8", ...options });

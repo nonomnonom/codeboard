@@ -11,3 +11,10 @@ node --import tsx test/fixtures/schema3/generate.mjs .preview/legacy-writer/sour
 ```
 
 The generator rejects a writer whose schema is not 3. Regeneration changes IDs/timestamps and therefore the expected file hash; do not regenerate simply to make a migration regression pass. The PNG comparisons are exact on the current renderer environment and may require a separately justified review if the canvas dependency changes.
+
+The committed render baselines were captured on Windows. Tests verify their
+hashes on every platform and compare decoded historical pixels exactly on Windows.
+Every platform additionally requires exact rendering equality between the opened
+legacy source and migrated output using that platform's current backend. Native
+rasterization and PNG compression are not assumed identical across operating systems;
+this does not relax document, media, source-file or migration equality checks.

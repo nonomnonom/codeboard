@@ -15,7 +15,7 @@ export default function Download() {
         Install the CLI and JavaScript/TypeScript library from npm. Requires Node.js 22.22 or later
         and npm.
       </p>
-      <section className="installer-section" aria-label="Install commands">
+      <section className="installation-options" aria-label="Install commands">
         <div>
           <h2>CLI for your machine</h2>
           <p>Use the same command on Windows, macOS, and Linux.</p>
@@ -34,7 +34,7 @@ export default function Download() {
           <pre tabIndex={0}>
             <code>{"npm install --save-exact codeboard-studio\nnpx codeboard --version"}</code>
           </pre>
-          <Link className="text-link" href="/docs/install">
+          <Link className="text-link" href="/docs/start/installation">
             Installation and updates
           </Link>
         </div>
@@ -51,7 +51,7 @@ export default function Download() {
           <code>output/first.png</code> to see the result. Keep <code>output/first.cboard</code> to
           continue editing.
         </p>
-        <Link className="button primary" href="/docs/quickstart">
+        <Link className="button primary" href="/docs/start/first-drawing">
           Follow the quickstart
         </Link>
       </section>
@@ -60,9 +60,9 @@ export default function Download() {
           <a href={`${repository}/blob/main/CHANGELOG.md`}>Changelog</a>
         </p>
         <p>
-          FFmpeg is needed for movie export. Fonts are not bundled. Migrating from an older
-          installer? Follow the{" "}
-          <Link href="/docs/install#migrate-from-the-old-installer">npm migration guide</Link>.
+          Movie export requires FFmpeg; audio decoding also requires ffprobe. Fonts come from your
+          rendering environment. See the{" "}
+          <Link href="/docs/start/installation#runtime-requirements">runtime requirements</Link>.
         </p>
       </div>
     </main>

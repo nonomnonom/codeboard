@@ -1,32 +1,29 @@
 # Lengkap
 
-A fictional six-scene, fifteen-second story with editable brush strokes and synthesized Foley. Its satire is story content, not a claim about real events or a Codeboard principle.
+An editable fifteen-second story told in six scenes with brush strokes and synthesized Foley. The story is fictional satire.
 
-## Local workspace
-
-Install once at the repository root with `npm ci`, then run `npm run build`. The shared `examples` workspace uses the checkout's engine through `file:..`. Keep `npm run dev` running for engine changes and re-run after successful compilation.
+## Run the downloaded story
 
 ```sh
-npm run typecheck --workspace @codeboard/examples
-npm run lengkap:author --workspace @codeboard/examples
-npm run lengkap:render --workspace @codeboard/examples
+npm install
+npm run typecheck
+npm run author
+npm run render
+npm run verify
 ```
 
-For a downloaded ZIP, run `npm install`, `npm run typecheck`, then the corresponding `npm run` command from its extracted project directory. The ZIP includes the matching local engine build under vendor/ and installs it without waiting for engine publication. Third-party dependencies still require installation. Keep the generated lockfile.
+Use the extracted `lengkap` folder as the working directory. Open the project and images in `output/`. Install FFmpeg and run `npm run render -- --movie` to export a movie with sound.
 
-## Source ownership
+## Inspect and change the work
 
-All implementation lives in `src/`. `src/config.ts` owns fixture settings. The shared `examples/tsconfig.json` enables strict checking against the engine's public declarations. `project/` assembles scenes, `scenes/` draws each scene, `artwork/` owns brushes and marks, `audio/` synthesizes sound, `review/` renders and verifies, and `cli/` exposes commands.
+Edit a scene in `src/scenes/`, brushes in `src/artwork/`, or sound in `src/audio/`. Choose a new output directory for another author run. `CODEBOARD_EXAMPLE_OUTPUT` selects the output root; render and verify reopen existing work.
 
-The story, geometry, materials, layer names, and timing are this fixture's inputs. They are not required project defaults. Public API behavior is described by the [online reference](https://codeboard.nonom.xyz/docs/reference/).
+The verification command checks timing and saved artwork, then performs edit/save/undo experiments on a separate copy under `output/review/`. It checks that the original source file stays unchanged. Review the images and listen to the movie yourself before accepting an artistic change.
 
-## Output and review
+## Run in the repository
 
-Generated files live in this project's `output/`, or the directory selected by `CODEBOARD_EXAMPLE_OUTPUT`. Authoring deliberately regenerates these files. Open saved artwork for revisions; keep independently revised projects out of a generator's output. Render commands read saved state. A generated image or passing assertion still needs visual review.
+After building the engine, use `npm run lengkap:author --workspace @codeboard/examples`. The matching actions are `lengkap:render` and `lengkap:verify`.
 
-`npm run lengkap:verify --workspace @codeboard/examples` checks timing and stored artwork, then
-performs edit/save/undo experiments in a unique copy under `output/review/`. In a downloaded ZIP,
-use `npm run verify`. The source project bytes are checked for changes. Passing these checks
-does not approve the story or visual result.
+Code is MIT; original artwork and synthesized audio are CC0-1.0. Rendered text can differ with the installed fonts.
 
-Pass `-- --movie` to the short study/story render command for MP4. FFmpeg is required. Host fonts may differ across platforms. Code is MIT; original synthesized audio is CC0-1.0.
+Authoring requires a new output directory and never overwrites existing projects or audio. Set `CODEBOARD_EXAMPLE_OUTPUT` to choose another destination. Both author and render use `src/review/render.ts`; verification edits a separate copy.
