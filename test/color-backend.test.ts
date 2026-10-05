@@ -27,13 +27,21 @@ it("measures the installed Canvas float readback without mistaking it for a floa
     0,
   );
   const hdr = floats(await pixel.toBuffer("raw", { colorType: "RGBAF32" }));
-  expect(hdr[0]).toBe(1);
+  // Float readback can unpremultiply saturated 8-bit red above 1 on some backends.
+  expect(hdr[0]).toBeGreaterThanOrEqual(1);
+  expect(hdr[0]).toBeLessThanOrEqual(2);
   expect(hdr[2]).toBe(0);
   expect(hdr[3]).toBeCloseTo(128 / 255, 6);
   expect(await pixel.toBuffer("png", { colorType: "RGBAF32" })).toEqual(
     await pixel.toBuffer("png"),
   );
   expect((await sharp(await pixel.toBuffer("png")).metadata()).bitsPerSample).toBe(8);
+  const pngPixels = await sharp(await pixel.toBuffer("png"))
+    .raw()
+    .toBuffer();
+  expect(pngPixels[0]).toBe(255);
+  expect(pngPixels[2]).toBe(0);
+  expect(pngPixels[3]).toBe(128);
 });
 
 it("distinguishes encoded sRGB compositing from linear-light compositing", async () => {

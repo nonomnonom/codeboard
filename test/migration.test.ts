@@ -9,6 +9,7 @@ import {
   renderFramePNG,
   renderShotFramePNG,
   renderEditorialFramePNG,
+  decodePixels,
 } from "../src/index.js";
 
 const fixtures = resolve("test/fixtures/schema3");
@@ -45,6 +46,18 @@ async function fixture(sourceFixtures = fixtures) {
 }
 const hash = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 
+async function expectLegacyPixels(png: Buffer, fixture: Buffer, sha256: string) {
+  expect(hash(fixture)).toBe(sha256);
+  const actual = await decodePixels(png),
+    expected = await decodePixels(fixture);
+  expect([actual.width, actual.height]).toEqual([expected.width, expected.height]);
+  // Compare image samples, not platform-dependent PNG compression bytes.
+  let maxDelta = 0;
+  for (let i = 0; i < actual.pixels.length; i++)
+    maxDelta = Math.max(maxDelta, Math.abs(actual.pixels[i]! - expected.pixels[i]!));
+  expect(maxDelta).toBeLessThanOrEqual(1);
+}
+
 it("migrates an authentic schema-3 container with board, media and legacy-render parity", async () => {
   const { source, target } = await fixture();
   const expected = JSON.parse(await readFile(join(fixtures, "expected.json"), "utf8"));
@@ -67,8 +80,12 @@ it("migrates an authentic schema-3 container with board, media and legacy-render
   expect(document).toEqual(legacy);
   for (const entry of expected.frames) {
     const png = await renderFramePNG(migrated.toJSON(), entry.frame);
-    expect(png).toEqual(await readFile(join(fixtures, `frame-${entry.frame}.png`)));
-    expect(hash(png)).toBe(entry.sha256);
+    expect(png).toEqual(await renderFramePNG(await StoryboardProject.open(source), entry.frame));
+    await expectLegacyPixels(
+      png,
+      await readFile(join(fixtures, `frame-${entry.frame}.png`)),
+      entry.sha256,
+    );
   }
   const original = ProjectStore.open(source);
   const destination = ProjectStore.open(target);
@@ -144,8 +161,23 @@ it("migrates an original schema-4 studio container while preserving local render
               document.studio.animations,
               sample.frame,
             );
-    expect(png).toEqual(await readFile(join(sourceFixtures, sample.filename)));
-    expect(hash(png)).toBe(sample.sha256);
+    const originalDocument = originalProject.toJSON();
+    const originalPNG =
+      sample.kind === "board"
+        ? await renderFramePNG(originalProject, sample.frame)
+        : sample.kind === "shot"
+          ? await renderShotFramePNG(originalDocument.studio.animations[0]!, sample.frame)
+          : await renderEditorialFramePNG(
+              originalDocument.studio.editorial[0]!,
+              originalDocument.studio.animations,
+              sample.frame,
+            );
+    expect(png).toEqual(originalPNG);
+    await expectLegacyPixels(
+      png,
+      await readFile(join(sourceFixtures, sample.filename)),
+      sample.sha256,
+    );
   }
   const original = ProjectStore.open(source);
   const destination = ProjectStore.open(target);

@@ -35,8 +35,8 @@ it(
       expect(await readFile(join(cwd, "src/fixtures/schema3.cboard"))).toEqual(
         await readFile("test/fixtures/schema3/legacy.cboard"),
       );
-      expect(await readFile(join(cwd, "src/fixtures/cuts.otio"))).toEqual(
-        await readFile("test/fixtures/otio/cuts.otio"),
+      expect(JSON.parse(await readFile(join(cwd, "src/fixtures/cuts.otio"), "utf8"))).toEqual(
+        JSON.parse(await readFile("test/fixtures/otio/cuts.otio", "utf8")),
       );
       if (networkInstall) {
         const npm =

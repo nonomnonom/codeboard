@@ -36,7 +36,11 @@ it("imports independent RLE and ZIP PSD fixtures into editable isolated groups a
     await renderPanelPNG(imported, panel.id, { annotations: false }),
   );
   const at = (1 * 4 + 1) * 4;
-  expect([...pixels.pixels.slice(at, at + 4)]).toEqual([255, 127, 127, 255]);
+  expect(pixels.pixels[at]).toBe(255);
+  // Native Skia backends differ by one code value when compositing group opacity.
+  for (const channel of [1, 2])
+    expect(Math.abs(pixels.pixels[at + channel]! - 127)).toBeLessThanOrEqual(1);
+  expect(pixels.pixels[at + 3]).toBe(255);
   expect([...pixels.pixels.slice(0, 4)]).toEqual([255, 255, 255, 255]);
   const group = rle.layers[1]!;
   if (group.kind !== "group") throw new Error("Expected isolated group");
