@@ -6,23 +6,18 @@ Codeboard is a JavaScript/TypeScript toolkit for drawing, storyboards, and 2D an
 
 The [agent skills](docs/agent-plugin.md) guide drawing, brushes, storyboards, animation, camera, audio, revision, review, and debugging. Install the plugin in Codex or Claude Code, or copy the complete skill folders into another compatible Agent Skills host. The source and bundled offline reference live under `plugin/`.
 
-[Website](https://codeboard.nonom.xyz) · [Documentation](https://codeboard.nonom.xyz/docs/) · [Examples](https://codeboard.nonom.xyz/examples/) · [GitHub Releases](https://github.com/nonomnonom/codeboard/releases/latest)
+[Website](https://codeboard.nonom.xyz) · [Documentation](https://codeboard.nonom.xyz/docs/) · [Examples](https://codeboard.nonom.xyz/examples/) · [npm package](https://www.npmjs.com/package/codeboard-studio)
 
 ## Install
 
-macOS or Linux:
+Install Node.js 22.22 or later and npm, then run on Windows, macOS, or Linux:
 
 ```sh
-curl -fsSL https://codeboard.nonom.xyz/install.sh | sh
+npm install -g codeboard-studio
+codeboard --version
 ```
 
-Windows, in 64-bit PowerShell:
-
-```powershell
-& ([scriptblock]::Create((Invoke-RestMethod https://codeboard.nonom.xyz/install.ps1)))
-```
-
-The installer downloads a GitHub release, verifies its checksum, and sets up the `codeboard` command. Node is included; no npm account is required. [Supported systems and installation options](docs/install.md).
+For a project dependency, use `npm install --save-exact codeboard-studio` and run the CLI with `npx codeboard`. The same package exports the JavaScript/TypeScript library. [Installation, updates, and migration](docs/install.md).
 
 ## Draw something
 

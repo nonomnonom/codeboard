@@ -6,7 +6,7 @@ The terminal scenes are a scripted presentation of an agent workflow. They are n
 
 ## Run with the released CLI
 
-Install [Codeboard](https://codeboard.nonom.xyz/docs/install/) and open a new terminal. This source targets **v0.2.1**. No npm install, TypeScript compiler, engine checkout, or separate Node installation is needed. The `codeboard` command must be on PATH because the pipeline invokes it for each stage.
+Install [Codeboard](https://codeboard.nonom.xyz/docs/install/) and open a new terminal. This source targets **v0.2.1**. Install Node.js 22.22 or later, then `npm install -g codeboard-studio@0.2.1`. No TypeScript compiler or engine checkout is needed. The `codeboard` command must be on PATH because the pipeline invokes it for each stage.
 
 From this directory:
 

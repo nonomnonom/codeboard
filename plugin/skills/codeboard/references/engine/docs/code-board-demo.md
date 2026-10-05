@@ -29,7 +29,7 @@ codeboard run src/run.ts author
 codeboard run src/run.ts render
 ```
 
-`author` creates editable projects, original synthesized Foley, review sheets, pose crops, and verification reports. `render` repeats that work and exports the film; it requires FFmpeg on PATH or `FFMPEG_PATH` pointing to its executable. No npm dependencies or engine build are needed.
+`author` creates editable projects, original synthesized Foley, review sheets, pose crops, and verification reports. `render` repeats that work and exports the film; it requires FFmpeg on PATH or `FFMPEG_PATH` pointing to its executable. After installing Codeboard from npm, no additional project dependencies or engine build are needed.
 
 Outputs go into `codeboard-demo-output/` in your working directory. `CODEBOARD_DEMO_OUTPUT` can select another output directory. Keep independent revisions elsewhere: running authoring again replaces its generated outputs.
 
@@ -39,7 +39,7 @@ codeboard preview codeboard-demo-output/launch/codeboard-launch.cboard
 codeboard movie codeboard-demo-output/launch/codeboard-launch.cboard --output film.mp4
 ```
 
-The [demo README](https://github.com/nonomnonom/codeboard/blob/v0.2.1/code-board-demo/README.md) maps source files and outputs. Verification reopens saved projects, compares all 192 performance frames, checks planted-foot drift and drawing exposures, and checks turnaround contours. Arial, Consolas and Segoe Print are host fonts; text appearance can differ between operating systems.
+The [demo README](https://github.com/nonomnonom/codeboard/blob/v0.3.0/code-board-demo/README.md) maps source files and outputs. Verification reopens saved projects, compares all 192 performance frames, checks planted-foot drift and drawing exposures, and checks turnaround contours. Arial, Consolas and Segoe Print are host fonts; text appearance can differ between operating systems.
 
 ## Separate shape from placement
 

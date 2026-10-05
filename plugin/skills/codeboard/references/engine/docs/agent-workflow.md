@@ -4,7 +4,7 @@ Your agent writes and executes JavaScript or TypeScript. Codeboard supplies the 
 
 ## Set up the agent plugin
 
-[Install the Codeboard skills](agent-plugin.md) in your compatible agent to add operation guidance and the bundled API reference. The guide covers plugin installation in Codex and Claude Code, portable skill folders for Cursor, Copilot, Gemini CLI, OpenCode and other hosts, verification, and updates. Install the [engine](install.md) separately in the agent's execution environment, then open your agent in the artwork folder.
+[Install the Codeboard skills](agent-plugin.md) in your compatible agent to add operation guidance and the bundled API reference. The guide covers plugin installation in Codex and Claude Code, portable skill folders for Cursor, Copilot, Gemini CLI, OpenCode and other hosts, verification, and updates. Install the [engine from npm](install.md) with `npm install -g codeboard-studio` in the agent's execution environment, then open your agent in the artwork folder.
 
 Ask the agent to use the `codeboard` skill for your first task. It establishes the runtime and documentation version and selects the relevant skills for drawing, animation, or revision. The installed reference travels with the plugin, so the agent does not need your source checkout to read it.
 
@@ -55,4 +55,4 @@ Keep the before/after frame number, affected IDs, and intended timing change in 
 
 Give the next agent the project path, authoring folder, and the latest review request. It should reopen the `.cboard` file rather than regenerate from an outdated script. Source code explains how the artwork was authored; the saved project contains the current edited state.
 
-Scripts run with your local account's permissions. Codeboard has no built-in model, chat service, or agent scheduler. Automatic CLI update prompts are skipped when an agent redirects input or output; use `codeboard update --check` to check explicitly.
+Scripts run with your local account's permissions. Codeboard has no built-in model, chat service, or agent scheduler. Use npm to check for and install runtime updates. For reproducible automation, install a pinned project dependency and commit its lockfile.

@@ -2,7 +2,7 @@
 
 The eight-second walk, stop, hop and landing from `code-board-demo`, extracted into a standalone public example. The pose generator and contour drawing functions come from that demo; this package omits its presentation scenes and third-party soundtrack.
 
-With Codeboard installed, run from this folder:
+Install Node.js 22.22 or later and `npm install -g codeboard-studio@0.2.1`, then run from this folder:
 
 ```sh
 codeboard run main.mjs

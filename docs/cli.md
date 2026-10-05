@@ -1,5 +1,7 @@
 # Command line
 
+Install with `npm install -g codeboard-studio`, or use `npx codeboard` with a project-local dependency. See [installation](install.md) for Node.js requirements, version pinning, and npm updates.
+
 Run `codeboard --help` to list commands or `codeboard COMMAND --help` for one command's options.
 
 | Command | Purpose |
@@ -13,9 +15,6 @@ Run `codeboard --help` to list commands or `codeboard COMMAND --help` for one co
 | `codeboard animatic <project>` | Export frame images and an animatic manifest |
 | `codeboard movie <project> --output <file>` | Export an MP4 using FFmpeg |
 | `codeboard --version` | Print the installed version |
-| `codeboard update --check` | Check GitHub for a newer stable release |
-| `codeboard update` | Install the latest stable release in an installer-managed installation |
-| `codeboard update --yes` | Authorize installation without an interactive prompt |
 
 ## Authoring
 

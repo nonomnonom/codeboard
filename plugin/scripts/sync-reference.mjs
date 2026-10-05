@@ -53,7 +53,7 @@ expected.set('bundle.json', Buffer.from(JSON.stringify({
   engine: pkg.name, engineVersion: pkg.version,
   source: 'https://github.com/nonomnonom/codeboard',
   hashEncoding: 'UTF-8 with LF line endings',
-  contents: 'Canonical text documentation, quickstart, and standalone character example. Showcase images/videos and external installers are online links, not runtime dependencies.',
+  contents: 'Canonical text documentation, quickstart, and standalone character example. Showcase images/videos and the npm package are online links, not runtime dependencies.',
   sourceHashes, bundledHashes,
 }, null, 2) + '\n'));
 

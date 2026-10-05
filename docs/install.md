@@ -1,43 +1,21 @@
 # Installation
 
-Run the installer for your operating system. It downloads the latest Codeboard release from GitHub, verifies the archive's SHA-256 checksum, and installs it for your user account. No administrator access, Node.js installation, or npm account is needed.
+Codeboard is published as [codeboard-studio on npm](https://www.npmjs.com/package/codeboard-studio). One package provides the JavaScript/TypeScript library and the `codeboard` CLI. Install Node.js 22.22 or later and npm first. No npm account is needed to install the public package.
 
-## macOS and Linux
+## Install the CLI
 
-In Terminal:
-
-```sh
-curl -fsSL https://codeboard.nonom.xyz/install.sh | sh
-```
-
-Open a new terminal, then check:
+On Windows, macOS, or Linux:
 
 ```sh
+npm install -g codeboard-studio
 codeboard --version
 ```
 
-The installer supports macOS on Apple Silicon and Intel, and Linux x64 with glibc. It needs `curl`, `tar`, and either `sha256sum` or `shasum`. Alpine Linux and Linux ARM packages are not available.
-
-Codeboard lives in `~/.local/share/codeboard/versions/`. The command is installed in `~/.local/bin/`. The installer adds that command directory to your bash, zsh, or login profile. To use it immediately in the current terminal:
-
-```sh
-export PATH="$HOME/.local/bin:$PATH"
-```
-
-## Windows
-
-In a 64-bit PowerShell window:
-
-```powershell
-& ([scriptblock]::Create((Invoke-RestMethod https://codeboard.nonom.xyz/install.ps1)))
-codeboard --version
-```
-
-The installer supports Windows x64. It installs into `%LOCALAPPDATA%\Programs\Codeboard`, adds its `bin` directory to your user PATH, and makes the command available in the current PowerShell session. Windows ARM is not supported.
+Rendering uses native dependencies (`skia-canvas` and `sharp`). Installation must allow their install scripts and native downloads. CI checks npm installation on Windows x64, Linux x64, and macOS. FFmpeg is a separate requirement only for movie export.
 
 ## Create your first drawing
 
-Choose a working folder for your artwork, separate from the installation folder:
+Choose a working folder for your artwork:
 
 ```sh
 mkdir my-film
@@ -46,45 +24,62 @@ codeboard init
 codeboard run scene.mjs
 ```
 
-Continue with [the quickstart](quickstart.md).
+Continue with [the quickstart](quickstart.md). The CLI resolves the library for authored scripts, so a global installation does not require a dependency in every artwork folder.
+
+## Install in a project
+
+For a library dependency or a project-specific CLI version:
+
+```sh
+npm install --save-exact codeboard-studio
+npx codeboard init
+npx codeboard run scene.mjs
+```
+
+Commit `package.json` and `package-lock.json`; use `npm ci` in CI or on another machine. Use `npx codeboard` in place of `codeboard` throughout these guides when using a local installation. npm scripts can call `codeboard` directly because npm adds the project's binaries to PATH.
+
+JavaScript modules can import the installed library directly:
+
+```js
+import { StoryboardProject } from 'codeboard-studio';
+```
+
+A global installation alone does not make imports available to plain `node` scripts. Either install locally or run the script through `codeboard run`.
+
+## Pin, update, or uninstall
+
+Select a specific version by adding it to the package name, for example `npm install -g codeboard-studio@0.2.1`.
+
+For a global CLI:
+
+```sh
+npm outdated -g codeboard-studio
+npm install -g codeboard-studio@latest
+npm uninstall -g codeboard-studio
+```
+
+For a project dependency:
+
+```sh
+npm outdated codeboard-studio
+npm install --save-exact codeboard-studio@latest
+npm uninstall codeboard-studio
+```
+
+Review and commit lockfile changes when updating a project. npm manages updates; Codeboard no longer checks GitHub for releases or provides `codeboard update`. Uninstalling the package leaves artwork in your working folders intact.
+
+## Migrate from the old installer
+
+Install Node.js and the npm package, then remove the old Codeboard command directory from PATH so it cannot shadow npm's command. The old default was `~/.local/bin/codeboard` on macOS/Linux, or `%LOCALAPPDATA%\Programs\Codeboard\bin` on Windows. Use `which -a codeboard` on macOS/Linux or `Get-Command codeboard -All` in PowerShell to inspect which installation runs.
+
+After verifying the npm installation, you may remove the old runtime directory (`~/.local/share/codeboard` or `%LOCALAPPDATA%\Programs\Codeboard`) and its wrapper. For custom installations, use the location you selected. Keep any artwork saved there before removing it. New releases do not provide shell installers, PowerShell installers, or bundled Node archives.
 
 ## Connect your coding agent
 
-[Install the Codeboard skills](agent-plugin.md) in your compatible coding agent. Use the plugin route for Codex and Claude Code, or the portable skill folders for other hosts. Install the engine in the same environment where the agent executes commands; the skills provide authoring, review, and revision guidance plus bundled documentation.
-
-## Review or pin the installer
-
-You can read the [shell installer](https://codeboard.nonom.xyz/install.sh) or [PowerShell installer](https://codeboard.nonom.xyz/install.ps1) before running it. To install a specific release, download the script and pass a version:
-
-```sh
-sh install.sh --version 0.2.0
-```
-
-```powershell
-& .\install.ps1 -Version 0.2.0
-```
-
-## Update or uninstall
-
-Codeboard checks for a stable GitHub release when you run a command in an interactive terminal, at most once a day. If a newer version is available, it asks `Install update? [y/N]`. Type `y` to install, or press Enter to continue without updating. It does not install updates without your confirmation.
-
-```sh
-codeboard update --check
-codeboard update
-```
-
-`--check` checks immediately without installing. `update` asks for confirmation, verifies and runs the release installer, then switches your installed command to the new version. Use `codeboard update --yes` to explicitly authorize installation from a script. Existing version directories are retained. Your projects stay in their working folders and are not changed by the installer. A running command continues using its current version; new commands use the updated version.
-
-Automatic checks are skipped in CI, when output is redirected, and when `CODEBOARD_NO_UPDATE_CHECK=1` is set. A daily network check waits at most 1.5 seconds; a failed check never prevents your command from running. Explicit `update` commands still contact GitHub.
-
-For Codeboard 0.2.0 or a manually extracted archive, run the installer above to get a version with the update command. Source checkouts are updated through Git. To select an older version again, run the installer with its version number.
-
-To uninstall, remove the Codeboard installation directory and command wrapper, then remove its PATH entry from your shell profile or Windows user environment settings. Keep any `.cboard` files and authoring scripts you want to retain.
+[Install the Codeboard skills](agent-plugin.md) through your agent host. Plugin/skill discovery follows the host's installation mechanism; npm installs the engine and CLI. Install the npm package in the environment where the agent executes commands, including remote containers or CI runners.
 
 ## Optional tools
 
 Movie export requires FFmpeg. Install it separately and put `ffmpeg` on PATH, or supply its path when [exporting a movie](export.md). Drawing, PNG export, and saving projects work without it.
 
-Fonts are read from your system. Install the fonts your artwork uses, or choose fonts available on your machine. macOS may request approval for downloaded executables in Privacy & Security; the portable packages are not notarized.
-
-Prefer manual installation? Download a matching archive from [GitHub Releases](https://github.com/nonomnonom/codeboard/releases/latest), verify it against `SHA256SUMS`, extract it, and add the directory containing `codeboard` or `codeboard.cmd` to PATH. Keep the complete extracted directory together.
+Fonts are read from your system. Install the fonts your artwork uses, or choose fonts available on your machine. See [troubleshooting](troubleshooting.md) for PATH and import problems.

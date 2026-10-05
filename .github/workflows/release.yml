@@ -43,21 +43,18 @@ jobs:
       - run: npm pack --ignore-scripts
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: sdk
+          name: npm-package
           path: '*.tgz'
           if-no-files-found: error
           retention-days: 3
-  portable:
+  install:
+    needs: validate
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - {os: windows-latest, platform: windows-x64, arch: x64}
-          - {os: ubuntu-24.04, platform: linux-x64, arch: x64}
-          - {os: macos-15, platform: macos-arm64, arch: arm64}
-          - {os: macos-15-intel, platform: macos-x64, arch: x64}
+        os: [windows-latest, ubuntu-latest, macos-15, macos-15-intel]
     env:
       SKIA_CANVAS_THREADS: '2'
     steps:
@@ -67,38 +64,51 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22.22.0'
-          architecture: ${{ matrix.arch }}
           package-manager-cache: false
-      - run: npm ci
-      - run: npm run package:portable
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
-          name: portable-${{ matrix.platform }}
-          path: release/*
-          if-no-files-found: error
-          retention-days: 3
+          name: npm-package
+          path: .preview/npm-release
+      - name: Test the release tarball
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $archive = (Get-ChildItem -LiteralPath .preview/npm-release -Filter '*.tgz').FullName
+          npm install -g $archive
+          $work = Join-Path $env:RUNNER_TEMP 'codeboard-release-smoke'
+          New-Item -ItemType Directory -Force $work | Out-Null
+          Copy-Item scripts/package-smoke.mjs $work
+          Set-Location $work
+          npm install --no-audit --no-fund $archive
+          node package-smoke.mjs
+          npx --no-install codeboard --version
+          codeboard init
+          codeboard run scene.mjs
+          if (!(Test-Path output/first.png) -or !(Test-Path output/first.cboard)) { throw 'CLI did not produce artwork' }
   publish:
-    needs: [validate, portable]
+    needs: [validate, install]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          persist-credentials: false
+          node-version: '24.x'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+      - run: npm install -g npm@11
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
-          path: release
-          merge-multiple: true
-      - name: Publish GitHub release
-        working-directory: release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
+          name: npm-package
+          path: package
+      - name: Publish to npm
+        working-directory: package
+        shell: bash
         run: |
-          cp ../website/public/install.sh ../website/public/install.ps1 .
-          sha256sum *.tgz *.zip *.tar.gz install.sh install.ps1 > SHA256SUMS
-          args=()
-          if [[ "$GITHUB_REF_NAME" == *-* ]]; then args+=(--prerelease); fi
-          gh release create "$GITHUB_REF_NAME" *.tgz *.zip *.tar.gz install.sh install.ps1 SHA256SUMS --verify-tag --title "Codeboard $GITHUB_REF_NAME" --generate-notes "${args[@]}"
+          set -euo pipefail
+          tag=latest
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then tag=next; fi
+          npm publish ./*.tgz --access public --tag "$tag"

@@ -4,6 +4,11 @@ Changes are grouped by release. Unreleased work is not a claim of registry publi
 
 ## Unreleased
 
+## [0.3.0] - 2026-10-05
+
+- BREAKING: distribute the engine and CLI only through npm (`codeboard-studio`). Require user-provided Node.js 22.22+; remove platform archives, shell/PowerShell installers, automatic GitHub update checks, and `codeboard update`. Use npm to install, pin, update, and uninstall.
+- Publish validated npm tarballs through GitHub Actions trusted publishing after cross-platform installation checks; update website, examples, and bundled agent references for npm installation.
+
 - Expand agent installation guidance with portable skill folders, documented discovery paths for additional hosts, reference verification, and remote-environment setup.
 
 - Add the agent plugin under `plugin/`, with Codex and Claude Code manifests, ten operation skills, and a generated offline reference bundle. `npm run docs:generate` updates API references and the bundle; validation rejects drift from the canonical documentation.

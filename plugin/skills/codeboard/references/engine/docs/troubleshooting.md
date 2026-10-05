@@ -2,11 +2,11 @@
 
 ## The command is not found
 
-Open a new terminal after installation. On macOS/Linux, the default wrapper is `~/.local/bin/codeboard`; on Windows it is `%LOCALAPPDATA%\Programs\Codeboard\bin\codeboard.cmd`. Follow [installation](install.md) for PATH setup. Keep the complete runtime directory together when installing a portable archive manually.
+Check `node --version` and `npm --version`, then install with `npm install -g codeboard-studio`. On macOS/Linux, npm's global commands are in the `bin` directory under `npm prefix -g`; on Windows they are directly in the global prefix. Ensure that directory is on PATH and open a new terminal. For a project-local installation, use `npx codeboard` from that project. If PowerShell blocks the npm script shim, use `npm.cmd` and `codeboard.cmd`. See [installation](install.md) for migration from the old installer.
 
 ## A script cannot import Codeboard
 
-Run `codeboard run scene.mjs` instead of `node scene.mjs`. The runner resolves `codeboard-studio` from the installed runtime. Use `.mjs` for JavaScript. Erasable TypeScript is supported as described in [quickstart](quickstart.md); a project requiring a build tool, JSX, enums, or custom path aliases needs its own compilation step.
+With a global CLI installation, run `codeboard run scene.mjs` instead of `node scene.mjs`. To use plain Node imports, install `codeboard-studio` as a dependency in that project. The runner resolves `codeboard-studio` from the installed runtime. Use `.mjs` for JavaScript. Erasable TypeScript is supported as described in [quickstart](quickstart.md); a project requiring a build tool, JSX, enums, or custom path aliases needs its own compilation step.
 
 ## Nothing appears in a render
 

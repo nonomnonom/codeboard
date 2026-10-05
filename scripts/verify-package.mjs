@@ -1,4 +1,4 @@
-import {mkdtemp,mkdir,readFile,rm,symlink,writeFile} from "node:fs/promises";
+import {mkdtemp,mkdir,readFile,rm,symlink,writeFile,stat} from "node:fs/promises";
 import {tmpdir} from "node:os";
 import {join,resolve} from "node:path";
 import {fileURLToPath} from "node:url";
@@ -38,6 +38,14 @@ try{
   process.stdout.write(run(process.execPath,[worker]));
   const help=run(process.execPath,[join(installed,metadata.bin.codeboard),"--help"]);
   assert(help.includes("inspect")&&help.includes("movie"),"Packaged CLI is incomplete");
+  assert(!/\bupdate\b/.test(help),"Removed self-updater is still exposed");
   assert.equal(run(process.execPath,[join(installed,metadata.bin.codeboard),"--version"]).trim(),metadata.version,"CLI version differs from package version");
+  if(process.argv.includes("--install")){
+    const npmArgs=[process.env.npm_execpath,"exec","--no","--","codeboard"];
+    assert.equal(run(process.execPath,[...npmArgs,"--version"]).trim(),metadata.version,"npm CLI shim version differs from package version");
+    run(process.execPath,[...npmArgs,"init"]);
+    run(process.execPath,[...npmArgs,"run","scene.mjs"]);
+    for(const name of ["first.png","first.cboard"])assert((await stat(join(directory,"output",name))).size>0,`CLI did not create ${name}`);
+  }
   console.log(`Local archive verified: ${packed.files.length} files, ${packed.size} compressed bytes; extracted API and CLI passed`);
 }finally{await rm(directory,{recursive:true,force:true});}

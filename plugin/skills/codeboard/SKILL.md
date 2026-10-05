@@ -9,7 +9,7 @@ Establish one session context, then load the skill for the actual operation. Kee
 
 ## Session context
 
-Record the artwork directory, current project, and runtime version. Check `codeboard --version`; an optional source build uses `node <checkout>/dist/src/cli.js`. Run authored scripts through that CLI's `run` command and import from `codeboard-studio`. This works outside the engine directory and avoids platform-specific absolute ESM imports.
+Record the artwork directory, current project, and runtime version. Install the runtime from npm with `npm install -g codeboard-studio`, or use a project dependency and `npx codeboard`. Check `codeboard --version` (or `npx codeboard --version` for a local dependency); an optional source build uses `node <checkout>/dist/src/cli.js`. Run authored scripts through that CLI's `run` command and import from `codeboard-studio`. This works outside the engine directory and avoids platform-specific absolute ESM imports.
 
 The documentation ships with this skill. Open [bundle metadata](references/engine/bundle.json) and [the manual index](references/engine/docs/index.md). The reference root is `references/engine/` beside this SKILL.md; every `docs/` or `examples/` path in these skills is relative to that root, not the user's working directory. No repository checkout or internet is required to read the API guides. Load only relevant pages.
 

@@ -2,7 +2,7 @@
 
 Draw, build storyboards, and animate with JavaScript or TypeScript. Give your coding agent a brief, let it run Codeboard, then review the images and ask for revisions.
 
-Codeboard runs on your computer. It includes its own runtime; you do not need an npm account or an AI service to use it.
+Codeboard runs on your computer with Node.js 22.22 or later. Install the CLI and library from npm; no npm account or AI service is required.
 
 ## Start a project
 

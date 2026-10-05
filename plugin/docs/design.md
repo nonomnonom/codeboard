@@ -33,7 +33,7 @@ All 29 top-level Markdown guides in the checkout's `docs/`, its navigation metad
 | Review and export | review, onion-skin, export, api-render |
 | Diagnosis | troubleshooting |
 
-The official website could not be retrieved by the browsing tool in this environment. Local documentation, public declarations, executable examples, and engine behavior were therefore the sources used for API claims. The bundled snapshot identifies its engine version. Skills check that version against the installed runtime and consult matching declarations/documentation for discrepancies. Showcase media and installer links remain online; they are not needed to read API contracts. Internal links between included manuals/examples remain local.
+The official website could not be retrieved by the browsing tool in this environment. Local documentation, public declarations, executable examples, and engine behavior were therefore the sources used for API claims. The bundled snapshot identifies its engine version. Skills check that version against the installed runtime and consult matching declarations/documentation for discrepancies. Showcase media and npm package links remain online; they are not needed to read API contracts. Internal links between included manuals/examples remain local.
 
 ## Validation boundaries
 
@@ -41,7 +41,7 @@ Structural checks catch broken metadata, references, duplicated paragraphs, and 
 
 ## Documentation distribution review
 
-The review traced authoring, generated declarations, website ingestion, plugin installation, example downloads, CI, and release validation. Retain the existing root `docs/` as the canonical guide source. Moving it into one consumer's plugin package would require changing website ingestion, GitHub edit links, repository links, API generation, and portable installer packaging without eliminating the need for a distributable snapshot. Symlinks would also reintroduce a dependency on files outside an installed plugin.
+The review traced authoring, generated declarations, website ingestion, plugin installation, example downloads, CI, and release validation. Retain the existing root `docs/` as the canonical guide source. Moving it into one consumer's plugin package would require changing website ingestion, GitHub edit links, repository links, API generation, and npm package documentation without eliminating the need for a distributable snapshot. Symlinks would also reintroduce a dependency on files outside an installed plugin.
 
 | Content or consumer | Owner and distribution path |
 | --- | --- |
@@ -51,7 +51,7 @@ The review traced authoring, generated declarations, website ingestion, plugin i
 | Offline agent reference | `plugin/scripts/sync-reference.mjs` derives `skills/codeboard/references/engine/` from canonical docs, selected runnable examples, LICENSE and NOTICE. |
 | Skill behavior | Edit the owning `SKILL.md`; signatures and full examples remain in the reference bundle. |
 | Runnable examples and media | Source stays in `examples/` / `code-board-demo/`; showcase media stays in website public assets. The plugin includes quickstart and the standalone character example, not all downloads or rendered media. |
-| Portable engine installer | `scripts/build-portable.mjs` reads root `docs/install.md` for `INSTALL.md`. The engine distribution and agent plugin remain separate installations. |
+| npm engine package | Root `package.json` exports the library and CLI as `codeboard-studio`; `docs/install.md` owns installation and migration guidance. The engine distribution and agent plugin remain separate installations. |
 | CI and engine release | Both workflows already run `npm run check`; it now verifies source-to-API and docs-to-bundle consistency. No remote workflow or release was executed here. |
 
 Contributor workflow: edit the owning source, run `npm run docs:generate`, review the generated diff, then `npm run check`. This single generation command updates API pages before the plugin bundle. Generated files are committed so a marketplace install from a Git checkout is immediately usable without build hooks. A missing/stale file or manual bundle edit fails validation; renames remove obsolete files recorded by the previous bundle. The sync test covers update, tamper, rename, link conversion, and containment of obsolete-file removal.

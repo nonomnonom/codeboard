@@ -34,8 +34,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - if: matrix.os == 'ubuntu-latest' && matrix.node == '22.22.0'
-        run: npm run test:install
+      - run: npm run test:install
   movie:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -52,23 +51,6 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: npm ci
       - run: npm test -- test/movie.test.ts
-  installers:
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
-        with:
-          node-version: '22.22.0'
-          package-manager-cache: false
-      - run: npm ci --omit=dev --ignore-scripts
-      - run: node scripts/test-installers.mjs
   released-examples:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 25
@@ -77,38 +59,16 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     env:
-      CODEBOARD_NO_UPDATE_CHECK: '1'
       SKIA_CANVAS_THREADS: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - name: Install published CLI (macOS / Linux)
-        if: runner.os != 'Windows'
-        shell: bash
-        run: |
-          set -euo pipefail
-          base=https://github.com/nonomnonom/codeboard/releases/download/v0.2.1
-          cd "$RUNNER_TEMP"
-          curl -fsSLO "$base/install.sh"
-          curl -fsSLO "$base/SHA256SUMS"
-          grep '  install.sh$' SHA256SUMS | shasum -a 256 --check
-          sh install.sh --version 0.2.1 --prefix "$RUNNER_TEMP/codeboard" --no-modify-path
-          echo "$RUNNER_TEMP/codeboard/bin" >> "$GITHUB_PATH"
-      - name: Install published CLI (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          $base = 'https://github.com/nonomnonom/codeboard/releases/download/v0.2.1'
-          $installer = Join-Path $env:RUNNER_TEMP 'install.ps1'
-          Invoke-WebRequest "$base/install.ps1" -OutFile $installer
-          $sumsFile = Join-Path $env:RUNNER_TEMP 'SHA256SUMS'
-          Invoke-WebRequest "$base/SHA256SUMS" -OutFile $sumsFile
-          $sums = Get-Content -LiteralPath $sumsFile -Raw
-          $expected = [regex]::Match($sums, '(?m)^([a-f0-9]{64})  install.ps1\r?$').Groups[1].Value
-          if (!$expected -or (Get-FileHash $installer -Algorithm SHA256).Hash -ne $expected) { throw 'Installer checksum mismatch' }
-          & $installer -Version 0.2.1 -InstallDir "$env:RUNNER_TEMP/codeboard" -NoModifyPath
-          "$env:RUNNER_TEMP/codeboard/bin" >> $env:GITHUB_PATH
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.22.0'
+          package-manager-cache: false
+      - run: npm install -g codeboard-studio@0.2.1
       - name: Run public sources outside the checkout
         shell: pwsh
         run: |
@@ -130,13 +90,12 @@ jobs:
           codeboard run examples/revise-last-light.ts
   gate:
     if: always()
-    needs: [test, movie, installers, released-examples]
+    needs: [test, movie, released-examples]
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
       - env:
           TEST_RESULT: ${{ needs.test.result }}
           MOVIE_RESULT: ${{ needs.movie.result }}
-          INSTALLER_RESULT: ${{ needs.installers.result }}
           EXAMPLES_RESULT: ${{ needs.released-examples.result }}
-        run: test "$TEST_RESULT" = success && test "$MOVIE_RESULT" = success && test "$INSTALLER_RESULT" = success && test "$EXAMPLES_RESULT" = success
+        run: test "$TEST_RESULT" = success && test "$MOVIE_RESULT" = success && test "$EXAMPLES_RESULT" = success

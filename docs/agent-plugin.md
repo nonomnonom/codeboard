@@ -4,7 +4,7 @@ Codeboard provides ten portable [Agent Skills](https://agentskills.io/home) for 
 
 Install them as a plugin in Codex or Claude Code, or copy the complete skill folders into another compatible agent's skill directory. The instructions and references are the same in both cases; the marketplace commands are host-specific.
 
-The plugin supplies instructions and references. [Install the Codeboard engine](install.md) separately to run scripts and render artwork.
+The plugin supplies instructions and references. [Install the Codeboard engine from npm](install.md) separately with `npm install -g codeboard-studio` to run scripts and render artwork. The execution environment needs Node.js 22.22 or later.
 
 ## Before you start
 
@@ -183,9 +183,9 @@ Continue with [the agent workflow](agent-workflow.md) for writing a brief, revie
 
 ## References and updates
 
-Manuals and API pages are included under the core skill's `references/engine/` directory. The bundle records its engine version. Showcase media and external installers remain online links; the API text and included example source can be read offline.
+Manuals and API pages are included under the core skill's `references/engine/` directory. The bundle records its engine version. Showcase media and the npm package remain online links; the API text and included example source can be read offline.
 
-Keep the local repository folder for future plugin updates. Updating the engine with `codeboard update` does not update the plugin. Pull a newer version of the repository, then refresh the installed plugin through your host. For Claude Code, use `claude plugin update codeboard@codeboard-local`. In Codex, rerun `codex plugin add codeboard@codeboard-local` against the updated local marketplace. Start a new session afterward.
+Keep the local repository folder for future plugin updates. Updating the engine with `npm install -g codeboard-studio@latest` (or updating the project dependency) does not update the plugin. Pull a newer version of the repository, then refresh the installed plugin through your host. For Claude Code, use `claude plugin update codeboard@codeboard-local`. In Codex, rerun `codex plugin add codeboard@codeboard-local` against the updated local marketplace. Start a new session afterward.
 
 For copied skills, back up the installed Codeboard folders outside the host's discovery directories, then replace the full set with the updated `plugin/skills/` contents. Replace the references along with the entrypoints; do not merge only new `SKILL.md` files into old bundles. Keep any personal edits separately and repeat the discovery/version check after reloading.
 

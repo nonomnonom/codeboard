@@ -1,6 +1,6 @@
 # Your first drawing
 
-[Install Codeboard](install.md), then open a terminal in an empty working folder.
+[Install Codeboard from npm](install.md) with `npm install -g codeboard-studio`, then open a terminal in an empty working folder. Node.js 22.22 or later is required. If you installed Codeboard as a project dependency, use `npx codeboard` for the commands below.
 
 ```sh
 codeboard init

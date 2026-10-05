@@ -1,6 +1,6 @@
 # Examples
 
-Install [Codeboard from GitHub Releases](../docs/install.md) first; these examples target release **0.2.1**. Run the commands from a downloaded or cloned repository, without `npm install` or an engine build. Only movie export needs FFmpeg. Examples call the public API. Generated outputs go under ignored `examples/output/`. Authoring commands regenerate their own outputs; keep independently edited projects elsewhere.
+Install [Codeboard from npm](../docs/install.md) with `npm install -g codeboard-studio@0.2.1` first; these examples target release **0.2.1**. Run the commands from a downloaded or cloned repository, without an additional project dependency install or an engine build. Only movie export needs FFmpeg. Examples call the public API. Generated outputs go under ignored `examples/output/`. Authoring commands regenerate their own outputs; keep independently edited projects elsewhere.
 
 ## First stroke
 
