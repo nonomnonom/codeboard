@@ -1,6 +1,7 @@
 import type { Layer, StoryboardDocument } from "../model/types.js";
 import { createTimeMapper } from "./rational-time.js";
 import { CodeboardError } from "../model/errors.js";
+import { scene3DKeyCollections } from "./scene3d.js";
 
 /** Operates on a staged document; the caller validates and commits it atomically. */
 export function convertTimebase(document: StoryboardDocument, frameRate: number): void {
@@ -58,6 +59,8 @@ export function convertTimebase(document: StoryboardDocument, frameRate: number)
         layers(layer.children);
       } else
         for (const element of layer.elements) {
+          if (element.kind === "scene-3d")
+            for (const entries of scene3DKeyCollections(element.scene)) keys(entries, element.id);
           if (element.kind === "raster-stroke" && element.reveal)
             element.reveal = interval(
               element.reveal.startFrame,

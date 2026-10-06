@@ -3,7 +3,7 @@ import { createGetUrl } from "fumadocs-core/source";
 export const appName = "Codeboard";
 export const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://codeboard.nonom.xyz";
-export const releaseVersion = "1.0.0";
+export const releaseVersion = "1.1.0";
 export const repository = "https://github.com/nonomnonom/codeboard";
 export const creator = {
   name: "Nonom Friedman",

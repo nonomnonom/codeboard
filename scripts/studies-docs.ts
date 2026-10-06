@@ -1,5 +1,6 @@
 /** Guide associations describe what a picture demonstrates, not test coverage. */
 export const studyDocs: Record<string, string[]> = {
+  "scene-3d": ["drawing/three"],
   representations: ["drawing/marks", "drawing/pixels"],
   clipping: ["drawing/layers"],
   selections: ["drawing/pixels"],

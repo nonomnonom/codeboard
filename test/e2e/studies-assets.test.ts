@@ -82,13 +82,19 @@ it(
             `
         import { createRequire } from 'node:module';
         import { readFileSync, realpathSync } from 'node:fs';
-        import { resolve, sep } from 'node:path';
+        import { dirname, resolve, sep } from 'node:path';
         import assert from 'node:assert/strict';
         const modules = realpathSync('node_modules');
         const manifest = resolve('node_modules/codeboard-studio/package.json');
         const require = createRequire(manifest);
         const dependencies = Object.keys(JSON.parse(readFileSync(manifest, 'utf8')).dependencies);
-        const paths = Object.fromEntries(dependencies.map(name => [name, realpathSync(require.resolve(name))]));
+        const paths = Object.fromEntries(dependencies.map(name => {
+          if (!name.startsWith('@types/')) return [name, realpathSync(require.resolve(name))];
+          const file = require.resolve(name + '/package.json');
+          const declaration = JSON.parse(readFileSync(file, 'utf8')).types;
+          assert.equal(typeof declaration, 'string', name + ' has no type entry');
+          return [name, realpathSync(resolve(dirname(file), declaration))];
+        }));
         for (const path of Object.values(paths)) assert(path.startsWith(modules + sep));
         assert(realpathSync(resolve('node_modules/codeboard-studio')).startsWith(modules + sep));
         console.log(JSON.stringify(paths, null, 2));
@@ -107,7 +113,13 @@ it(
         );
         assert.equal(unpack.status, 0, unpack.stderr);
         const engineManifest = JSON.parse(await readFile(join(engine, "package.json"), "utf8"));
-        for (const dependency of [...Object.keys(engineManifest.dependencies), "@types"]) {
+        const dependencies = new Set([
+          ...Object.keys(engineManifest.dependencies).map((name) =>
+            name.startsWith("@types/") ? "@types" : name,
+          ),
+          "@types",
+        ]);
+        for (const dependency of dependencies) {
           const target = join(modules, dependency);
           await mkdir(dirname(target), { recursive: true });
           await symlink(

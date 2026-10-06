@@ -7,6 +7,18 @@ export const animation: Chapter = {
     "Read the pictures in order. For motion, play the clip and watch the same part of the drawing throughout.",
   lessons: [
     {
+      id: "scene-3d",
+      title: "Turn three solids around one pivot",
+      question: "How do the silhouettes change as the group turns?",
+      observe:
+        "The ring becomes narrow when seen edge-on. The box and sphere keep their position relative to the same pivot, while the 2D title stays still.",
+      takeaway:
+        "The saved project retains the solids, camera, lighting, and rotation keys. Each frame projects the scene again.",
+      experiment:
+        "Open the saved scene, change the box material color with LayerHandle.edit, and render the same frames again.",
+      source: "animation/scene-3d.ts",
+    },
+    {
       id: "skin-weights",
       title: "Share a bend between two joints",
       question: "Which part of the strip follows each joint?",

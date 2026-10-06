@@ -97,7 +97,9 @@ Read [review](../workflow/review.md), [projects and revisions](../workflow/proje
 | OTIO | Explicitly bound media references on one video cut track, preserving supported source ranges | [OTIO subset](../animation/otio.md) |
 | Script/CSV | Stable script records, captions and explicit board mappings; Final Draft support is a subset | [Storyboards](../animation/storyboards.md) |
 
-PSD export, native 3D scenes, automatic speech recognition, and native Harmony project
+Primitive [3D scenes](../drawing/three.md) retain their camera, solids, lights, and animation keys inside `.cboard`. Their SVG renderer has a bounded feature set.
+
+PSD export, imported 3D models, automatic speech recognition, and native Harmony project
 interchange are outside the current native support described here. OTIO cut support does not
 imply AAF/FCPXML support or automatic baking of unsupported transitions.
 

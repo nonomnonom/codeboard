@@ -15,7 +15,8 @@
     "exactOptionalPropertyTypes": true,
     "rewriteRelativeImportExtensions": true,
     "paths": {
-      "codeboard-studio": ["./src/index.ts"]
+      "codeboard-studio": ["./src/index.ts"],
+      "codeboard-studio/three": ["./src/three.ts"]
     }
   },
   "include": [

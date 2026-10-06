@@ -3,10 +3,12 @@ import { resolve } from "node:path";
 import { readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import { starter } from "../starter.js";
+import { registerCharacterCommands } from "./character.js";
 
 import { CodeboardError } from "../model/errors.js";
 
 export function registerAuthoringCommands(program: Command): void {
+  registerCharacterCommands(program);
   program
     .command("migrate")
     .argument("<source>")

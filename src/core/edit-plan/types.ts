@@ -32,6 +32,10 @@ import type { PlanDrawingElement } from "./artwork.js";
 import type { PathBooleanOperation } from "../../drawing/path-geometry.js";
 
 export type EditCommand =
+  | ({
+      op: "character.instantiate";
+      sourceAnimationId: string;
+    } & import("../../model/types/characters.js").CharacterInstanceOptions)
   | { op: "palette.put"; palette: import("../../model/types/palettes.js").Palette }
   | { op: "palette.remove"; id: string }
   | {

@@ -1,4 +1,15 @@
 export type { Id, AffineMatrix, Point, Transform, Pivot, BlendMode } from "./types/primitives.js";
+export type {
+  Scene3D,
+  Scene3DElement,
+  Scene3DNode,
+  Scene3DCamera,
+  Scene3DLight,
+  Scene3DKeyframe,
+  Scene3DCameraKeyframe,
+  Pose3D,
+  Vector3D,
+} from "./types/scene3d.js";
 export { identityTransform } from "./types/primitives.js";
 export type {
   PageOptions,

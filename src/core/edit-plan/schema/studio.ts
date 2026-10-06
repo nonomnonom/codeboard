@@ -5,8 +5,12 @@ import { planShotElementSchema } from "../artwork.js";
 import { planShotAnimationSchema } from "../studio.js";
 import { editorialSequenceSchema, editorialEditsSchema } from "../../../model/schema/editorial.js";
 import { id, pixelRegion } from "./common.js";
+import { characterInstanceOptionsSchema } from "../../../model/schema/characters.js";
 
 export const studioCommands = {
+  "character.instantiate": characterInstanceOptionsSchema
+    .extend({ op: z.literal("character.instantiate"), sourceAnimationId: id })
+    .strict(),
   "animation.duplicate": z
     .object({
       op: z.literal("animation.duplicate"),

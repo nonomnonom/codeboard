@@ -1,6 +1,7 @@
 import type { AffineMatrix, Id, Point } from "./primitives.js";
 import type { BrushPreset } from "./brushes.js";
 import type { ColorBinding, ColorChannel } from "./palettes.js";
+import type { Scene3DElement } from "./scene3d.js";
 
 interface ElementPlacement {
   matrix?: AffineMatrix;
@@ -114,9 +115,16 @@ export type PathCommand =
   | { op: "Q"; x1: number; y1: number; x: number; y: number }
   | { op: "Z" };
 
-export type DrawingElement = RasterStroke | RasterSurface | VectorStroke | VectorPath | TextElement;
+export type DrawingElement =
+  | RasterStroke
+  | RasterSurface
+  | VectorStroke
+  | VectorPath
+  | TextElement
+  | Scene3DElement;
 
 export type NewDrawingElement =
+  | (Omit<Scene3DElement, "id"> & { id?: Id })
   | (Omit<RasterStroke, "id"> & { id?: Id })
   | (Omit<RasterSurface, "id"> & { id?: Id })
   | (Omit<VectorStroke, "id"> & { id?: Id })

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- Insert an editable character rig and its local performance into an existing shot using `instantiateShotCharacter`, `character.instantiate` plans and the `character-plan` CLI. Copies remap substitutions, IK, controllers, deformation and tracked component origins while preserving the destination set and camera. Placement and frame offset are explicit; incomplete external dependencies reject.
+- Add persistent primitive 3D scenes through `LayerHandle.scene3D`. Saved projects retain mesh and group transforms, perspective or orthographic cameras, basic materials and lighting, and transform/camera keyframes. Scenes render through normal board, shot, and editorial workflows, and participate in capture, retiming, and character-instance offsets. Add a visual study and save/reopen/edit/render integration tests.
+
+  Also add `codeboard-studio/three` for rendering externally authored Three.js scenes as SVG or RGBA snapshots. Both APIs use SVG painter ordering; textures, shadows, PBR and skeletal animation are unsupported. Projects containing the new scene element require this version or newer.
+
 ## 1.0.0
 
 Code-first editable 2D production: storyboard and shot animation, saved-state revision,

@@ -1,6 +1,6 @@
 {
   "name": "codeboard-studio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Code-first drawing and storyboard tools for JavaScript and TypeScript",
   "repository": {
     "type": "git",
@@ -26,6 +26,10 @@
     ".": {
       "types": "./dist/src/index.d.ts",
       "import": "./dist/src/index.js"
+    },
+    "./three": {
+      "types": "./dist/src/three.d.ts",
+      "import": "./dist/src/three.js"
     }
   },
   "bin": {
@@ -93,11 +97,14 @@
     "node": ">=22.22"
   },
   "dependencies": {
+    "@types/three": "0.186.0",
+    "@xmldom/xmldom": "0.9.12",
     "commander": "^14.0.1",
     "fast-xml-parser": "^5.11.2",
     "fflate": "^0.8.3",
     "sharp": "^0.35.5",
     "skia-canvas": "^3.0.8",
+    "three": "0.186.1",
     "zod": "^4.1.12"
   },
   "devDependencies": {

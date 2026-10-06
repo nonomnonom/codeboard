@@ -1,4 +1,5 @@
 import { generate as brushImport } from "./studies/drawing/brush-import.ts";
+import { generate as scene3D } from "./studies/animation/scene-3d.ts";
 import { generate as strokeOutline } from "./studies/drawing/stroke-outline.ts";
 import { generate as layerOrder } from "./studies/drawing/layer-order.ts";
 import { generate as masks } from "./studies/drawing/masks.ts";
@@ -64,6 +65,13 @@ export interface Study {
 }
 
 export const studies: Study[] = [
+  {
+    id: "scene-3d",
+    features: ["scene3d"],
+    kind: "artwork",
+    video: { kind: "board" },
+    generate: scene3D,
+  },
   { id: "brush-import", features: ["drawing"], kind: "artwork", generate: brushImport },
   { id: "stroke-outline", features: ["drawing"], kind: "artwork", generate: strokeOutline },
   { id: "layer-order", features: ["drawing"], kind: "artwork", generate: layerOrder },

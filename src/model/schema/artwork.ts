@@ -5,6 +5,7 @@ import type { VectorFill } from "../types.js";
 import { elementMatrix, point, color, finite } from "./primitives.js";
 import { brush } from "./brushes.js";
 import { colorBindingsSchema } from "./palettes.js";
+import { scene3DElement, globalScene3DElement } from "./scene3d.js";
 
 export const rasterStroke = z.object({
   colorBindings: colorBindingsSchema.optional(),
@@ -120,6 +121,7 @@ export const rasterSurface = z
   });
 
 export const element = z.discriminatedUnion("kind", [
+  globalScene3DElement,
   rasterStroke,
   rasterSurface,
   vectorStroke,
@@ -132,6 +134,7 @@ export const drawingElementSchema = element;
 export const pathCommandSchema = pathCommand;
 
 export const localDrawingElementSchema = z.discriminatedUnion("kind", [
+  scene3DElement,
   rasterStroke.extend({
     reveal: z
       .object({ startFrame: z.number().int().safe(), endFrame: z.number().int().safe() })

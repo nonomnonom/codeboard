@@ -63,7 +63,7 @@ for (const project of projects) {
     for (const entry of await readdir(new URL(base + relative, root), { withFileTypes: true })) {
       const file = relative + entry.name;
       if (entry.isDirectory()) await collect(`${file}/`);
-      else if (/\.(?:ts|cboard|otio|md|woff2|png|psd)$/.test(entry.name))
+      else if (/\.(?:ts|cboard|otio|md|txt|woff2|png|psd)$/.test(entry.name))
         files[`${project.name}/${file}`] = await readFile(new URL(base + file, root));
     }
   }

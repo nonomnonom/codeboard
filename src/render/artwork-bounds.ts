@@ -46,8 +46,9 @@ export function artworkBounds(layer: DrawingLayer): {
     }
   };
   for (const e of layer.elements) {
-    if (e.kind === "raster-surface") {
-      include(0, 0, e.width, e.height, e.matrix, 1);
+    if (e.kind === "raster-surface" || e.kind === "scene-3d") {
+      const { width, height } = e.kind === "scene-3d" ? e.scene : e;
+      include(0, 0, width, height, e.matrix, 1);
       continue;
     }
     if (e.kind === "text") {

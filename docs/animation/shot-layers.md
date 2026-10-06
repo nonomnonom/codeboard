@@ -2,6 +2,8 @@
 
 Use these operations for artwork inside a shot animation. They use shot-local frames; storyboard layer handles use board frames.
 
+To insert a complete character into an existing shot, use [character instances](reusable-characters.md). This preserves the destination set and camera while copying the character's editable rig and local performance.
+
 ## Edit local animation channels
 
 `project.editShotAnimation(animationId, edits)` applies a validated batch through the existing project transaction. `reviseShotAnimation(animation, edits)` applies the same algorithm to isolated values and returns a new animation. A batch contains 1–1000 operations:

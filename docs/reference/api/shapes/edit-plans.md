@@ -34,7 +34,10 @@ export interface ValueMergeReport {
 ## EditCommand
 
 ```ts
-export type EditCommand = {
+export type EditCommand = ({
+    op: "character.instantiate";
+    sourceAnimationId: string;
+} & import("../../model/types/characters.js").CharacterInstanceOptions) | {
     op: "palette.put";
     palette: import("../../model/types/palettes.js").Palette;
 } | {

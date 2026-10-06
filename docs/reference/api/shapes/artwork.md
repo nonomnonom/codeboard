@@ -197,13 +197,15 @@ export type PathCommand = {
 ## DrawingElement
 
 ```ts
-export type DrawingElement = RasterStroke | RasterSurface | VectorStroke | VectorPath | TextElement;
+export type DrawingElement = RasterStroke | RasterSurface | VectorStroke | VectorPath | TextElement | Scene3DElement;
 ```
 
 ## NewDrawingElement
 
 ```ts
-export type NewDrawingElement = (Omit<RasterStroke, "id"> & {
+export type NewDrawingElement = (Omit<Scene3DElement, "id"> & {
+    id?: Id;
+}) | (Omit<RasterStroke, "id"> & {
     id?: Id;
 }) | (Omit<RasterSurface, "id"> & {
     id?: Id;

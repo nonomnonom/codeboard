@@ -19,6 +19,7 @@ Positions are canvas units; rotation is radians; pressure and opacity use 0–1;
 | [review](shapes/review.md) | 3 |
 | [delivery](shapes/delivery.md) | 1 |
 | [shot](shapes/shot.md) | 3 |
+| [characters](shapes/characters.md) | 2 |
 | [studio](shapes/studio.md) | 1 |
 | [editorial](shapes/editorial.md) | 4 |
 | [script](shapes/script.md) | 10 |
@@ -32,6 +33,7 @@ Positions are canvas units; rotation is radians; pressure and opacity use 0–1;
 | [export](shapes/export.md) | 24 |
 | [storage](shapes/storage.md) | 4 |
 | [audio](shapes/audio.md) | 13 |
+| [scene3d](shapes/scene3d.md) | 10 |
 | [shot timing](shapes/shot-timing.md) | 1 |
 | [compositing](shapes/compositing.md) | 2 |
 | [deformation](shapes/deformation.md) | 10 |

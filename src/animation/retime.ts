@@ -1,5 +1,6 @@
 import type { Layer, StoryboardDocument } from "../model/types.js";
 import { CodeboardError } from "../model/errors.js";
+import { scene3DKeyCollections } from "./scene3d.js";
 
 /** Frame positions are global; stroke point.time remains pen-input milliseconds. */
 export function retimePanel(
@@ -41,7 +42,7 @@ export function retimePanel(
       denominator = BigInt(oldDuration - 1);
     return safe(panel.startFrame + Number((2n * numerator + denominator) / (2n * denominator)));
   };
-  const keys = <T extends { id: string; frame: number }>(entries: T[], ownerId: string) => {
+  const keys = <T extends { id?: string; frame: number }>(entries: T[], ownerId: string) => {
     const positions = new Map<number, number>();
     for (const key of entries) {
       const frame = map(key.frame);
@@ -61,7 +62,7 @@ export function retimePanel(
           },
         );
       positions.set(frame, key.frame);
-      if (frame !== key.frame) affected.add(key.id);
+      if (frame !== key.frame) affected.add(key.id ?? ownerId);
       updates.push(() => {
         key.frame = frame;
       });
@@ -110,7 +111,9 @@ export function retimePanel(
         }
         visit(layer.children);
       } else
-        for (const e of layer.elements)
+        for (const e of layer.elements) {
+          if (e.kind === "scene-3d")
+            for (const entries of scene3DKeyCollections(e.scene)) keys(entries, e.id);
           if (e.kind === "raster-stroke" && e.reveal) {
             const startFrame = map(e.reveal.startFrame),
               endFrame = map(e.reveal.endFrame);
@@ -119,6 +122,7 @@ export function retimePanel(
               e.reveal = { startFrame, endFrame };
             });
           }
+        }
     }
   };
   for (const p of document.panels) {
