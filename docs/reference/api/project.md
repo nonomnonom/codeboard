@@ -292,6 +292,12 @@ capturePanelAnimation(panelId: string, options: PanelCaptureOptions): PanelCaptu
 duplicateShotAnimation(sourceAnimationId: string, options: ShotDuplicateOptions): ShotDuplicateResult;
 ```
 
+### instantiateShotCharacter
+
+```ts
+instantiateShotCharacter(sourceAnimationId: string, options: CharacterInstanceOptions): CharacterInstanceResult;
+```
+
 ### editShotAnimation
 
 ```ts
@@ -528,6 +534,12 @@ layer(id: Id): LayerHandle;
 ```
 
 ## LayerHandle
+
+### scene3D
+
+```ts
+scene3D(scene: Scene3D, options: Partial<Pick<Scene3DElement, "id" | "name" | "matrix" | "opacity" | "visible">> = {}): Id;
+```
 
 ### rasterSurface
 

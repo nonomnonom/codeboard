@@ -1,4 +1,5 @@
 import { iterateLayers } from "./layers.js";
+import { scene3DKeyCollections } from "../animation/scene3d.js";
 import { drawingElementSchema } from "./schema/artwork.js";
 import type { DrawingElement } from "./types.js";
 import { recordComponentOrigin } from "./component-origins.js";
@@ -36,7 +37,13 @@ export function cloneStaticComponentLayers(
     l.exposure = null;
     delete l.componentSource;
     if (l.kind !== "group")
-      for (const e of l.elements) if (e.kind === "raster-stroke") delete e.reveal;
+      for (const e of l.elements) {
+        if (e.kind === "raster-stroke") delete e.reveal;
+        if (e.kind === "scene-3d") {
+          delete e.scene.camera.keyframes;
+          for (const node of e.scene.nodes) delete node.keyframes;
+        }
+      }
   });
   layers[0]!.transform = identityTransform();
   return layers;
@@ -201,6 +208,14 @@ export function replaceComponentElementArtwork(
       details: { issues: parsed.error.issues },
     });
   const element = parsed.data as DrawingElement;
+  if (
+    element.kind === "scene-3d" &&
+    scene3DKeyCollections(element.scene).some((keys) => keys.length)
+  )
+    throw new CodeboardError(
+      "INVALID_ARGUMENT",
+      "Static component source cannot contain 3D animation",
+    );
   if (element.kind === "raster-stroke" && element.reveal !== undefined)
     throw new CodeboardError(
       "INVALID_ARGUMENT",

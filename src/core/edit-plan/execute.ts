@@ -14,6 +14,7 @@ export function executePlan(project: StoryboardProject, plan: EditPlan): void {
     for (const [index, command] of plan.commands.entries()) {
       try {
         switch (command.op) {
+          case "character.instantiate":
           case "animation.element.add":
           case "animation.element.remove":
           case "animation.edit":

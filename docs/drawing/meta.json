@@ -11,6 +11,7 @@
     "component-upgrades",
     "effects",
     "geometry",
+    "three",
     "organizing-layers"
   ]
 }

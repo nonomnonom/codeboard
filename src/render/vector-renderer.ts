@@ -4,6 +4,7 @@ import { drawRasterStroke } from "./brush-engine.js";
 import { contourPath } from "../drawing/path-geometry.js";
 import { traceVectorStroke } from "../drawing/stroke-outline.js";
 import { assertDrawingColors } from "../drawing/color.js";
+import { drawScene3D } from "./scene3d.js";
 
 export function drawVectorStroke(ctx: CanvasRenderingContext2D, stroke: VectorStroke): void {
   if (stroke.points.length === 0) return;
@@ -99,7 +100,8 @@ export function drawElement(
       } finally {
         ctx.restore();
       }
-    } else {
+    } else if (element.kind === "scene-3d") drawScene3D(ctx, element, frame);
+    else {
       ctx.save();
       try {
         ctx.globalAlpha = element.opacity;

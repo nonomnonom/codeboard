@@ -22,6 +22,7 @@ Using an agent? [Set up the Codeboard skills](start/agent-setup.md), then [give 
 | Develop a storyboard | [Scenes, shots and panels](animation/storyboards.md) |
 | Animate poses and movement | [Drawings and keyframes](animation/timing.md) |
 | Build a character rig | [Rigging](animation/rigging.md) |
+| Reuse a character in an existing shot | [Character instances](animation/reusable-characters.md) |
 | Add a soundtrack | [Board audio](audio/board-audio.md) or [shot audio](audio/shot-audio.md) |
 | Save, share or revise existing work | [Projects and revisions](workflow/projects.md) |
 | Export images, a PDF or a movie | [Export](delivery/export.md) |

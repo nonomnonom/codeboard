@@ -22,6 +22,7 @@ Run `codeboard --help` to list commands or `codeboard COMMAND --help` for one co
 | `codeboard validate <project>` | Check project integrity |
 | `codeboard configure <project> <changes>` | Apply a JSON file of [project settings](../workflow/projects.md#configure-production-settings) and save atomically |
 | `codeboard plan <project> <commands> --label <text> [--actor <id>]` | Validate a JSON command array and emit a serializable [edit plan](edit-plans.md#persist-a-retryable-edit-plan) |
+| `codeboard character-plan <project> <source> <root> <target> --id <id> --expected-version <number>` | Plan [character insertion](../animation/reusable-characters.md) into an existing shot |
 | `codeboard commit <project> <plan> --request-id <id> [--actor <id>]` | Atomically save the plan and durable receipt; identical retries return the original receipt |
 | `codeboard receipt <project> <request-id>` | Read a committed request receipt as JSON, or `null` if absent |
 | `codeboard render <project>` | Export panel images and storyboard sheets |

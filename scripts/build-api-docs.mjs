@@ -326,6 +326,7 @@ const typeFiles = [
   "model/types/review",
   "model/types/delivery",
   "model/types/shot",
+  "model/types/characters",
   "model/types/studio",
   "model/types/editorial",
   "model/types/script",

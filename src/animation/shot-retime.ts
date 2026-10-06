@@ -10,6 +10,7 @@ import {
   type TimeRounding,
 } from "./rational-time.js";
 import { CodeboardError } from "../model/errors.js";
+import { scene3DKeyCollections } from "./scene3d.js";
 
 export interface ShotRetimeReport {
   animationId: string;
@@ -127,9 +128,13 @@ export function retimeShotAnimation(
     if (layer.kind === "group") {
       if (layer.drawingSequence) keys(layer.drawingSequence, layer.id, "drawingSequence");
     } else
-      for (const element of layer.elements)
+      for (const element of layer.elements) {
+        if (element.kind === "scene-3d")
+          for (const entries of scene3DKeyCollections(element.scene))
+            keys(entries, element.id, "scene3D.keyframes");
         if (element.kind === "raster-stroke" && element.reveal)
           interval(element.reveal, element.id, "reveal");
+      }
   }
   for (const controller of animation.controllers ?? []) {
     keys(controller.keyframes, controller.id, "controller.keyframes");

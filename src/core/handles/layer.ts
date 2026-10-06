@@ -19,6 +19,7 @@ import { readPixelRegion, writePixelRegion } from "../../drawing/pixel-buffer.js
 import { validatePixels } from "../../model/validation/pixels.js";
 import { outlinedStroke } from "../../drawing/stroke-outline.js";
 import { combinePaths, type PathBooleanOperation } from "../../drawing/path-geometry.js";
+import type { Scene3D, Scene3DElement } from "../../model/types/scene3d.js";
 
 export class LayerHandle {
   constructor(
@@ -26,6 +27,19 @@ export class LayerHandle {
     readonly panelId: Id,
     readonly id: Id,
   ) {}
+
+  scene3D(
+    scene: Scene3D,
+    options: Partial<Pick<Scene3DElement, "id" | "name" | "matrix" | "opacity" | "visible">> = {},
+  ): Id {
+    return this.project._addElement(this.panelId, this.id, {
+      kind: "scene-3d",
+      scene: structuredClone(scene),
+      opacity: 1,
+      visible: true,
+      ...structuredClone(options),
+    });
+  }
 
   rasterSurface(
     image: PixelBuffer,

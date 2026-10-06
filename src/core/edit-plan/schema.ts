@@ -11,6 +11,7 @@ import { mediaCommands } from "./schema/media.js";
 import { collaborationCommands } from "./schema/collaboration.js";
 
 export const commandSchema = z.discriminatedUnion("op", [
+  studioCommands["character.instantiate"],
   artworkCommands["palette.put"],
   artworkCommands["palette.remove"],
   artworkCommands["palette.bind"],

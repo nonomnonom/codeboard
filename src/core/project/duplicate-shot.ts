@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { StoryboardDocument } from "../../model/types.js";
-import { cloneLayersWithIdentities } from "../../model/layers.js";
+import { cloneShotArtwork } from "../../animation/clone-shot-artwork.js";
 import { copyComponentOrigins } from "../../model/component-origins.js";
 import { defineShotAnimation } from "../../animation/shot.js";
 import { CodeboardError } from "../../model/errors.js";
@@ -35,7 +35,7 @@ export function duplicateShotAnimation(
     throw new CodeboardError("INVALID_ARGUMENT", "Duplicate requires a new animation ID");
   if (!document.shots.some((entry) => entry.id === options.shotId))
     throw new CodeboardError("INVALID_ARGUMENT", "Destination shot not found");
-  const copied = cloneLayersWithIdentities(source.layers, nextId);
+  const copied = cloneShotArtwork(source, nextId);
   const identities = [{ sourceId: source.id, copyId: options.id }, ...copied.identities];
   const layerIds = new Map(copied.identities.map((entry) => [entry.sourceId, entry.copyId]));
   const mappedLayer = (sourceId: string) => {
@@ -51,8 +51,13 @@ export function duplicateShotAnimation(
     identities.push({ sourceId, copyId });
     return copyId;
   };
-  const { layers: _layers, ...metadata } = source;
-  const animation = { ...structuredClone(metadata), layers: copied.layers };
+  const { layers: _layers, meshes: _meshes, controllers: _controllers, ...metadata } = source;
+  const animation = {
+    ...structuredClone(metadata),
+    layers: copied.layers,
+    ...(copied.meshes === undefined ? {} : { meshes: copied.meshes }),
+    ...(copied.controllers === undefined ? {} : { controllers: copied.controllers }),
+  };
   animation.id = options.id;
   animation.shotId = options.shotId;
   animation.name = options.name ?? source.name;
@@ -61,21 +66,6 @@ export function duplicateShotAnimation(
     ...key,
     id: allocate(key.id, "camera-key"),
   }));
-  for (const binding of animation.meshes ?? []) {
-    binding.layerId = mappedLayer(binding.layerId);
-    if (binding.skin)
-      binding.skin.jointLayers = binding.skin.jointLayers.map((joint) => ({
-        ...joint,
-        layerId: mappedLayer(joint.layerId),
-      }));
-  }
-  for (const controller of animation.controllers ?? []) {
-    controller.id = allocate(controller.id, "controller");
-    controller.targets = controller.targets.map((target) => ({
-      ...target,
-      layerId: mappedLayer(target.layerId),
-    }));
-  }
   for (const node of animation.compositing?.nodes ?? [])
     if (node.kind === "source") node.layerIds = node.layerIds.map(mappedLayer);
   for (const track of animation.audio ?? []) {

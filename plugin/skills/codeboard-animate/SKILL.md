@@ -7,7 +7,7 @@ description: Use when Codeboard artwork needs drawing holds, poses, skin or curv
 
 Prerequisite: codeboard session context.
 
-Read `docs/animation/timing.md` for board timing, `docs/animation/shot-layers.md` for local keys, `docs/drawing/geometry.md` for joints and `docs/reference/api/production.md` for mutations. For skin/controller authoring or performance handoff, follow `docs/animation/rigging.md` and consult the installed public declarations before using recent APIs.
+Read `docs/animation/timing.md` for board time and `docs/animation/shot-layers.md` for shot keys. For rigs and motion reuse, read `docs/animation/rigging.md` and installed public declarations.
 
 | Change | Mechanism |
 | --- | --- |
@@ -19,6 +19,7 @@ Read `docs/animation/timing.md` for board timing, `docs/animation/shot-layers.md
 | Live multi-layer pose blend | Named shot controller |
 | Reuse numeric controller motion | Controller performance package and explicit mappings |
 | Reuse a complete same-project rig | `animation.duplicate`; read `docs/animation/rigging.md` for copied ownership and shared dependencies |
+| Insert character into shot | `character.instantiate`; read `docs/animation/reusable-characters.md` for dependencies and placement |
 | Isolate a shot for handoff | `exportShotProject`; inspect dependencies and external fonts before destination review |
 | Painted line appearing over time | Raster-stroke reveal |
 | Board panel length and subsequent timing | Panel retime |

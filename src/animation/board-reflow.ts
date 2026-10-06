@@ -1,6 +1,7 @@
 import type { Id, Panel, StoryboardDocument } from "../model/types.js";
 import { CodeboardError } from "../model/errors.js";
 import { findPanel, visitLayers } from "../model/layers.js";
+import { scene3DKeyCollections } from "./scene3d.js";
 
 export function orderedPanels(document: StoryboardDocument, shotId: Id): Panel[] {
   const shot = document.shots.find((entry) => entry.id === shotId);
@@ -69,9 +70,13 @@ export function reflowTimeline(document: StoryboardDocument): void {
             if (layer.kind === "group")
               for (const key of layer.drawingSequence ?? []) shiftKey(key, delta);
             else
-              for (const element of layer.elements)
+              for (const element of layer.elements) {
+                if (element.kind === "scene-3d")
+                  for (const keys of scene3DKeyCollections(element.scene))
+                    for (const key of keys) shiftKey(key, delta);
                 if (element.kind === "raster-stroke" && element.reveal)
                   shiftRange(element.reveal, delta);
+              }
           });
         }
       }

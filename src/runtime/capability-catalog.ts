@@ -106,7 +106,21 @@ export function capabilityCatalog(): CapabilityEntry[] {
       "camera",
       "supported",
       ["production.addCameraKeyframe", "production.setPlaneDepth"],
-      "2D camera and depth planes; no native 3D scene",
+      "2D camera and depth planes; embedded 3D scenes have their own camera",
+    ),
+    feature(
+      "scene3d",
+      "partial",
+      ["LayerHandle.scene3D", "LayerHandle.edit", "createRenderSession", "createShotRenderSession"],
+      "Persisted primitive scenes in vector layers; group transforms, perspective/orthographic camera, transform and camera keyframes, Basic/Lambert/Normal materials and ambient/directional lights. Board capture, retiming, save/reopen and ordinary frame rendering preserve scene data",
+      "SVG painter ordering; no depth buffer, textures, shadows, PBR, external models or skeletal animation. Each scene has an independent viewport and depth order; no shared depth between 2D layers or separate scenes",
+    ),
+    feature(
+      "render.three",
+      "partial",
+      ["codeboard-studio/three.renderThreeFrame", "codeboard-studio/three.renderThreeSVG"],
+      "Headless Three.js SVG projection and RGBA snapshots; perspective/orthographic cameras, Basic/Lambert/Normal meshes, lines and basic lights",
+      "Painter ordering, not a depth buffer; no textures, shadows, PBR, fog, skinning or instanced meshes; saved raster layers retain pixels rather than live Three scenes",
     ),
     feature(
       "audio",
@@ -214,6 +228,14 @@ export function capabilityCatalog(): CapabilityEntry[] {
       ["exportMovie", "exportShotMovie", "exportEditorialMovie"],
       "Requires FFmpeg and compatible encoders; even dimensions and matching panel sizes; optional require-available font preflight runs before audio decoding/rendering",
       "Studio mix uses stereo 48 kHz PCM/AAC, rejects clipping and is limited to 16777216 samples; persistent PNG jobs are a separate workflow; font availability does not lock font binaries or guarantee glyph coverage",
+    ),
+    feature(
+      "character.instances",
+      "partial",
+      ["StoryboardProject.instantiateShotCharacter", "character.instantiate", "character-plan"],
+      "Insert one self-contained top-level character group into an existing same-project shot; fresh artwork/key/controller identities, retained IK/substitutions/mesh/curve/envelope/skin and tracked component origins",
+      "Separate placement group and explicit frame offset; equal frame rates and a performance range that fits the destination. External mask/joint/controller dependencies reject; composited destinations require a receiving source node",
+      "Existing destination artwork/camera/audio remain authored independently. Shared palettes/components/media stay project resources; no automatic cross-project asset import, full-character upgrade propagation or Harmony interchange",
     ),
     feature(
       "editorial.shot-local",

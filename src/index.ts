@@ -1,4 +1,15 @@
 export { renderPanelCanvas, renderPanelPNG } from "./render/panel.js";
+export type {
+  Scene3D,
+  Scene3DElement,
+  Scene3DNode,
+  Scene3DCamera,
+  Scene3DLight,
+  Scene3DKeyframe,
+  Scene3DCameraKeyframe,
+  Pose3D,
+  Vector3D,
+} from "./model/types/scene3d.js";
 export { StoryboardProject } from "./core/project.js";
 export type {
   Palette,
@@ -71,6 +82,10 @@ export { planDrawingElement, planShotElement } from "./core/edit-plan/artwork.js
 export { planShotAnimation } from "./core/edit-plan/studio.js";
 export { planComponentSource } from "./core/edit-plan/component-source.js";
 export type { ShotDuplicateOptions, ShotDuplicateResult } from "./core/project/duplicate-shot.js";
+export type {
+  CharacterInstanceOptions,
+  CharacterInstanceResult,
+} from "./model/types/characters.js";
 export type { ShotDependency } from "./model/shot-dependencies.js";
 export { mergePalette, type PaletteMergeOptions } from "./model/palette-merge.js";
 export { planPaletteMerge } from "./core/production/palette-merge.js";

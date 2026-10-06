@@ -9,6 +9,11 @@ type Command = Extract<EditCommand, { op: keyof typeof studioCommands }>;
 
 export function executeStudio(project: StoryboardProject, command: Command): void {
   switch (command.op) {
+    case "character.instantiate": {
+      const { op: _op, sourceAnimationId, ...options } = command;
+      project.instantiateShotCharacter(sourceAnimationId, options);
+      break;
+    }
     case "animation.element.add":
       project.addShotElement(
         command.animationId,

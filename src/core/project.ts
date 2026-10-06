@@ -25,6 +25,11 @@ import {
   type ShotDuplicateOptions,
   type ShotDuplicateResult,
 } from "./project/duplicate-shot.js";
+import { instantiateShotCharacter } from "./project/instantiate-character.js";
+import type {
+  CharacterInstanceOptions,
+  CharacterInstanceResult,
+} from "../model/types/characters.js";
 import * as structure from "./project/structure.js";
 import * as studioOperations from "./project/studio.js";
 import { defineShotAnimation } from "../animation/shot.js";
@@ -380,6 +385,30 @@ export class StoryboardProject {
       [sourceAnimationId, options.id, options.shotId],
       () => {
         result = duplicateShotAnimation(
+          this.#document,
+          (prefix) => this.#nextId(prefix),
+          sourceAnimationId,
+          options,
+        );
+      },
+    );
+    return result!;
+  }
+
+  instantiateShotCharacter(
+    sourceAnimationId: string,
+    options: CharacterInstanceOptions,
+  ): CharacterInstanceResult {
+    let result: CharacterInstanceResult | undefined;
+    this.#mutate(
+      "instantiate shot character",
+      [
+        options.targetAnimationId,
+        options.id,
+        ...(options.parentLayerId === undefined ? [] : [options.parentLayerId]),
+      ],
+      () => {
+        result = instantiateShotCharacter(
           this.#document,
           (prefix) => this.#nextId(prefix),
           sourceAnimationId,

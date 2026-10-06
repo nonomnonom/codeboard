@@ -5,6 +5,7 @@ import { iterateLayers } from "./layers.js";
 import { validateArtwork } from "./validation/artwork.js";
 import { CodeboardError } from "./errors.js";
 import { fingerprint } from "./value-fingerprint.js";
+import { scene3DKeyCollections } from "../animation/scene3d.js";
 
 /** Validate an explicitly identified static library tree without regenerating identities. */
 export function defineComponentSource(input: unknown): Layer[] {
@@ -35,6 +36,14 @@ export function defineComponentSource(input: unknown): Layer[] {
     } else {
       for (const element of layer.elements) {
         insert(element.id);
+        if (
+          element.kind === "scene-3d" &&
+          scene3DKeyCollections(element.scene).some((keys) => keys.length)
+        )
+          throw new CodeboardError(
+            "INVALID_ARGUMENT",
+            "Component source cannot contain 3D animation",
+          );
         if (element.kind === "raster-stroke" && element.reveal !== undefined)
           throw new CodeboardError(
             "INVALID_ARGUMENT",

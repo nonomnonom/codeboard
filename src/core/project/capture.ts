@@ -4,6 +4,7 @@ import { allLayers, cloneLayersWithIdentities, findPanel } from "../../model/lay
 import { defineShotAnimation } from "../../animation/shot.js";
 import { normalizeRate } from "../../animation/rational-time.js";
 import { CodeboardError } from "../../model/errors.js";
+import { scene3DKeyCollections } from "../../animation/scene3d.js";
 
 export interface PanelCaptureResult {
   animationId: string;
@@ -76,6 +77,9 @@ export function capturePanelAnimation(
       for (const key of layer.drawingSequence ?? []) key.frame = local(key.frame);
     else
       for (const element of layer.elements) {
+        if (element.kind === "scene-3d")
+          for (const keys of scene3DKeyCollections(element.scene))
+            for (const key of keys) key.frame = local(key.frame);
         if (element.kind === "raster-stroke" && element.reveal)
           element.reveal = {
             startFrame: local(element.reveal.startFrame),
